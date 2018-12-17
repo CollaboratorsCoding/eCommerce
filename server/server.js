@@ -11,6 +11,7 @@ import expressStaticGzip from 'express-static-gzip';
 
 // Our loader - this basically acts as the entry point for each page load
 import loader from './loader';
+import api from './api';
 
 // Create our express app using the port optionally specified
 const app = express();
@@ -43,6 +44,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 
 // Set up homepage, static assets, and capture everything else
+app.use('/api', api);
 app.use(express.Router().get('/', loader));
 app.use(
   expressStaticGzip(path.join(__dirname, '../build'), {

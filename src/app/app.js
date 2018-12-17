@@ -1,50 +1,46 @@
 // The basics
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
-
+import 'semantic-ui-css/semantic.min.css';
 // Action creators and helpers
-import { establishCurrentUser } from '../modules/auth';
-import { isServer } from '../store';
 
 import Header from './header';
 import Routes from './routes';
-import 'semantic-ui-css/semantic.min.css';
+
 import './app.scss';
 
 class App extends Component {
-  componentWillMount() {
-    if (!isServer) {
-      this.props.establishCurrentUser();
-    }
-  }
+	componentWillMount = () => {
+		
+	};
 
-  render() {
-    return (
-      <div id="app">
-        <Header
-          isAuthenticated={this.props.isAuthenticated}
-          current={this.props.location.pathname}
-        />
-        <div id="content">
-          <Routes />
-        </div>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div id="app">
+				<Header
+					isAuthenticated={this.props.isAuthenticated}
+					current={this.props.location.pathname}
+				/>
+				<div id="content">
+					<Routes />
+				</div>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+	isAuthenticated: state.profile.isAuthenticated,
+	pathname: state.router.location.pathname,
+	search: state.router.location.search,
+	hash: state.router.location.hash,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ establishCurrentUser }, dispatch);
-
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(App)
+	connect(
+		mapStateToProps,
+		null
+	)(App)
 );

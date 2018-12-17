@@ -210,7 +210,7 @@ module.exports = {
               ),
 
               plugins: [
-                // require.resolve('react-hot-loader/babel'),
+                require.resolve('react-hot-loader/babel'),
                 [
                   require.resolve('babel-plugin-named-asset-import'),
                   {
