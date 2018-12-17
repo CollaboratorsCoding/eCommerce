@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { Button, Icon, Label, Grid, Image, Segment } from 'semantic-ui-react';
 import Page from '../../components/page';
 
 import logo from '../../assets/iphone-xs-silver-select-2018_AV3.jpg';
@@ -29,5 +29,42 @@ export default () => (
 		</div>
 
 		<img src={logo} alt="Homepage" style={{ width: '400px' }} />
+		<Grid stackable columns={2}>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+			<Grid.Column>
+				<Segment>
+					<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+				</Segment>
+			</Grid.Column>
+		</Grid>
 	</Page>
 );

@@ -6,26 +6,22 @@ import { withRouter } from 'react-router';
 import 'semantic-ui-css/semantic.min.css';
 // Action creators and helpers
 
-import Header from './header';
+import Layout from './layout';
 import Routes from './routes';
 
 import './app.scss';
 
 class App extends Component {
-	componentWillMount = () => {
-		
-	};
+	componentWillMount = () => {};
 
 	render() {
 		return (
 			<div id="app">
-				<Header
-					isAuthenticated={this.props.isAuthenticated}
-					current={this.props.location.pathname}
-				/>
-				<div id="content">
-					<Routes />
-				</div>
+				<Layout current={this.props.location.pathname}>
+					<div id="content">
+						<Routes />
+					</div>
+				</Layout>
 			</div>
 		);
 	}
