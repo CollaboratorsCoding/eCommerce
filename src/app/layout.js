@@ -14,9 +14,10 @@ import {
 	Menu,
 	Segment,
 	Visibility,
+	Icon,
 } from 'semantic-ui-react';
 
-import logo from './assets/loto.png';
+import logo from './assets/logo.png';
 
 const links = [
 	{
@@ -53,8 +54,7 @@ const menuStyle = {
 	border: 'none',
 	borderRadius: 0,
 	boxShadow: 'none',
-	marginBottom: '1em',
-	marginTop: '4em',
+
 	transition: 'box-shadow 0.5s ease, padding 0.5s ease',
 };
 
@@ -114,7 +114,7 @@ export default class StickyLayout extends Component {
 						fixed={menuFixed ? 'top' : undefined}
 						style={menuFixed ? fixedMenuStyle : menuStyle}
 					>
-						<Container text>
+						<Container>
 							<Menu.Item>
 								<Image size="mini" src={logo} />
 							</Menu.Item>
@@ -132,8 +132,18 @@ export default class StickyLayout extends Component {
 							})}
 
 							<Menu.Menu position="right">
+								<Menu.Item>
+									<Icon.Group size="big">
+										<Icon name="shopping cart" />
+										<Icon
+											color="red "
+											corner="top right"
+											name="add"
+										/>
+									</Icon.Group>
+								</Menu.Item>
 								<Dropdown
-									text="Dropdown"
+									text="Profile"
 									pointing
 									className="link item"
 								>
@@ -166,7 +176,7 @@ export default class StickyLayout extends Component {
 					</Menu>
 				</Visibility>
 
-				<Container>{children}</Container>
+				<Container fluid>{children}</Container>
 
 				<Segment
 					inverted

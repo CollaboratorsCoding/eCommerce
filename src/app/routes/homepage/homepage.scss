@@ -1,0 +1,26 @@
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
+
+// .slick-slide img {
+// 	max-width: 67% !important;
+// }
+.slick-slide.slick-center img {
+	box-shadow: 0 0 6px #969696;
+	z-index: 100;
+}
+.slider-item {
+	position: relative;
+}
+.slider-text {
+	position: absolute;
+	bottom: 25px;
+	z-index: 200;
+	font-size: 24px;
+	left: 38%;
+	/* text-align: center; */
+	font-weight: bold;
+}
+
+.slick-slide:not(.slick-center) div {
+	filter: blur(2px);
+}

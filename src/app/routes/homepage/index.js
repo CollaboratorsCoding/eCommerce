@@ -1,34 +1,45 @@
 import React from 'react';
-import { Button, Icon, Label, Grid, Image, Segment } from 'semantic-ui-react';
+import { Grid, Image, Segment } from 'semantic-ui-react';
+import Slider from 'react-slick';
 import Page from '../../components/page';
 
-import logo from '../../assets/iphone-xs-silver-select-2018_AV3.jpg';
+import './homepage.scss';
 
+const settings = {
+	// infinite: false,
+	className: 'slider variable-width',
+	dots: false,
+	infinite: true,
+	centerMode: true,
+	slidesToShow: 1,
+	slidesToScroll: 1,
+	variableWidth: true,
+	autoplay: true,
+	autoplaySpeed: 4000,
+};
 export default () => (
 	<Page id="homepage">
-		<p>Here our homepage. All are welcome. </p>
 		<div>
-			<Button as="div" labelPosition="right">
-				<Button color="red">
-					<Icon name="heart" />
-					Likes
-				</Button>
-				<Label as="a" basic color="red" pointing="left">
-					2,048
-				</Label>
-			</Button>
-			<Button as="div" labelPosition="right">
-				<Button basic color="blue">
-					<Icon name="fork" />
-					Fork
-				</Button>
-				<Label as="a" basic color="blue" pointing="left">
-					2,048
-				</Label>
-			</Button>
+			<Slider {...settings}>
+				<div className="slider-item">
+					<Image src={require('../../assets/1.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/2.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/4.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/5.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+			</Slider>
 		</div>
 
-		<img src={logo} alt="Homepage" style={{ width: '400px' }} />
 		<Grid stackable columns={2}>
 			<Grid.Column>
 				<Segment>
