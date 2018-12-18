@@ -21,6 +21,10 @@
 	font-weight: bold;
 }
 
+.slider-wrapper {
+	transition: opacity 2s;
+}
+
 .slick-slide:not(.slick-center) div {
 	filter: blur(2px);
 }
