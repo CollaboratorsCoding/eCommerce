@@ -1,10 +1,9 @@
 // Express requirements
-import bodyParser from 'body-parser';
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
-import forceDomain from 'forcedomain';
+// import forceDomain from 'forcedomain';
 import Loadable from 'react-loadable';
 import cookieParser from 'cookie-parser';
 import expressStaticGzip from 'express-static-gzip';
@@ -38,8 +37,8 @@ const PORT = process.env.PORT || 3000;
 
 // Compress, parse, log, and raid the cookie jar
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cookieParser());
 
@@ -47,37 +46,37 @@ app.use(cookieParser());
 app.use('/api', api);
 app.use(express.Router().get('/', loader));
 app.use(
-  expressStaticGzip(path.join(__dirname, '../build'), {
-    enableBrotli: true,
-    orderPreference: ['br']
-  })
+	expressStaticGzip(path.join(__dirname, '../build'), {
+		enableBrotli: true,
+		orderPreference: ['br'],
+	})
 );
 
 app.use(loader);
 
 // We tell React Loadable to load all required assets and start listening - ROCK AND ROLL!
 Loadable.preloadAll().then(() => {
-  app.listen(PORT, console.log(`App listening on port ${PORT}!`));
+	app.listen(PORT, console.log(`App listening on port ${PORT}!`));
 });
 
 // Handle the bugs somehow
 app.on('error', error => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
 
-  const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
+	const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`;
 
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+	switch (error.code) {
+		case 'EACCES':
+			console.error(`${bind} requires elevated privileges`);
+			process.exit(1);
+			break;
+		case 'EADDRINUSE':
+			console.error(`${bind} is already in use`);
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
 });
