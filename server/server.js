@@ -1,10 +1,11 @@
 // Express requirements
-import bodyParser from 'body-parser';
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
-import forceDomain from 'forcedomain';
+// import forceDomain from 'forcedomain';
+import session from 'express-session';
+import mongoose from 'mongoose';
 import Loadable from 'react-loadable';
 import cookieParser from 'cookie-parser';
 import expressStaticGzip from 'express-static-gzip';
@@ -13,6 +14,11 @@ import expressStaticGzip from 'express-static-gzip';
 import loader from './loader';
 import api from './api';
 
+const MongoStore = require('connect-mongo')(session);
+const dbConnector = require('./db_connector');
+require('dotenv').config();
+
+dbConnector(process.env.DB_CONNECT);
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,48 +42,62 @@ const PORT = process.env.PORT || 3000;
 //   );
 // }
 
+const sessionConfig = session({
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: false,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection,
+	}),
+	cookie: {
+		maxAge: 24 * 60 * 60 * 1000,
+		httpOnly: true,
+	},
+});
+
 // Compress, parse, log, and raid the cookie jar
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(sessionConfig);
 
 // Set up homepage, static assets, and capture everything else
 app.use('/api', api);
 app.use(express.Router().get('/', loader));
 app.use(
-  expressStaticGzip(path.join(__dirname, '../build'), {
-    enableBrotli: true,
-    orderPreference: ['br']
-  })
+	expressStaticGzip(path.join(__dirname, '../build'), {
+		enableBrotli: true,
+		orderPreference: ['br'],
+	})
 );
 
 app.use(loader);
 
 // We tell React Loadable to load all required assets and start listening - ROCK AND ROLL!
 Loadable.preloadAll().then(() => {
-  app.listen(PORT, console.log(`App listening on port ${PORT}!`));
+	app.listen(PORT, console.log(`App listening on port ${PORT}!`));
 });
 
 // Handle the bugs somehow
 app.on('error', error => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
 
-  const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
+	const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`;
 
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+	switch (error.code) {
+		case 'EACCES':
+			console.error(`${bind} requires elevated privileges`);
+			process.exit(1);
+			break;
+		case 'EADDRINUSE':
+			console.error(`${bind} is already in use`);
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
 });
