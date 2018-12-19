@@ -29,7 +29,7 @@ register(ignoreStyles.DEFAULT_EXTENSIONS, (mod, filename) => {
 // Polyfill is required for Babel 7, polyfill includes a custom regenerator runtime and core-js
 require('@babel/polyfill');
 require('@babel/register')({
-	ignore: [/\/(build|node_modules)\//],
+	ignore: [/\/(build|node_modules|emailTemplates)\//],
 	presets: ['@babel/preset-env', '@babel/preset-react'],
 	plugins: [
 		'@babel/plugin-syntax-dynamic-import',

@@ -3,6 +3,7 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import passport from 'passport';
 // import forceDomain from 'forcedomain';
 import session from 'express-session';
 import mongoose from 'mongoose';
@@ -19,6 +20,8 @@ const dbConnector = require('./db_connector');
 require('dotenv').config();
 
 dbConnector(process.env.DB_CONNECT);
+
+const passportConfig = require('./passport');
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -62,6 +65,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(sessionConfig);
+passportConfig(passport);
+app.use(passport.initialize());
 
 // Set up homepage, static assets, and capture everything else
 app.use('/api', api);
