@@ -12,13 +12,11 @@ const { getCart } = CartActions;
 
 const frontload = async props => await props.getCart();
 class About extends Component {
-	shouldComponentUpdate() {
-		return true;
-	}
+	componentDidMount = () => {};
 
 	render() {
 		const { totalPrice, totalQty } = this.props.cart;
-		console.log(this.props.cart);
+
 		return (
 			<Page
 				id="about"

@@ -18,7 +18,6 @@ register(ignoreStyles.DEFAULT_EXTENSIONS, (mod, filename) => {
 
 	mod.exports = `/static/media/${bn}`;
 });
-
 require('@babel/polyfill');
 require('@babel/register')({
 	ignore: [/\/(build|node_modules)\//],

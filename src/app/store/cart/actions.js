@@ -1,37 +1,23 @@
-// import axios from 'axios';
+import axios from 'axios';
 // // import cartTypes from './type';
 // import createActionThunk from '../actionThunk';
+
+// import request from 'superagent';
 
 const CartActions = {};
 
 CartActions.getCart = () => dispatch =>
 	new Promise(resolve => {
-		fetch('/api/get-cart').then(response => {
-			dispatch({
-				type: 'GET_CART',
-				cart: response,
-			});
-			resolve(response);
+		axios.get('http://localhost:3000/api/get-cart').then(response => {
+			if (response.data) {
+				dispatch({
+					type: 'GET_CART',
+					cart: response.data,
+				});
+				console.log(response.data);
+				resolve(response.data);
+			}
 		});
 	});
-// new Promise((resolve, reject) =>
-// 	fetch('/api/get-cart').then(
-// 		response => {
-// 			if (response.ok) {
-// 				dispatch({
-// 					type: 'GET_CART',
-// 					cart: response,
-// 				});
-
-// 				resolve(response);
-// 			} else {
-// 				reject(new Error('error'));
-// 			}
-// 		},
-// 		error => {
-// 			reject(new Error(error.message));
-// 		}
-// 	)
-// );
 
 export default CartActions;

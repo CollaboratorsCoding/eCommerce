@@ -27,6 +27,7 @@ export default (req, res) => {
       - Preloaded state (for Redux) depending on the current route
       - Code-split script tags depending on the current route
   */
+
 	const injectHTML = (
 		data,
 		{ html, title, meta, body, css, scripts, state }
