@@ -1,8 +1,8 @@
-const handlebars = require('handlebars');
-const juice = require('juice');
-const getPrivateFile = require('./get-file');
+import handlebars from 'handlebars';
+import juice from 'juice';
+import getPrivateFile from './get-file';
 
-module.exports = (handlebarsMarkup, context, options) => {
+export default (handlebarsMarkup, context, options) => {
 	if (handlebarsMarkup && context) {
 		const template = handlebars.compile(handlebarsMarkup);
 		const content = template(context);
@@ -13,7 +13,7 @@ module.exports = (handlebarsMarkup, context, options) => {
 		}
 
 		const layout = handlebars.compile(
-			getPrivateFile('../emailTemplates/layout.html')
+			getPrivateFile('emailTemplates/layout.html')
 		);
 
 		const layoutContext = {

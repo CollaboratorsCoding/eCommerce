@@ -1,7 +1,7 @@
-const nodeMailer = require('nodemailer');
-const getPrivateFile = require('./get-file');
-const templateToText = require('./hbs-email-to-text');
-const templateToHTML = require('./hbs-email-to-html');
+import nodeMailer from 'nodemailer';
+import getPrivateFile from './get-file';
+import templateToText from './hbs-email-to-text';
+import templateToHTML from './hbs-email-to-html';
 
 /*
     USAGE GUIDE:
@@ -45,7 +45,7 @@ const sendEmail = (options, { resolve, reject }) => {
 };
 
 // TODO: Hbs parse
-module.exports = ({ text, html, template, templateVars, ...rest }) => {
+export default ({ text, html, template, templateVars, ...rest }) => {
 	if (text || html || template) {
 		return new Promise((resolve, reject) => {
 			sendEmail(
@@ -54,7 +54,7 @@ module.exports = ({ text, html, template, templateVars, ...rest }) => {
 					text: template
 						? templateToText(
 								getPrivateFile(
-									`../emailTemplates/${template}.txt`
+									`emailTemplates/${template}.txt`
 								),
 								templateVars || {}
 						  )
@@ -62,7 +62,7 @@ module.exports = ({ text, html, template, templateVars, ...rest }) => {
 					html: template
 						? templateToHTML(
 								getPrivateFile(
-									`../emailTemplates/${template}.html`
+									`emailTemplates/${template}.html`
 								),
 								templateVars || {}
 						  )

@@ -1,6 +1,6 @@
 const handlebars = require('handlebars');
 
-module.exports = (handlebarsMarkup, context) => {
+export default (handlebarsMarkup, context) => {
 	if (handlebarsMarkup && context) {
 		const template = handlebars.compile(handlebarsMarkup);
 		return template(context);

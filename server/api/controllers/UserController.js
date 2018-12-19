@@ -1,9 +1,10 @@
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const _ = require('lodash');
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
+import _ from 'lodash';
+import sendEmail from '../../utils/send-email';
+
 const User = require('../../models/user.model');
 const genToken = require('../../utils/generateToken').genToken;
-const sendEmail = require('../../utils/send-email');
 const validate = require('../../utils/validate').validate;
 const UserTypes = require('../../type_models/user.types');
 
@@ -234,4 +235,4 @@ UserController.resetPassword = (req, res) => {
 	);
 };
 
-module.exports = UserController;
+export default UserController;

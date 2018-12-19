@@ -39,4 +39,4 @@ const checkJwt = (req, res, next) => {
 	}
 };
 
-module.exports = checkJwt;
+export default checkJwt;

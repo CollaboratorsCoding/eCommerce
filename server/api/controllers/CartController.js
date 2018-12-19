@@ -60,5 +60,4 @@ CartController.removeOne = (req, res) => {
 		totalQty: cart.totalQty,
 	});
 };
-
-module.exports = CartController;
+export default CartController;

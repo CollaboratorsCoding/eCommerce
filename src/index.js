@@ -1,3 +1,4 @@
+import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,6 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import createStore from './app/store';
 
 import App from './app/app';
+
 import './index.scss';
 
 // Create a store and get back itself and its history object

@@ -2,7 +2,7 @@
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
+
 import passport from 'passport';
 // import forceDomain from 'forcedomain';
 import session from 'express-session';
@@ -10,6 +10,7 @@ import mongoose from 'mongoose';
 import Loadable from 'react-loadable';
 import cookieParser from 'cookie-parser';
 import expressStaticGzip from 'express-static-gzip';
+import passportConfig from './passport';
 
 // Our loader - this basically acts as the entry point for each page load
 import loader from './loader';
@@ -21,7 +22,7 @@ require('dotenv').config();
 
 dbConnector(process.env.DB_CONNECT);
 
-const passportConfig = require('./passport');
+// const passportConfig = require('./passport');
 // Create our express app using the port optionally specified
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -72,7 +73,7 @@ app.use(passport.initialize());
 app.use('/api', api);
 app.use(express.Router().get('/', loader));
 app.use(
-	expressStaticGzip(path.join(__dirname, '../build'), {
+	expressStaticGzip(`${process.env.INIT_CWD}/build`, {
 		enableBrotli: true,
 		orderPreference: ['br'],
 	})

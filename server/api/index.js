@@ -1,10 +1,9 @@
-const express = require('express');
-const UserController = require('./controllers/UserController');
-const CartController = require('./controllers/CartController');
+import express from 'express';
+import CartController from './controllers/CartController';
+import UserController from './controllers/UserController';
+import checkJwt from '../middlewares/jwt.middleware';
 
 const api = express.Router();
-
-const checkJwt = require('../middlewares/jwt.middleware');
 
 /* rest api */
 
@@ -27,4 +26,4 @@ api.get('/logout', UserController.logout);
 
 /* ... */
 
-module.exports = api;
+export default api;
