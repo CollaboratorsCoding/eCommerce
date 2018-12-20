@@ -8,6 +8,8 @@ const compiler = require('./utils/compiler').default;
 const compilerConfig = require('./utils/compiler').config;
 const spawnNodemon = require('./utils/nodemon').default;
 const chalk = require('chalk');
+const paths = require('../config/paths');
+const fs = require('fs-extra');
 
 console.log(
 	`${chalk.magenta('\n[INFO]')} For correct work you have to start` +
@@ -22,7 +24,7 @@ const bundlePath = path.resolve(
 );
 
 let nodemon;
-
+fs.copySync(paths.serverAssets, paths.appBuildServer);
 console.log(chalk.cyan('\nWebpack starts to build and watch your files...\n'));
 
 compiler.watch(null, (err, stats) => {

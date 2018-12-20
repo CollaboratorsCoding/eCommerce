@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'production';
 
 const compiler = require('./utils/compiler').default;
 const chalk = require('chalk');
+const paths = require('../config/paths');
+const fs = require('fs-extra');
 
 console.log(
 	`${chalk.magenta(
@@ -14,6 +16,8 @@ console.log(
 );
 
 console.log(chalk.cyan('\nCreating production Server build...\n'));
+
+fs.copySync(paths.serverAssets, paths.appBuildServer);
 
 compiler.run((err, stats) => {
 	if (err) {

@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
+const paths = require('./paths');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -8,8 +9,8 @@ module.exports = {
 	mode: NODE_ENV,
 	entry: './server/server.js',
 	output: {
-		path: path.resolve(__dirname, '..', 'build_server'),
-		filename: 'server.js',
+		path: path.resolve(__dirname, '..', 'build'),
+		filename: 'server/server.js',
 	},
 	target: 'node',
 	externals: [nodeExternals()],
@@ -20,7 +21,9 @@ module.exports = {
 				loader: 'file-loader',
 				options: {
 					limit: 10000,
-					name: 'static/media/[name].[hash:8].[ext]',
+					name: '[name].[hash:8].[ext]',
+					publicPath: '/static/media/',
+					outputPath: '/client/static/media/',
 				},
 			},
 			{

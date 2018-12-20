@@ -108,7 +108,7 @@
 		"workbox-webpack-plugin": "3.6.2"
 	},
 	"scripts": {
-		"start": "cross-env NODE_ENV=production node build_server/server.js",
+		"start": "cross-env NODE_ENV=production node build/server/server.js",
 		"dev:react": "node scripts/start.js",
 		"dev:node": "node scripts/dev-node.js",
 		"build:react": "node scripts/build.js",
