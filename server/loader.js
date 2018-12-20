@@ -26,6 +26,7 @@ export default (req, res) => {
       - Preloaded state (for Redux) depending on the current route
       - Code-split script tags depending on the current route
   */
+
 	const injectHTML = (
 		data,
 		{ html, title, meta, body, css, scripts, state }
@@ -134,13 +135,14 @@ export default (req, res) => {
 							)}"></link>`
 					);
 					console.log(cssChunks);
+
 					// We need to tell Helmet to compute the right meta tags, title, and such
 					const helmet = Helmet.renderStatic();
 
 					// NOTE: Disable if you desire
 					// Let's output the title, just to see SSR is working as intended
 					console.log('THE TITLE', helmet.title.toString());
-
+					console.log('state >>>', store.getState());
 					// Pass all this nonsense into our HTML formatting function above
 					const html = injectHTML(htmlData, {
 						html: helmet.htmlAttributes.toString(),

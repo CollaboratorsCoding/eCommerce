@@ -12,7 +12,7 @@ export default (url = '/') => {
 
 	const history = isServer()
 		? createMemoryHistory({
-			initialEntries: [url],
+				initialEntries: [url],
 		  })
 		: createBrowserHistory();
 
@@ -34,10 +34,12 @@ export default (url = '/') => {
 	);
 
 	// Do we have preloaded state available? Great, save it.
-	const initialState = !isServer ? window.__PRELOADED_STATE__ : {};
+
+	const initialState =
+		typeof window !== 'undefined' ? window.__PRELOADED_STATE__ : {};
 
 	// Delete it once we have it stored in a variable
-	if (!isServer) {
+	if (typeof window !== 'undefined') {
 		delete window.__PRELOADED_STATE__;
 	}
 

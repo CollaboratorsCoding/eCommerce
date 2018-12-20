@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Product = require('./models/product.model');
+const Product = require('./models/product');
 
 mongoose.connect('mongodb://localhost:27017/ecommerce');
 
@@ -58,7 +58,9 @@ const products = [
 
 let done = 0;
 for (let i = 0; i < products.length; i++) {
+	console.log(products.length, done, i);
 	new Product(products[i]).save((err, result) => {
+		console.log(err, result);
 		done++;
 		if (done === products.length) {
 			exit();
