@@ -1,15 +1,15 @@
 /* eslint-disable */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
+let connectExist = false;
 let FRONTLOAD_QUEUES = [];
 
 const LIFECYCLE_PHASES = {
 	MOUNT: 0,
 	UPDATE: 1,
 };
-
-let connectedExist = false;
 
 const log =
 	process.env.NODE_ENV !== 'production' &&
@@ -134,7 +134,7 @@ export class Frontload extends React.Component {
 							);
 						}
 						// if on client -> just execute it immediately, but only after first client render is done if server rendering is enabled
-					} else if (!this.isServer && !connectedComponentRendered) {
+					} else if (noServerRender || this.firstClientRenderDone) {
 						frontload(childProps, { isMount, isUpdate });
 
 						if (
@@ -184,6 +184,7 @@ export class Frontload extends React.Component {
 		// Frontload provider: { noServerRender: true }, which of course enables this for all frontload fns
 		this.componentDidMount = () => {
 			this.firstClientRenderDone = true;
+
 			if (
 				process.env.NODE_ENV !== 'production' &&
 				props.withLogging &&
@@ -211,24 +212,15 @@ class FrontloadConnectedComponent extends React.Component {
 		super(props, context);
 
 		if (context.frontload.isServer) {
-			connectedExist = true;
 			this.componentWillMount = this.pushFrontload(
 				LIFECYCLE_PHASES.MOUNT,
 				true
 			);
 		} else {
-			this.componentDidMount = () => {
-				if (!connectedExist) {
-					this.pushFrontload(LIFECYCLE_PHASES.MOUNT);
-				}
-				connectedExist = false;
-			};
-			this.componentDidUpdate = () => {
-				if (!connectedExist) {
-					this.pushFrontload(LIFECYCLE_PHASES.UPDATE);
-				}
-				connectedExist = false;
-			};
+			this.componentDidMount = this.pushFrontload(LIFECYCLE_PHASES.MOUNT);
+			this.componentDidUpdate = this.pushFrontload(
+				LIFECYCLE_PHASES.UPDATE
+			);
 		}
 	}
 
@@ -242,18 +234,20 @@ class FrontloadConnectedComponent extends React.Component {
 							? 'mount'
 							: 'update'
 				  }]`;
-
-		this.context.frontload.pushFrontload(
-			this.props.frontload,
-			this.props.options,
-			lifecyclePhase,
-			this.props.componentProps,
-			logMessage
-		);
+		if (isServer || !window.__CONNECTED_EXIST__) {
+			this.context.frontload.pushFrontload(
+				this.props.frontload,
+				this.props.options,
+				lifecyclePhase,
+				this.props.componentProps,
+				logMessage
+			);
+		} else {
+			window.__CONNECTED_EXIST__ = false;
+		}
 	};
 
 	render() {
-		console.log('renderim component');
 		return <this.props.component {...this.props.componentProps} />;
 	}
 }
@@ -285,7 +279,7 @@ export const frontloadServerRender = (render, withLogging) => {
 	// rendering dry-run to walk the component tree without actually doing the render at the end
 	// the true flag here signals that this render is just a "dry-run"
 	render(true);
-
+	const isConnected = !!(FRONTLOAD_QUEUES[0] && FRONTLOAD_QUEUES[0].length);
 	if (process.env.NODE_ENV !== 'production' && withLogging) {
 		log(
 			'frontloadServerRender info',
@@ -325,7 +319,7 @@ export const frontloadServerRender = (render, withLogging) => {
 			);
 		}
 
-		return { routeMarkup: output, connectedExist };
+		return { routeMarkup: output, connectExist: isConnected };
 	});
 
 	return rendered;

@@ -29,14 +29,14 @@ export default (req, res) => {
 
 	const injectHTML = (
 		data,
-		{ html, title, meta, body, css, scripts, state, connectedExist }
+		{ html, title, meta, body, css, scripts, state, connectExist }
 	) => {
 		data = data.replace('<html>', `<html ${html}>`);
 		data = data.replace(/<title>.*?<\/title>/g, title);
 		data = data.replace('</head>', `${meta}${css}</head>`);
 		data = data.replace(
 			'<div id="root"></div>',
-			`<div id="root">${body}</div><script>window.__CONNECTED_EXIST__ = ${connectedExist}; window.__PRELOADED_STATE__ = ${state}</script>`
+			`<div id="root">${body}</div><script>window.__CONNECTED_EXIST__ = ${connectExist}; window.__PRELOADED_STATE__ = ${state}</script>`
 		);
 		data = data.replace('</body>', `${scripts.join('')}</body>`);
 
@@ -90,76 +90,66 @@ export default (req, res) => {
 						</Provider>
 					</Loadable.Capture>
 				)
-			).then(({ routeMarkup, connectedExist }) => {
-				if (context.url) {
-					// If context has a url property, then we need to handle a redirection in Redux Router
-					res.writeHead(302, {
-						Location: context.url,
-					});
+			).then(({ routeMarkup, connectExist }) => {
+				// Otherwise, we carry on...
 
-					res.end();
-				} else {
-					// Otherwise, we carry on...
+				// Let's give ourself a function to load all our page-specific JS assets for code splitting
+				const extractAssets = (assets, chunks) =>
+					Object.keys(assets)
+						.filter(
+							asset =>
+								chunks.indexOf(asset.replace('.js', '')) > -1
+						)
+						.map(k => assets[k]);
+				const extractAssetsCSS = (assets, chunks) =>
+					Object.keys(assets)
+						.filter(
+							asset =>
+								chunks.indexOf(asset.replace('.css', '')) > -1
+						)
+						.map(k => assets[k]);
 
-					// Let's give ourself a function to load all our page-specific JS assets for code splitting
-					const extractAssets = (assets, chunks) =>
-						Object.keys(assets)
-							.filter(
-								asset =>
-									chunks.indexOf(asset.replace('.js', '')) >
-									-1
-							)
-							.map(k => assets[k]);
-					const extractAssetsCSS = (assets, chunks) =>
-						Object.keys(assets)
-							.filter(
-								asset =>
-									chunks.indexOf(asset.replace('.css', '')) >
-									-1
-							)
-							.map(k => assets[k]);
+				// Let's format those assets into pretty <script> tags
+				const extraChunks = extractAssets(manifest, modules).map(
+					c =>
+						`<script type="text/javascript" src="/${c.replace(
+							/^\//,
+							''
+						)}"></script>`
+				);
+				const cssChunks = extractAssetsCSS(manifest, modules).map(
+					c =>
+						`<link rel="stylesheet" href="/${c.replace(
+							/^\//,
+							''
+						)}"></link>`
+				);
 
-					// Let's format those assets into pretty <script> tags
-					const extraChunks = extractAssets(manifest, modules).map(
-						c =>
-							`<script type="text/javascript" src="/${c.replace(
-								/^\//,
-								''
-							)}"></script>`
-					);
-					const cssChunks = extractAssetsCSS(manifest, modules).map(
-						c =>
-							`<link rel="stylesheet" href="/${c.replace(
-								/^\//,
-								''
-							)}"></link>`
-					);
+				// We need to tell Helmet to compute the right meta tags, title, and such
+				const helmet = Helmet.renderStatic();
 
-					// We need to tell Helmet to compute the right meta tags, title, and such
-					const helmet = Helmet.renderStatic();
+				// NOTE: Disable if you desire
+				// Let's output the title, just to see SSR is working as intended
+				console.log('THE TITLE', helmet.title.toString());
+				console.log('state >>>', store.getState());
 
-					// NOTE: Disable if you desire
-					// Let's output the title, just to see SSR is working as intended
-					console.log('THE TITLE', helmet.title.toString());
-					console.log('state >>>', store.getState());
-					// Pass all this nonsense into our HTML formatting function above
-					const html = injectHTML(htmlData, {
-						html: helmet.htmlAttributes.toString(),
-						title: helmet.title.toString(),
-						meta: helmet.meta.toString(),
-						body: routeMarkup,
-						css: cssChunks,
-						scripts: extraChunks,
-						state: JSON.stringify(store.getState()).replace(
-							/</g,
-							'\\u003c'
-						),
-						connectedExist,
-					});
+				// Pass all this nonsense into our HTML formatting function above
+				const html = injectHTML(htmlData, {
+					html: helmet.htmlAttributes.toString(),
+					title: helmet.title.toString(),
+					meta: helmet.meta.toString(),
+					body: routeMarkup,
+					css: cssChunks,
+					scripts: extraChunks,
+					state: JSON.stringify(store.getState()).replace(
+						/</g,
+						'\\u003c'
+					),
+					connectExist,
+				});
 
-					// We have all the final HTML, let's send it to the user already!
-					res.send(html);
-				}
+				// We have all the final HTML, let's send it to the user already!
+				res.send(html);
 			});
 		}
 	);
