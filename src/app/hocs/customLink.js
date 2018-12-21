@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 
 class CustomLink extends PureComponent {
-	handleClick = () => {
+	handleClick = e => {
+		e.preventDefault();
 		const { componentPromise, history, to } = this.props;
 
 		componentPromise.preload().then(() => {
@@ -11,8 +12,12 @@ class CustomLink extends PureComponent {
 	};
 
 	render() {
-		const { text } = this.props;
-		return <div onClick={this.handleClick}>{text}</div>;
+		const { text, ...rest } = this.props;
+		return (
+			<a {...rest} onClick={this.handleClick}>
+				{text}
+			</a>
+		);
 	}
 }
 

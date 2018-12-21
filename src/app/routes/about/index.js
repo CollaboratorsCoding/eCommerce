@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Embed } from 'semantic-ui-react';
@@ -11,12 +11,12 @@ import './about.scss';
 const { getCart } = CartActions;
 
 const frontload = async props => await props.getCart();
-class About extends Component {
+class About extends PureComponent {
 	componentDidMount = () => {};
 
 	render() {
 		const { totalPrice, totalQty } = this.props.cart;
-
+		console.log(this.props);
 		return (
 			<Page
 				id="about"
@@ -37,6 +37,7 @@ class About extends Component {
 
 const mapStateToProps = state => ({
 	cart: state.cart.cart,
+	rout: state,
 });
 
 const mapDispatchToProps = dispatch =>
