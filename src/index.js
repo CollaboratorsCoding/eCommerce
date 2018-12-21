@@ -3,8 +3,8 @@ import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
-import { Frontload } from 'react-frontload';
 import { ConnectedRouter } from 'connected-react-router';
+import { Frontload } from './app/hocs/frontLoad';
 import createStore from './app/store';
 
 import App from './app/app';

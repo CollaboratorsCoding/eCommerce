@@ -7,8 +7,8 @@ import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
-import { Frontload, frontloadServerRender } from 'react-frontload';
 import Loadable from 'react-loadable';
+import { Frontload, frontloadServerRender } from '../src/app/hocs/frontLoad';
 
 // Our store, entrypoint, and manifest
 import createStore from '../src/app/store';
@@ -29,14 +29,14 @@ export default (req, res) => {
 
 	const injectHTML = (
 		data,
-		{ html, title, meta, body, css, scripts, state }
+		{ html, title, meta, body, css, scripts, state, connectedExist }
 	) => {
 		data = data.replace('<html>', `<html ${html}>`);
 		data = data.replace(/<title>.*?<\/title>/g, title);
 		data = data.replace('</head>', `${meta}${css}</head>`);
 		data = data.replace(
 			'<div id="root"></div>',
-			`<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`
+			`<div id="root">${body}</div><script>window.__CONNECTED_EXIST__ = ${connectedExist}; window.__PRELOADED_STATE__ = ${state}</script>`
 		);
 		data = data.replace('</body>', `${scripts.join('')}</body>`);
 
@@ -90,7 +90,7 @@ export default (req, res) => {
 						</Provider>
 					</Loadable.Capture>
 				)
-			).then(routeMarkup => {
+			).then(({ routeMarkup, connectedExist }) => {
 				if (context.url) {
 					// If context has a url property, then we need to handle a redirection in Redux Router
 					res.writeHead(302, {
@@ -134,7 +134,6 @@ export default (req, res) => {
 								''
 							)}"></link>`
 					);
-					console.log(cssChunks);
 
 					// We need to tell Helmet to compute the right meta tags, title, and such
 					const helmet = Helmet.renderStatic();
@@ -155,6 +154,7 @@ export default (req, res) => {
 							/</g,
 							'\\u003c'
 						),
+						connectedExist,
 					});
 
 					// We have all the final HTML, let's send it to the user already!

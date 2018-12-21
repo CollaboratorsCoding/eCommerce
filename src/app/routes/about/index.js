@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { frontloadConnect } from 'react-frontload';
 import { Embed } from 'semantic-ui-react';
+import { frontloadConnect } from '../../hocs/frontLoad';
 
 import CartActions from '../../store/cart/actions';
 import Page from '../../components/page';
@@ -48,6 +48,6 @@ export default connect(
 )(
 	frontloadConnect(frontload, {
 		onMount: true,
-		onUpdate: false,
+		onUpdate: true,
 	})(About)
 );
