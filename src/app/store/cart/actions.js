@@ -14,7 +14,7 @@ CartActions.getCart = () => dispatch =>
 					type: 'GET_CART',
 					cart: response.data,
 				});
-				console.log(response.data);
+
 				resolve(response.data);
 			}
 		});

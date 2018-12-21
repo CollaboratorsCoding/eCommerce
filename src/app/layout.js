@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 
-import { Link } from 'react-router-dom';
-
 import {
 	Container,
 	Divider,
@@ -16,6 +14,8 @@ import {
 	Visibility,
 	Icon,
 } from 'semantic-ui-react';
+import CustomLink from './hocs/customLink';
+import { Homepage, About } from './routes';
 
 import logo from './assets/logo.png';
 
@@ -23,10 +23,12 @@ const links = [
 	{
 		to: '/',
 		text: 'Homepage',
+		componentPromise: Homepage,
 	},
 	{
 		to: '/about',
 		text: 'About',
+		componentPromise: About,
 	},
 ];
 
@@ -41,10 +43,12 @@ const isCurrent = (to, current) => {
 	return false;
 };
 
-const HeaderLink = ({ to, text, current }) => (
+const HeaderLink = ({ to, text, componentPromise, current }) => (
 	<Menu.Item
 		to={to}
-		as={Link}
+		componentPromise={componentPromise}
+		text={text}
+		as={CustomLink}
 		className={isCurrent(to, current) ? 'current' : ''}
 	>
 		{text}

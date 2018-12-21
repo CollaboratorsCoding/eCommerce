@@ -6,13 +6,13 @@ import Loadable from 'react-loadable';
 
 import NotFound from './not-found';
 
-const Homepage = Loadable({
+export const Homepage = Loadable({
 	loader: () => import(/* webpackChunkName: "homepage" */ './homepage'),
 	loading: () => null,
 	modules: ['homepage'],
 });
 
-const About = Loadable({
+export const About = Loadable({
 	loader: () => import(/* webpackChunkName: "about" */ './about'),
 	loading: () => null,
 	modules: ['about'],
