@@ -1,4 +1,4 @@
 const fs = require('fs');
 
 export default p =>
-	fs.readFileSync(`${process.env.INIT_CWD}/build/server/${p}`, 'utf8');
+	fs.readFileSync(`${process.cwd()}/build/server/${p}`, 'utf8');

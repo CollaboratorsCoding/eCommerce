@@ -1,5 +1,6 @@
 // Express requirements
 import fs from 'fs';
+import path from 'path';
 
 // React requirements
 import React from 'react';
@@ -45,7 +46,7 @@ export default (req, res) => {
 
 	// Load in our HTML file from our build
 	fs.readFile(
-		`${process.env.INIT_CWD}/build/client/index.html`,
+		path.join(`${process.cwd()}/build/client/index.html`),
 		'utf8',
 		(err, htmlData) => {
 			// If there's an error... serve up something nasty

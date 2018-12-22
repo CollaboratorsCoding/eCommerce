@@ -74,7 +74,7 @@ app.use(passport.initialize());
 app.use('/api', api);
 app.use(express.Router().get('/', loader));
 app.use(
-	expressStaticGzip(`${process.env.INIT_CWD}/build/client`, {
+	expressStaticGzip(`${process.cwd()}/build/client`, {
 		enableBrotli: true,
 		orderPreference: ['br'],
 	})
