@@ -23,7 +23,7 @@ class About extends PureComponent {
 				title="About"
 				description="This is about really cool stuff."
 			>
-				Totla price : {totalPrice}
+				Total : {totalPrice}
 				Total qty : {totalQty}
 				<Embed
 					id="WWaLxFIVX1s"

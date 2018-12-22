@@ -1,7 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
-const paths = require('./paths');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -22,8 +21,14 @@ module.exports = {
 				options: {
 					limit: 10000,
 					name: '[name].[hash:8].[ext]',
-					publicPath: '/static/media/',
-					outputPath: '/client/static/media/',
+					publicPath:
+						NODE_ENV === 'production'
+							? '/static/media/'
+							: '/media/',
+					outputPath:
+						NODE_ENV === 'production'
+							? '/client/static/media/'
+							: '/client/media/',
 				},
 			},
 			{
