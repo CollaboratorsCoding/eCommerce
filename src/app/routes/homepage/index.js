@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import { Grid, Image, Segment } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import Slider from 'react-slick';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { frontloadConnect } from '../../hocs/frontLoad';
 import Page from '../../components/page';
+import CategoriesList from '../../components/categories-list';
+import ProductActions from '../../store/product/actions';
 
 import './homepage.scss';
 
-export default class HomePage extends Component {
+const { getCategories } = ProductActions;
+
+const frontload = async props => await props.getCategories();
+class HomePage extends Component {
 	state = {
 		loaded: false,
 	};
@@ -56,45 +64,24 @@ export default class HomePage extends Component {
 						</div>
 					</Slider>
 				</div>
-
-				<Grid stackable columns={2}>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-					<Grid.Column>
-						<Segment>
-							<Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
-						</Segment>
-					</Grid.Column>
-				</Grid>
+				<CategoriesList categories={this.props.categories} />
 			</Page>
 		);
 	}
 }
+const mapStateToProps = state => ({
+	categories: state.product.categories,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators({ getCategories }, dispatch);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(
+	frontloadConnect(frontload, {
+		onMount: true,
+		onUpdate: false,
+	})(HomePage)
+);

@@ -1,11 +1,23 @@
 import express from 'express';
 import CartController from './controllers/CartController';
 import UserController from './controllers/UserController';
+import ProductController from './controllers/ProductController';
+import CategoryController from './controllers/CategoryController';
 import checkJwt from '../middlewares/jwt.middleware';
 
 const api = express.Router();
 
 /* rest api */
+
+// CATEGORY API
+
+api.post('/add-category', CategoryController.addCategory);
+api.get('/get-categories', CategoryController.getCategories);
+
+// PRODUCT API
+
+api.post('/add-product', ProductController.addProduct);
+api.get('/get-products', ProductController.getProducts);
 
 // CART API
 

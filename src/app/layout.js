@@ -15,7 +15,7 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from './hocs/customLink';
-import { Homepage, About } from './routes';
+import { Homepage, About, AddProduct } from './routes';
 
 import logo from './assets/logo.png';
 
@@ -29,6 +29,11 @@ const links = [
 		to: '/about',
 		text: 'About',
 		componentPromise: About,
+	},
+	{
+		to: '/add',
+		text: 'Add',
+		componentPromise: AddProduct,
 	},
 ];
 
@@ -47,7 +52,6 @@ const HeaderLink = ({ to, text, componentPromise, current }) => (
 	<Menu.Item
 		to={to}
 		componentPromise={componentPromise}
-		text={text}
 		as={CustomLink}
 		className={isCurrent(to, current) ? 'current' : ''}
 	>

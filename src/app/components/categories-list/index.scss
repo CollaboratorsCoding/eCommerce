@@ -1,0 +1,10 @@
+.category-item > .segment {
+	background-color: #f7f7f7;
+	cursor: pointer;
+	transition: background-color 1s;
+	font-size: 1.3rem;
+	color: #656565;
+	&:hover {
+		background-color: #e2e2e2;
+	}
+}
