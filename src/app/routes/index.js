@@ -18,6 +18,12 @@ export const About = Loadable({
 	modules: ['about'],
 });
 
+export const Cart = Loadable({
+	loader: () => import(/* webpackChunkName: "cart" */ './shopping-cart'),
+	loading: () => null,
+	modules: ['cart'],
+});
+
 // const Dashboard = Loadable({
 //   loader: () => import(/* webpackChunkName: "dashboard" */ './dashboard'),
 //   loading: () => null,
@@ -46,6 +52,7 @@ export default () => (
 	<Switch>
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
+		<Route exact path="/cart" component={Cart} />
 
 		{/* <Route exact path="/profile/:id" component={Profile} /> */}
 

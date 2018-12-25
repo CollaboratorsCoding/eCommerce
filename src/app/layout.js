@@ -10,12 +10,13 @@ import {
 	Image,
 	List,
 	Menu,
+	Label,
 	Segment,
 	Visibility,
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from './hocs/customLink';
-import { Homepage, About } from './routes';
+import { Homepage, About, Cart } from './routes';
 
 import logo from './assets/logo.png';
 
@@ -137,14 +138,27 @@ export default class StickyLayout extends Component {
 
 							<Menu.Menu position="right">
 								<Menu.Item>
-									<Icon.Group size="big">
-										<Icon name="shopping cart" />
-										<Icon
-											color="red"
-											corner="top right"
-											name="add"
-										/>
-									</Icon.Group>
+									<CustomLink
+										to="/cart"
+										componentPromise={Cart}
+										text={
+											<Icon.Group size="big">
+												<Icon
+													className="cart--menu"
+													color="black"
+													name="shopping basket"
+												/>
+												<Label
+													circular
+													size="mini"
+													color="teal"
+													floating
+												>
+													2
+												</Label>
+											</Icon.Group>
+										}
+									/>
 								</Menu.Item>
 								<Dropdown
 									text="Profile"
