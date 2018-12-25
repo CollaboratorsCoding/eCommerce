@@ -27,6 +27,7 @@ CartController.getItemsCart = (req, res) => {
 			.status(200)
 			.json({ productsInCart: [], totalQty: 0, totalPrice: 0 });
 	}
+
 	const cart = new Cart(req.session.cart);
 	return res.status(200).json({
 		productsInCart: cart.generateArray(),

@@ -12,7 +12,6 @@ export default class AsyncRoute extends PureComponent {
 		const { componentPromise } = this.props;
 
 		componentPromise.then(component => {
-			console.log(component);
 			setTimeout(() => {
 				this.setState({
 					Component: component.default,
