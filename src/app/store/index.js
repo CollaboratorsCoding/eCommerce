@@ -4,10 +4,11 @@ import thunk from 'redux-thunk';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import rootReducer from './rootReducer';
 import { isServer } from '../utils';
+import createMiddleware from './middleware/clientMiddleware';
 
 // A nice helper to tell us if we're on the server
 
-export default (url = '/') => {
+export default (url = '/', client) => {
 	// Create a history depending on the environment
 
 	const history = isServer()
@@ -27,7 +28,11 @@ export default (url = '/') => {
 		}
 	}
 
-	const middleware = [thunk, routerMiddleware(history)];
+	const middleware = [
+		createMiddleware(client),
+		thunk,
+		routerMiddleware(history),
+	];
 	const composedEnhancers = compose(
 		applyMiddleware(...middleware),
 		...enhancers

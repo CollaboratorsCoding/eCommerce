@@ -6,10 +6,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case 'GET_CART':
+		case 'GET_CART_SUCCESS':
 			return {
 				...state,
-				cart: action.cart,
+				cart: action.result,
 			};
 		default:
 			return state;

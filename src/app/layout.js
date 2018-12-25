@@ -140,7 +140,7 @@ export default class StickyLayout extends Component {
 									<Icon.Group size="big">
 										<Icon name="shopping cart" />
 										<Icon
-											color="red "
+											color="red"
 											corner="top right"
 											name="add"
 										/>

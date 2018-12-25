@@ -5,14 +5,17 @@ import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
 import { ConnectedRouter } from 'connected-react-router';
 import { Frontload } from './app/hocs/frontLoad';
+
+import ApiClient from './app/store/ApiClient';
 import createStore from './app/store';
 
 import App from './app/app';
 
 import './index.scss';
 
+const client = new ApiClient();
 // Create a store and get back itself and its history object
-const { store, history } = createStore();
+const { store, history } = createStore(undefined, client);
 
 // Running locally, we should run on a <ConnectedRouter /> rather than on a <StaticRouter /> like on the server
 // Let's also let React Frontload explicitly know we're not rendering on the server here

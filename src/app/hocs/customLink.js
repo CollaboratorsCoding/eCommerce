@@ -12,7 +12,7 @@ class CustomLink extends PureComponent {
 	};
 
 	render() {
-		const { text, ...rest } = this.props;
+		const { text, componentPromise, staticContext, ...rest } = this.props;
 		return (
 			<a {...rest} onClick={this.handleClick}>
 				{text}

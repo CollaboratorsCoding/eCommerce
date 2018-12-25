@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { Frontload, frontloadServerRender } from '../src/app/hocs/frontLoad';
+import ApiClient from '../src/app/store/ApiClient';
 
 // Our store, entrypoint, and manifest
 import createStore from '../src/app/store';
@@ -55,9 +56,9 @@ export default (req, res) => {
 
 				return res.status(404).end();
 			}
-
+			const client = new ApiClient(req);
 			// Create a store (with a memory history) from our current url
-			const { store } = createStore(req.url);
+			const { store } = createStore(req.url, client);
 
 			// If the user has a cookie (i.e. they're signed in) - set them as the current user
 			// Otherwise, we want to set the current state to be logged out, just in case this isn't the default
