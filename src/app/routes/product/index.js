@@ -1,34 +1,39 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+
 import { connect } from 'react-redux';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
-import ProductsList from '../../components/products-list';
 
-const { getProducts } = MarketActions;
+const { getProduct } = MarketActions;
 
 const frontload = async props =>
-	await props.getProducts(props.match.params.slug_category);
+	await props.getProduct(props.match.params.slug_product);
 export class Category extends Component {
 	componentDidMount = () => {
-		console.log('COMPONENT', this.props.products);
+		console.log('COMPONENT', this.props.product);
 	};
 
 	render() {
+		const { product } = this.props;
+		if (!product) return null;
+		const { description, imagePath, price, title } = product;
 		return (
 			<div>
-				{this.props.match.params.slug_category} Category
-				<ProductsList products={this.props.products} />
+				<h1>{title}</h1>
+				<div>Price: {price}</div>
+				<img src={imagePath} alt={title} />
+				<div>{description}</div>
 			</div>
 		);
 	}
 }
 const mapStateToProps = state => ({
-	products: state.market.products,
+	product: state.market.product,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getProducts }, dispatch);
+	bindActionCreators({ getProduct }, dispatch);
 
 export default connect(
 	mapStateToProps,

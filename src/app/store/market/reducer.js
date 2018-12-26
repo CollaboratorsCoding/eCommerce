@@ -3,6 +3,7 @@
 const initialState = {
 	categories: {},
 	products: [],
+	product: null,
 };
 
 export default (state = initialState, action) => {
@@ -16,6 +17,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				products: action.result.products,
+			};
+		}
+
+		case 'GET_PRODUCT_SUCCESS': {
+			return {
+				...state,
+				product: action.result.product,
 			};
 		}
 

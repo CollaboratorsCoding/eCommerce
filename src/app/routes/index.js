@@ -29,6 +29,11 @@ export const Category = Loadable({
 	loading: () => null,
 	modules: ['c'],
 });
+export const Product = Loadable({
+	loader: () => import(/* webpackChunkName: "p" */ './product'),
+	loading: () => null,
+	modules: ['p'],
+});
 // const Dashboard = Loadable({
 //   loader: () => import(/* webpackChunkName: "dashboard" */ './dashboard'),
 //   loading: () => null,
@@ -58,7 +63,8 @@ export default () => (
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
 		<Route exact path="/add" component={AddProduct} />
-		<Route exact path="/c/:slug/" component={Category} />
+		<Route exact path="/c/:slug_category/" component={Category} />
+		<Route exact path="/p/:slug_product" component={Product} />
 		{/* <Route exact path="/product/:slug/" component={AddProduct} /> */}
 		{/* <Route exact path="/profile/:id" component={Profile} /> */}
 

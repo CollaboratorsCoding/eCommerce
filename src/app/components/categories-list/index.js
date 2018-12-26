@@ -10,9 +10,9 @@ export default function CategoriesList({ categories }) {
 	const categoriestList = categories.map(category => (
 		<Grid.Column key={category.title}>
 			<CustomLink
-				componentPromis={Category}
+				componentPromise={Category}
 				className="category-item"
-				to={`/c/${category.title}`}
+				to={`/c/${category.slug}`}
 			>
 				<Segment>{category.title}</Segment>
 			</CustomLink>

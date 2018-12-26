@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import Page from '../../components/page';
 import CategoriesList from '../../components/categories-list';
-import ProductActions from '../../store/product/actions';
+import MarketActions from '../../store/market/actions';
 
 import './homepage.scss';
 
-const { getCategories } = ProductActions;
+const { getCategories } = MarketActions;
 
 const frontload = async props => await props.getCategories();
 class HomePage extends Component {
@@ -70,7 +70,7 @@ class HomePage extends Component {
 	}
 }
 const mapStateToProps = state => ({
-	categories: state.product.categories,
+	categories: state.market.categories,
 });
 
 const mapDispatchToProps = dispatch =>

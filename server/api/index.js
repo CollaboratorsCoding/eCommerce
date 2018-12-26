@@ -18,7 +18,7 @@ api.get('/get-categories', CategoryController.getCategories);
 
 api.post('/add-product', ProductController.addProduct);
 api.get('/get-products', ProductController.getProducts);
-
+api.get('/get-product', ProductController.getProduct);
 // CART API
 
 api.get('/add-cart/:id', CartController.addToCart);

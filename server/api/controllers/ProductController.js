@@ -18,4 +18,12 @@ ProductController.getProducts = (req, res) => {
 		});
 	});
 };
+
+ProductController.getProduct = (req, res) => {
+	Product.findOne({ slug: req.query.p }, (err, product) => {
+		res.json({
+			product,
+		});
+	});
+};
 export default ProductController;
