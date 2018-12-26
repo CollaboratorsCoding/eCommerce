@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { Table, Grid, Icon, Button, Container } from 'semantic-ui-react';
 import { frontloadConnect } from '../../hocs/frontLoad';
 
-import CartActions from '../../store/cart/actions';
+import MarketActions from '../../store/market/actions';
 import Page from '../../components/page';
 
 import ItemCart from './components/ItemCart';
 
 import './styles/index.scss';
 
-const { getCart } = CartActions;
+const { getCart } = MarketActions;
 
 const frontload = async props => await props.getCart();
 class About extends PureComponent {
@@ -82,8 +82,7 @@ class About extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-	cart: state.cart.cart,
-	rout: state,
+	cart: state.market.cart,
 });
 
 const mapDispatchToProps = dispatch =>

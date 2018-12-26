@@ -4,6 +4,7 @@ const initialState = {
 	categories: {},
 	products: [],
 	product: null,
+	cart: {},
 };
 
 export default (state = initialState, action) => {
@@ -26,7 +27,16 @@ export default (state = initialState, action) => {
 				product: action.result.product,
 			};
 		}
-
+		case 'GET_CART_SUCCESS':
+			return {
+				...state,
+				cart: action.result.cart,
+			};
+		case 'ADD_TO_CART_PRODUCT_SUCCESS':
+			return {
+				...state,
+				cart: action.result.cart,
+			};
 		default:
 			return state;
 	}

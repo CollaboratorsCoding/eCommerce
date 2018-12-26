@@ -1,8 +1,9 @@
 import superagent from 'superagent';
+import { isServer } from '../utils';
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
-function formatUrl(path, isServer) {
+function formatUrl(path) {
 	const adjustedPath = path[0] !== '/' ? `/${path}` : path;
 	if (isServer) {
 		// Prepend host and port of the API server to the path.
@@ -14,8 +15,6 @@ function formatUrl(path, isServer) {
 
 export default class ApiClient {
 	constructor(req) {
-		const isServer = req;
-
 		methods.forEach(
 			/* eslint-disable-next-line */
 			method =>

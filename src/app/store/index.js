@@ -11,7 +11,7 @@ import createMiddleware from './middleware/clientMiddleware';
 export default (url = '/', client) => {
 	// Create a history depending on the environment
 
-	const history = isServer()
+	const history = isServer
 		? createMemoryHistory({
 				initialEntries: [url],
 		  })

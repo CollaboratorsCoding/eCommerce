@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Embed } from 'semantic-ui-react';
 import { frontloadConnect } from '../../hocs/frontLoad';
 
-import CartActions from '../../store/cart/actions';
+import MarketActions from '../../store/market/actions';
 import ProfileActions from '../../store/profile/actions';
 import Page from '../../components/page';
 import './about.scss';
 
-const { getCart } = CartActions;
+const { getCart } = MarketActions;
 const { signin, signup } = ProfileActions;
 
 const frontload = async props => await props.getCart();
@@ -63,8 +63,7 @@ class About extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-	cart: state.cart.cart,
-	rout: state,
+	cart: state.market.cart,
 });
 
 const mapDispatchToProps = dispatch =>
