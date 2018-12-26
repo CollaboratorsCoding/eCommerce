@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-
 import { connect } from 'react-redux';
+import Page from '../../components/page';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
 
@@ -19,12 +19,19 @@ export class Category extends Component {
 		if (!product) return null;
 		const { description, imagePath, price, title } = product;
 		return (
-			<div>
-				<h1>{title}</h1>
-				<div>Price: {price}</div>
-				<img src={imagePath} alt={title} />
-				<div>{description}</div>
-			</div>
+			<Page
+				id="product"
+				title={title}
+				description={description}
+				image={imagePath}
+			>
+				<div>
+					<h1>{title}</h1>
+					<div>Price: {price}</div>
+					<img src={imagePath} alt={title} />
+					<div>{description}</div>
+				</div>
+			</Page>
 		);
 	}
 }
