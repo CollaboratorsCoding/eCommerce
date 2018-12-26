@@ -111,7 +111,8 @@
 	},
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node build/server/server.js",
-		"dev:react": "cra-build-watch",
+		"dev": "node scripts/start.js",
+		"dev:react": "cra-build-watch -p /",
 		"dev:node": "node scripts/dev-node.js",
 		"build:react": "node scripts/build.js",
 		"build:node": "node scripts/build-node.js",
