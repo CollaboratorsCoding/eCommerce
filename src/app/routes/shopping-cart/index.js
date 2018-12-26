@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Grid, Icon, Button } from 'semantic-ui-react';
+import { Table, Grid, Icon, Button } from 'semantic-ui-react';
 import { frontloadConnect } from '../../hocs/frontLoad';
 
 import CartActions from '../../store/cart/actions';
 import Page from '../../components/page';
 
-import CartBody from './components/CartBody';
+import ItemCart from './components/ItemCart';
 
 import './styles/index.scss';
 
@@ -34,7 +34,30 @@ class About extends PureComponent {
 						</Grid.Row>
 						<Grid.Row className="shopping-cart-section-body">
 							<Grid.Column>
-								<CartBody />
+								<Table
+									className="shopping-cart-section-body-table"
+									basic="very"
+								>
+									<Table.Header className="shopping-cart-section-body-table-header">
+										<Table.Row>
+											<Table.HeaderCell>
+												Product
+											</Table.HeaderCell>
+											<Table.HeaderCell>
+												Quantity
+											</Table.HeaderCell>
+											<Table.HeaderCell>
+												Price
+											</Table.HeaderCell>
+											<Table.HeaderCell>
+												Subtotal
+											</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										<ItemCart />
+									</Table.Body>
+								</Table>
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
