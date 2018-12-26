@@ -34,6 +34,12 @@ export const Product = Loadable({
 	loading: () => null,
 	modules: ['p'],
 });
+export const Cart = Loadable({
+	loader: () => import(/* webpackChunkName: "cart" */ './shopping-cart'),
+	loading: () => null,
+	modules: ['cart'],
+});
+
 // const Dashboard = Loadable({
 //   loader: () => import(/* webpackChunkName: "dashboard" */ './dashboard'),
 //   loading: () => null,
@@ -66,6 +72,8 @@ export default () => (
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />
 		{/* <Route exact path="/product/:slug/" component={AddProduct} /> */}
+		<Route exact path="/cart" component={Cart} />
+
 		{/* <Route exact path="/profile/:id" component={Profile} /> */}
 
 		{/* <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
