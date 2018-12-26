@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
 import ProductsList from '../../components/products-list';
+import Page from '../../components/page';
 
 const { getProducts } = MarketActions;
 
@@ -15,11 +16,14 @@ export class Category extends Component {
 	};
 
 	render() {
+		const categoryName = this.props.match.params.slug_category;
 		return (
-			<div>
-				{this.props.match.params.slug_category} Category
-				<ProductsList products={this.props.products} />
-			</div>
+			<Page id="category" title={categoryName} description={categoryName}>
+				<div>
+					{categoryName} Category
+					<ProductsList products={this.props.products} />
+				</div>
+			</Page>
 		);
 	}
 }
