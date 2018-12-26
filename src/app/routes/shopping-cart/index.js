@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Table, Grid, Icon, Button } from 'semantic-ui-react';
+import { Table, Grid, Icon, Button, Container } from 'semantic-ui-react';
 import { frontloadConnect } from '../../hocs/frontLoad';
 
 import CartActions from '../../store/cart/actions';
@@ -22,7 +22,7 @@ class About extends PureComponent {
 
 		return (
 			<Page id="shopping-cart" title="My shopping cart">
-				<section className="shopping-cart-section">
+				<Container className="shopping-cart-section">
 					<Grid>
 						<Grid.Row className="shopping-cart-section-header">
 							<Grid.Column>
@@ -75,7 +75,7 @@ class About extends PureComponent {
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>
-				</section>
+				</Container>
 			</Page>
 		);
 	}

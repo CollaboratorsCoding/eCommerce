@@ -17,7 +17,6 @@ import {
 } from 'semantic-ui-react';
 import CustomLink from './hocs/customLink';
 import { Homepage, About, AddProduct, Cart } from './routes';
-
 import logo from './assets/logo.png';
 
 const links = [
@@ -145,24 +144,23 @@ export default class StickyLayout extends Component {
 									<CustomLink
 										to="/cart"
 										componentPromise={Cart}
-										text={
-											<Icon.Group size="big">
-												<Icon
-													className="cart--menu"
-													color="black"
-													name="shopping basket"
-												/>
-												<Label
-													circular
-													size="mini"
-													color="teal"
-													floating
-												>
-													2
-												</Label>
-											</Icon.Group>
-										}
-									/>
+									>
+										<Icon.Group size="big">
+											<Icon
+												className="cart--menu"
+												color="black"
+												name="shopping basket"
+											/>
+											<Label
+												circular
+												size="mini"
+												color="teal"
+												floating
+											>
+												2
+											</Label>
+										</Icon.Group>
+									</CustomLink>
 								</Menu.Item>
 								<Dropdown
 									text="Profile"
