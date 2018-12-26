@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table, Icon, Label } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
+
+import ItemCart from './ItemCart';
 
 export default function CartBody() {
 	return (
@@ -12,68 +14,8 @@ export default function CartBody() {
 					<Table.HeaderCell>Subtotal</Table.HeaderCell>
 				</Table.Row>
 			</Table.Header>
-
 			<Table.Body>
-				<Table.Row>
-					<Table.Cell>Iphone x</Table.Cell>
-					<Table.Cell>
-						<Icon
-							color="grey"
-							size="large"
-							name="caret square left"
-						/>
-						<Label
-							className="shopping-cart-section-body-table-quantity"
-							color="teal"
-						>
-							2
-						</Label>
-						<Icon
-							color="grey"
-							size="large"
-							name="caret square right"
-						/>
-					</Table.Cell>
-					<Table.Cell>22</Table.Cell>
-					<Table.Cell>
-						22
-						<Icon
-							className="shopping-cart-section-body-table__icon-delete"
-							color="red"
-							name="trash alternate outline"
-						/>
-					</Table.Cell>
-				</Table.Row>
-				<Table.Row>
-					<Table.Cell>Iphone x</Table.Cell>
-					<Table.Cell>
-						<Icon
-							color="grey"
-							size="large"
-							name="caret square left"
-						/>
-						<Label
-							className="shopping-cart-section-body-table-quantity"
-							color="teal"
-						>
-							1
-						</Label>
-						<Icon
-							color="grey"
-							size="large"
-							name="caret square right"
-						/>
-					</Table.Cell>
-					<Table.Cell>22</Table.Cell>
-					<Table.Cell>
-						22
-						<Icon
-							className="shopping-cart-section-body-table__icon-delete"
-							color="red"
-							name="trash alternate outline"
-						/>
-					</Table.Cell>
-				</Table.Row>
+				<ItemCart />
 			</Table.Body>
 		</Table>
 	);

@@ -14,9 +14,18 @@
 		&-table {
 			text-align: center !important;
 			font-size: 15px !important;
+
+			&-arrow:hover {
+				cursor: pointer;
+			}
+
 			&__icon-delete {
 				position: absolute;
 				right: 50px;
+
+				&:hover {
+					cursor: pointer;
+				}
 			}
 		}
 	}
@@ -28,7 +37,7 @@
 
 		& > h2 {
 			margin: 0;
-			padding: 3px;
+			padding: 0;
 		}
 	}
 }
