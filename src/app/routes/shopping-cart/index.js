@@ -37,11 +37,18 @@ class About extends PureComponent {
 								<CartBody />
 							</Grid.Column>
 						</Grid.Row>
-						<Grid.Row className="shopping-cart-section-footer">
+						<Grid.Row>
 							<Grid.Column>
-								<h2 style={{ textAlign: 'right' }}>
-									Total: $230
-								</h2>
+								<div className="shopping-cart-section-footer">
+									<div>
+										<Button color="teal">
+											<Icon name="arrow left" /> COUNTINUE
+											SHOPPING
+										</Button>
+										<Button primary>CHECKOUT</Button>
+									</div>
+									<h2>Total: $230</h2>
+								</div>
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>

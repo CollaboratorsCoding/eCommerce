@@ -24,7 +24,7 @@ export default function CartBody() {
 						/>
 						<Label
 							className="shopping-cart-section-body-table-quantity"
-							color="blue"
+							color="teal"
 						>
 							2
 						</Label>
@@ -54,7 +54,7 @@ export default function CartBody() {
 						/>
 						<Label
 							className="shopping-cart-section-body-table-quantity"
-							color="blue"
+							color="teal"
 						>
 							1
 						</Label>

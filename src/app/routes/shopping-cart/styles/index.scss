@@ -1,5 +1,5 @@
 .shopping-cart-section {
-	background-image: linear-gradient(to right, #373b44, #4e74b1);
+	background-image: linear-gradient(to right, #373b44, #568879);
 	width: 933px;
 	margin: 100px auto;
 	border-radius: 5px;
@@ -18,6 +18,17 @@
 				position: absolute;
 				right: 50px;
 			}
+		}
+	}
+
+	&-footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		& > h2 {
+			margin: 0;
+			padding: 3px;
 		}
 	}
 }
