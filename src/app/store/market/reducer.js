@@ -37,6 +37,16 @@ export default (state = initialState, action) => {
 				...state,
 				cart: action.result.cart,
 			};
+		case 'REMOVE_CART_PRODUCT_SUCCESS':
+			return {
+				...state,
+				cart: action.result.cart,
+			};
+		case 'REDUCE_CART_PRODUCT_SUCCESS':
+			return {
+				...state,
+				cart: action.result.cart,
+			};
 		default:
 			return state;
 	}

@@ -3,21 +3,16 @@ import React, { Component } from 'react';
 
 import {
 	Container,
-	Divider,
 	Dropdown,
-	Grid,
-	Header,
 	Image,
-	List,
 	Menu,
 	Label,
-	Segment,
 	Visibility,
 	Icon,
 } from 'semantic-ui-react';
-import CustomLink from './hocs/customLink';
-import { Homepage, About, AddProduct, Cart } from './routes';
-import logo from './assets/logo.png';
+import CustomLink from '../hocs/customLink';
+import { Homepage, About, AddProduct, Cart } from '../routes';
+import logo from '../assets/logo.png';
 
 const links = [
 	{
@@ -72,7 +67,7 @@ const fixedMenuStyle = {
 	boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
 };
 
-export default class StickyLayout extends Component {
+export default class Header extends Component {
 	state = {
 		menuFixed: false,
 	};
@@ -97,7 +92,7 @@ export default class StickyLayout extends Component {
 
 	render() {
 		const { menuFixed } = this.state;
-		const { current, children } = this.props;
+		const { current, totalQty } = this.props;
 		return (
 			<div>
 				{/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
@@ -151,14 +146,16 @@ export default class StickyLayout extends Component {
 												color="black"
 												name="shopping basket"
 											/>
-											<Label
-												circular
-												size="mini"
-												color="teal"
-												floating
-											>
-												2
-											</Label>
+											{totalQty ? (
+												<Label
+													circular
+													size="mini"
+													color="teal"
+													floating
+												>
+													{totalQty}
+												</Label>
+											) : null}
 										</Icon.Group>
 									</CustomLink>
 								</Menu.Item>
@@ -195,88 +192,6 @@ export default class StickyLayout extends Component {
 						</Container>
 					</Menu>
 				</Visibility>
-
-				<Container fluid>{children}</Container>
-
-				<Segment
-					inverted
-					style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
-					vertical
-				>
-					<Container textAlign="center">
-						<Grid columns={4} divided stackable inverted>
-							<Grid.Row>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 1"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 2"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 3"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Footer Header"
-									/>
-									<p>
-										Extra space for a call to action inside
-										the footer that could help re-engage
-										users.
-									</p>
-								</Grid.Column>
-							</Grid.Row>
-						</Grid>
-						<Divider inverted section />
-						<Image src={logo} centered size="mini" />
-						<List horizontal inverted divided link size="small">
-							<List.Item as="a" href="#">
-								Site Map
-							</List.Item>
-							<List.Item as="a" href="#">
-								Contact Us
-							</List.Item>
-							<List.Item as="a" href="#">
-								Terms and Conditions
-							</List.Item>
-							<List.Item as="a" href="#">
-								Privacy Policy
-							</List.Item>
-						</List>
-					</Container>
-				</Segment>
 			</div>
 		);
 	}

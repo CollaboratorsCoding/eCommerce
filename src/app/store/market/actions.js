@@ -1,34 +1,40 @@
-// // import cartTypes from './type';
+import MarketTypes from './type';
 // import createActionThunk from '../actionThunk';
 
 // import request from 'superagent';
 const MarketActions = {};
 
 MarketActions.getCart = () => ({
-	types: ['GET_CART', 'GET_CART_SUCCESS', 'GET_CART_FAIL'],
+	types: MarketTypes.getCart,
 	promise: client => client.get('get-cart'),
 });
 MarketActions.addToCartProduct = id => ({
-	types: [
-		'ADD_TO_CART_PRODUCT',
-		'ADD_TO_CART_PRODUCT_SUCCESS',
-		'ADD_TO_CART_PRODUCT_FAIL',
-	],
+	types: MarketTypes.addToCartProduct,
 	promise: client => client.get(`/add-cart/${id}`),
 });
 
+MarketActions.removeCartProduct = id => ({
+	types: MarketTypes.removeCartProduct,
+	promise: client => client.get(`/remove/${id}`),
+});
+
+MarketActions.reduceCartProduct = id => ({
+	types: MarketTypes.reduceCartProduct,
+	promise: client => client.get(`/reduce/${id}`),
+});
+
 MarketActions.getCategories = () => ({
-	types: ['GET_CATEGORIES', 'GET_CATEGORIES_SUCCESS', 'GET_CATEGORIES_FAIL'],
+	types: MarketTypes.getCategories,
 	promise: client => client.get('get-categories'),
 });
 
 MarketActions.getProducts = category => ({
-	types: ['GET_PRODUCTS', 'GET_PRODUCTS_SUCCESS', 'GET_PRODUCTS_FAIL'],
+	types: MarketTypes.getProducts,
 	promise: client => client.get(`get-products?c=${category}`),
 });
 
 MarketActions.getProduct = slug => ({
-	types: ['GET_PRODUCT', 'GET_PRODUCT_SUCCESS', 'GET_PRODUCT_FAIL'],
+	types: MarketTypes.getProduct,
 	promise: client => client.get(`get-product?p=${slug}`),
 });
 export default MarketActions;
