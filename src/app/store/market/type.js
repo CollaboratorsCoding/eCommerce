@@ -32,5 +32,6 @@ MarketTypes.getProduct = [
 	'GET_PRODUCT_SUCCESS',
 	'GET_PRODUCT_FAIL',
 ];
+MarketTypes.addReview = ['ADD_REVIEW', 'ADD_REVIEW_SUCCESS', 'ADD_REVIEW_FAIL'];
 
 export default MarketTypes;

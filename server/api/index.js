@@ -17,8 +17,10 @@ api.get('/get-categories', CategoryController.getCategories);
 // PRODUCT API
 
 api.post('/add-product', ProductController.addProduct);
+api.post('/add-review/:id', ProductController.addReview);
 api.get('/get-products', ProductController.getProducts);
 api.get('/get-product', ProductController.getProduct);
+
 // CART API
 
 api.get('/add-cart/:id', CartController.addToCart);

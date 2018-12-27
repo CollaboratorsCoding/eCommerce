@@ -27,6 +27,15 @@ export default (state = initialState, action) => {
 				product: action.result.product,
 			};
 		}
+		case 'ADD_REVIEW_SUCCESS': {
+			return {
+				...state,
+				product: {
+					...state.product,
+					reviews: [action.result.review, ...state.product.reviews],
+				},
+			};
+		}
 		case 'GET_CART_SUCCESS':
 			return {
 				...state,

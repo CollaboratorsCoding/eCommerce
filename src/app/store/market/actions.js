@@ -37,4 +37,9 @@ MarketActions.getProduct = slug => ({
 	types: MarketTypes.getProduct,
 	promise: client => client.get(`get-product?p=${slug}`),
 });
+
+MarketActions.addReview = (data, id) => ({
+	types: MarketTypes.addReview,
+	promise: client => client.post(`add-review/${id}`, { data }),
+});
 export default MarketActions;
