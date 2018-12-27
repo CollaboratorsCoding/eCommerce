@@ -1,13 +1,17 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 
+import LoaderContext from '../context';
+
 class CustomLink extends PureComponent {
-	handleClick = e => {
+	handleClick = async (e, setLoader) => {
 		e.preventDefault();
 		const { componentPromise, history, to } = this.props;
 		if (componentPromise) {
+			await setLoader(true);
 			componentPromise.preload().then(() => {
 				history.push(to);
+				setLoader(false);
 			});
 		} else {
 			history.push(to);
@@ -25,9 +29,13 @@ class CustomLink extends PureComponent {
 			...rest
 		} = this.props;
 		return (
-			<a {...rest} onClick={this.handleClick}>
-				{children}
-			</a>
+			<LoaderContext.Consumer>
+				{setLoader => (
+					<a {...rest} onClick={e => this.handleClick(e, setLoader)}>
+						{children}
+					</a>
+				)}
+			</LoaderContext.Consumer>
 		);
 	}
 }

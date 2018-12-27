@@ -106,7 +106,7 @@ export default class Header extends Component {
 
 				{/* Attaching the top menu is a simple operation, we only switch `fixed` prop and add another style if it has
             gone beyond the scope of visibility
-          */}
+		  */}
 				<Visibility
 					onBottomPassed={this.stickTopMenu}
 					onBottomVisible={this.unStickTopMenu}
