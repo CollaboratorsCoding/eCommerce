@@ -1,0 +1,44 @@
+@import './components/cart_empty';
+
+.shopping-cart-section {
+	background-image: linear-gradient(to right, #373b44, #568879);
+	margin: 100px auto;
+	border-radius: 5px;
+	box-shadow: 0 15px 40px rgba(#000, 0.15);
+	color: white;
+	&-header {
+		text-align: left;
+	}
+	&-body {
+		background: white;
+		color: #727272;
+		&-table {
+			text-align: center !important;
+			font-size: 15px !important;
+
+			&-arrow:hover {
+				cursor: pointer;
+			}
+
+			&__icon-delete {
+				position: absolute;
+				right: 50px;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	&-footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		& > h2 {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}

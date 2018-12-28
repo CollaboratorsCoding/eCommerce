@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
-import 'semantic-ui-css/semantic.min.css';
+
 // Action creators and helpers
 
 import Layout from './layout';

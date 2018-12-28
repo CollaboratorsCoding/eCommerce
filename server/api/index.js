@@ -1,10 +1,25 @@
-const express = require('express');
-const UserController = require('./controllers/UserController');
-const CartController = require('./controllers/CartController');
+import express from 'express';
+import CartController from './controllers/CartController';
+import UserController from './controllers/UserController';
+import ProductController from './controllers/ProductController';
+import CategoryController from './controllers/CategoryController';
+import checkJwt from '../middlewares/jwt.middleware';
 
 const api = express.Router();
 
 /* rest api */
+
+// CATEGORY API
+
+api.post('/add-category', CategoryController.addCategory);
+api.get('/get-categories', CategoryController.getCategories);
+
+// PRODUCT API
+
+api.post('/add-product', ProductController.addProduct);
+api.post('/add-review/:id', ProductController.addReview);
+api.get('/get-products', ProductController.getProducts);
+api.get('/get-product', ProductController.getProduct);
 
 // CART API
 
@@ -15,8 +30,14 @@ api.get('/reduce/:id', CartController.removeOne);
 
 // USER API
 
-api.get('/profile', UserController.getprofile);
+api.get('/profile', checkJwt, UserController.getprofile);
+api.put('/profile', checkJwt, UserController.editProfile);
+api.post('/sendresetPassword', UserController.sendresetPassword);
+api.post('/resetPassword', UserController.resetPassword);
+api.post('/signin', UserController.signin);
+api.post('/signup', UserController.signup);
+api.get('/logout', UserController.logout);
 
 /* ... */
 
-module.exports = api;
+export default api;

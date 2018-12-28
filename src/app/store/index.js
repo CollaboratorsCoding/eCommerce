@@ -4,15 +4,16 @@ import thunk from 'redux-thunk';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import rootReducer from './rootReducer';
 import { isServer } from '../utils';
+import createMiddleware from './middleware/clientMiddleware';
 
 // A nice helper to tell us if we're on the server
 
-export default (url = '/') => {
+export default (url = '/', client) => {
 	// Create a history depending on the environment
 
-	const history = isServer()
+	const history = isServer
 		? createMemoryHistory({
-			initialEntries: [url],
+				initialEntries: [url],
 		  })
 		: createBrowserHistory();
 
@@ -27,17 +28,23 @@ export default (url = '/') => {
 		}
 	}
 
-	const middleware = [thunk, routerMiddleware(history)];
+	const middleware = [
+		createMiddleware(client),
+		thunk,
+		routerMiddleware(history),
+	];
 	const composedEnhancers = compose(
 		applyMiddleware(...middleware),
 		...enhancers
 	);
 
 	// Do we have preloaded state available? Great, save it.
-	const initialState = !isServer ? window.__PRELOADED_STATE__ : {};
+
+	const initialState =
+		typeof window !== 'undefined' ? window.__PRELOADED_STATE__ : {};
 
 	// Delete it once we have it stored in a variable
-	if (!isServer) {
+	if (typeof window !== 'undefined') {
 		delete window.__PRELOADED_STATE__;
 	}
 

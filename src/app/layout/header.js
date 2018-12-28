@@ -1,32 +1,34 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 
-import { Link } from 'react-router-dom';
-
 import {
 	Container,
-	Divider,
 	Dropdown,
-	Grid,
-	Header,
 	Image,
-	List,
 	Menu,
-	Segment,
+	Label,
 	Visibility,
 	Icon,
 } from 'semantic-ui-react';
-
-import logo from './assets/logo.png';
+import CustomLink from '../hocs/customLink';
+import { Homepage, About, AddProduct, Cart } from '../routes';
+import logo from '../assets/logo.png';
 
 const links = [
 	{
 		to: '/',
 		text: 'Homepage',
+		componentPromise: Homepage,
 	},
 	{
 		to: '/about',
 		text: 'About',
+		componentPromise: About,
+	},
+	{
+		to: '/add',
+		text: 'Add',
+		componentPromise: AddProduct,
 	},
 ];
 
@@ -41,10 +43,11 @@ const isCurrent = (to, current) => {
 	return false;
 };
 
-const HeaderLink = ({ to, text, current }) => (
+const HeaderLink = ({ to, text, componentPromise, current }) => (
 	<Menu.Item
 		to={to}
-		as={Link}
+		componentPromise={componentPromise}
+		as={CustomLink}
 		className={isCurrent(to, current) ? 'current' : ''}
 	>
 		{text}
@@ -64,7 +67,7 @@ const fixedMenuStyle = {
 	boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
 };
 
-export default class StickyLayout extends Component {
+export default class Header extends Component {
 	state = {
 		menuFixed: false,
 	};
@@ -89,7 +92,7 @@ export default class StickyLayout extends Component {
 
 	render() {
 		const { menuFixed } = this.state;
-		const { current, children } = this.props;
+		const { current, totalQty } = this.props;
 		return (
 			<div>
 				{/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
@@ -103,7 +106,7 @@ export default class StickyLayout extends Component {
 
 				{/* Attaching the top menu is a simple operation, we only switch `fixed` prop and add another style if it has
             gone beyond the scope of visibility
-          */}
+		  */}
 				<Visibility
 					onBottomPassed={this.stickTopMenu}
 					onBottomVisible={this.unStickTopMenu}
@@ -133,14 +136,28 @@ export default class StickyLayout extends Component {
 
 							<Menu.Menu position="right">
 								<Menu.Item>
-									<Icon.Group size="big">
-										<Icon name="shopping cart" />
-										<Icon
-											color="red "
-											corner="top right"
-											name="add"
-										/>
-									</Icon.Group>
+									<CustomLink
+										to="/cart"
+										componentPromise={Cart}
+									>
+										<Icon.Group size="big">
+											<Icon
+												className="cart--menu"
+												color="black"
+												name="shopping basket"
+											/>
+											{totalQty ? (
+												<Label
+													circular
+													size="mini"
+													color="teal"
+													floating
+												>
+													{totalQty}
+												</Label>
+											) : null}
+										</Icon.Group>
+									</CustomLink>
 								</Menu.Item>
 								<Dropdown
 									text="Profile"
@@ -175,88 +192,6 @@ export default class StickyLayout extends Component {
 						</Container>
 					</Menu>
 				</Visibility>
-
-				<Container fluid>{children}</Container>
-
-				<Segment
-					inverted
-					style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
-					vertical
-				>
-					<Container textAlign="center">
-						<Grid columns={4} divided stackable inverted>
-							<Grid.Row>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 1"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 2"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Group 3"
-									/>
-									<List link inverted>
-										<List.Item as="a">Link One</List.Item>
-										<List.Item as="a">Link Two</List.Item>
-										<List.Item as="a">Link Three</List.Item>
-										<List.Item as="a">Link Four</List.Item>
-									</List>
-								</Grid.Column>
-								<Grid.Column>
-									<Header
-										inverted
-										as="h4"
-										content="Footer Header"
-									/>
-									<p>
-										Extra space for a call to action inside
-										the footer that could help re-engage
-										users.
-									</p>
-								</Grid.Column>
-							</Grid.Row>
-						</Grid>
-						<Divider inverted section />
-						<Image src={logo} centered size="mini" />
-						<List horizontal inverted divided link size="small">
-							<List.Item as="a" href="#">
-								Site Map
-							</List.Item>
-							<List.Item as="a" href="#">
-								Contact Us
-							</List.Item>
-							<List.Item as="a" href="#">
-								Terms and Conditions
-							</List.Item>
-							<List.Item as="a" href="#">
-								Privacy Policy
-							</List.Item>
-						</List>
-					</Container>
-				</Segment>
 			</div>
 		);
 	}

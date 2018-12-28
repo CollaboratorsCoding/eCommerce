@@ -6,16 +6,38 @@ import Loadable from 'react-loadable';
 
 import NotFound from './not-found';
 
-const Homepage = Loadable({
+export const Homepage = Loadable({
 	loader: () => import(/* webpackChunkName: "homepage" */ './homepage'),
 	loading: () => null,
 	modules: ['homepage'],
 });
 
-const About = Loadable({
+export const About = Loadable({
 	loader: () => import(/* webpackChunkName: "about" */ './about'),
 	loading: () => null,
 	modules: ['about'],
+});
+
+export const AddProduct = Loadable({
+	loader: () => import(/* webpackChunkName: "add" */ './add'),
+	loading: () => null,
+	modules: ['add'],
+});
+
+export const Category = Loadable({
+	loader: () => import(/* webpackChunkName: "c" */ './category'),
+	loading: () => null,
+	modules: ['c'],
+});
+export const Product = Loadable({
+	loader: () => import(/* webpackChunkName: "p" */ './product'),
+	loading: () => null,
+	modules: ['p'],
+});
+export const Cart = Loadable({
+	loader: () => import(/* webpackChunkName: "cart" */ './shopping-cart'),
+	loading: () => null,
+	modules: ['cart'],
 });
 
 // const Dashboard = Loadable({
@@ -46,6 +68,11 @@ export default () => (
 	<Switch>
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
+		<Route exact path="/add" component={AddProduct} />
+		<Route exact path="/c/:slug_category/" component={Category} />
+		<Route exact path="/p/:slug_product" component={Product} />
+		{/* <Route exact path="/product/:slug/" component={AddProduct} /> */}
+		<Route exact path="/cart" component={Cart} />
 
 		{/* <Route exact path="/profile/:id" component={Profile} /> */}
 

@@ -1,23 +1,29 @@
+import 'semantic-ui-css/semantic.min.css';
+import 'react-loading-bar/dist/index.css';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
-import { Frontload } from 'react-frontload';
 import { ConnectedRouter } from 'connected-react-router';
+import { Frontload } from './app/hocs/frontLoad';
+
+import ApiClient from './app/store/ApiClient';
 import createStore from './app/store';
 
 import App from './app/app';
+
 import './index.scss';
 
+const client = new ApiClient();
 // Create a store and get back itself and its history object
-const { store, history } = createStore();
+const { store, history } = createStore(undefined, client);
 
 // Running locally, we should run on a <ConnectedRouter /> rather than on a <StaticRouter /> like on the server
 // Let's also let React Frontload explicitly know we're not rendering on the server here
 const Application = (
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<Frontload noServerRender>
+			<Frontload>
 				<App />
 			</Frontload>
 		</ConnectedRouter>

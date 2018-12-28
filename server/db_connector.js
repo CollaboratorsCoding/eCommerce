@@ -10,7 +10,7 @@ const dbConnector = mongo => {
 			reconnectInterval: 3000,
 		}
 	);
-	mongoose.set('useCreateIndex', true);
+	// mongoose.set('useCreateIndex', true);
 	mongoose.set('debug', true);
 	mongoose.Promise = global.Promise;
 	mongoose.connection.on('connected', () => {
