@@ -1,82 +1,59 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import queryString from 'query-string';
 import { connect } from 'react-redux';
-import { Button, Rating, Comment } from 'semantic-ui-react';
+import { Button, Label, Menu, Tab } from 'semantic-ui-react';
 import Page from '../../components/page';
+import Reviews from '../../components/reviews';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
-import { weekDayFormat } from '../../utils';
 
-const { getProduct, addToCartProduct, addReview } = MarketActions;
+const { getProduct, addToCartProduct, addReview, getReviews } = MarketActions;
 
 const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
-export class Category extends Component {
-	state = {
-		rating: 0,
-	};
 
+export class Category extends Component {
 	componentDidMount = () => {
 		console.log('COMPONENT', this.props.product);
 	};
 
-	handleRate = (e, { rating }) => this.setState({ rating });
-
-	handleSubmit = e => {
-		const formData = new FormData(e.target);
-		let data = {};
-
-		e.preventDefault();
-
-		/* eslint-disable-next-line */
-		for (const entry of formData.entries()) {
-			data[entry[0]] = entry[1];
-		}
-		if (this.state.rating) {
-			data = {
-				...data,
-				rating: this.state.rating,
-			};
-		}
-
-		this.props.addReview(data, this.props.product._id);
-	};
-
 	render() {
-		const { product, addToCart } = this.props;
+		const { product, addToCart, location } = this.props;
+
 		if (!product) return null;
-		const { description, imagePath, price, title, reviews } = product;
 
-		let renderReviews = null;
+		const { description, imagePath, price, title, reviewCount } = product;
 
-		if (reviews && reviews.length) {
-			renderReviews = reviews.map(review => (
-				<Comment>
-					<Comment.Content>
-						<Comment.Author>{review.author}</Comment.Author>
-						<Comment.Metadata>
-							<div>
-								{weekDayFormat(
-									new Date(review.date).getUTCDay()
-								)}
-							</div>
-							<div>
-								{review.rating ? (
-									<Rating
-										rating={review.rating}
-										maxRating={5}
-										disabled
-									/>
-								) : (
-									'Not Rated'
-								)}
-							</div>
-						</Comment.Metadata>
-						<Comment.Text>{review.text}</Comment.Text>
-					</Comment.Content>
-				</Comment>
-			));
-		}
+		const query = queryString.parse(location.search);
+
+		const panes = [
+			{
+				menuItem: {
+					key: 'description',
+					icon: 'info circle',
+					content: 'Description',
+				},
+				render: () => <Tab.Pane>{description}</Tab.Pane>,
+			},
+			{
+				menuItem: (
+					<Menu.Item key="reviews">
+						Reviews<Label>{reviewCount}</Label>
+					</Menu.Item>
+				),
+				render: () => (
+					<Tab.Pane>
+						<Reviews
+							query={query}
+							product={product}
+							onGetReviews={this.props.getReviews}
+							onAddReview={this.props.addReview}
+						/>
+					</Tab.Pane>
+				),
+			},
+		];
 		return (
 			<Page
 				id="product"
@@ -97,31 +74,10 @@ export class Category extends Component {
 						Add to Cart
 					</Button>
 					<img src={imagePath} alt={title} />
-					<div>{description}</div>
-					<section>Reviews ({reviews.length})</section>
-					{renderReviews ? (
-						<Comment.Group>{renderReviews}</Comment.Group>
-					) : null}
-					<div>Add Review</div>
-					<form onSubmit={this.handleSubmit}>
-						<input
-							type="text"
-							name="author"
-							placeholder="Enter Your Name"
-						/>
-						<input
-							type="text"
-							name="text"
-							placeholder="Write Review Here"
-						/>
-						<Rating
-							icon="star"
-							rating={this.state.rating}
-							maxRating={5}
-							onRate={this.handleRate}
-						/>
-						<button type="submit">Send</button>
-					</form>
+					<Tab
+						panes={panes}
+						defaultActiveIndex={query.reviews ? 1 : 0}
+					/>
 				</div>
 			</Page>
 		);
@@ -133,7 +89,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
-		{ getProduct, addToCart: addToCartProduct, addReview },
+		{ getProduct, addToCart: addToCartProduct, addReview, getReviews },
 		dispatch
 	);
 

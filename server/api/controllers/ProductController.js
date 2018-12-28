@@ -22,11 +22,37 @@ ProductController.getProducts = (req, res) => {
 
 ProductController.getProduct = (req, res) => {
 	Product.findOne({ slug: req.query.p }, (err, product) => {
-		const query = Review.find({ parentId: product._id }).sort({ date: -1 });
-		query.exec((error, reviews) => {
-			res.json({
-				product: { ...product.toJSON(), reviews },
-			});
+		Review.estimatedDocumentCount(
+			{
+				parentId: product._id,
+			},
+			(error, count) => {
+				res.json({
+					product: { ...product.toJSON(), reviewCount: count },
+				});
+			}
+		);
+	});
+};
+
+ProductController.getReviews = (req, res) => {
+	let limit = 20;
+	let offset = 0;
+	if (parseFloat(req.query.l)) {
+		limit = req.query.l;
+	}
+	if (parseFloat(req.query.o)) {
+		offset = req.query.o;
+	}
+
+	const query = Review.find({ parentId: req.params.id })
+		.sort({ date: -1 })
+		.skip(parseFloat(offset))
+		.limit(limit);
+	query.exec((error, reviews) => {
+		console.log(reviews);
+		res.json({
+			reviews,
 		});
 	});
 };
