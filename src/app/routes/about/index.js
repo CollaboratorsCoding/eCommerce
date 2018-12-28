@@ -2,17 +2,13 @@ import React, { PureComponent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Embed } from 'semantic-ui-react';
-import { frontloadConnect } from '../../hocs/frontLoad';
 
-import MarketActions from '../../store/market/actions';
 import ProfileActions from '../../store/profile/actions';
 import Page from '../../components/page';
 import './about.scss';
 
-const { getCart } = MarketActions;
 const { signin, signup } = ProfileActions;
 
-const frontload = async props => await props.getCart();
 class About extends PureComponent {
 	componentDidMount = () => {};
 
@@ -30,16 +26,12 @@ class About extends PureComponent {
 	};
 
 	render() {
-		const { totalPrice, totalQty } = this.props.cart;
-
 		return (
 			<Page
 				id="about"
 				title="About"
 				description="This is about really cool stuff."
 			>
-				Total : {totalPrice}
-				Total qty : {totalQty}
 				<form onSubmit={this.handleSubmit}>
 					<input type="text" name="email" placeholder="email" />
 					<input type="text" name="address" placeholder="address" />
@@ -67,14 +59,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getCart, signin, signup }, dispatch);
+	bindActionCreators({ signin, signup }, dispatch);
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(
-	frontloadConnect(frontload, {
-		onMount: true,
-		onUpdate: false,
-	})(About)
-);
+)(About);

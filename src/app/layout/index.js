@@ -9,10 +9,15 @@ import LoaderContext from '../context';
 
 import { frontloadConnect } from '../hocs/frontLoad';
 import MarketActions from '../store/market/actions';
+import ProfileActions from '../store/profile/actions';
 
 const { getCart } = MarketActions;
+const { getProfile } = ProfileActions;
 
-const frontload = async props => await props.getCart();
+const frontload = async props => {
+	await props.getCart();
+	await props.getProfile();
+};
 
 class StickyLayout extends Component {
 	state = {
@@ -33,6 +38,7 @@ class StickyLayout extends Component {
 				/>
 				<LoaderContext.Provider value={this.setLoader}>
 					<Header
+						user={this.props.user}
 						totalQty={this.props.cart.totalQty}
 						current={this.props.current}
 					/>
@@ -46,11 +52,11 @@ class StickyLayout extends Component {
 
 const mapStateToProps = state => ({
 	cart: state.market.cart,
-	router: state.router,
+	user: state.profile,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getCart }, dispatch);
+	bindActionCreators({ getCart, getProfile }, dispatch);
 
 export default connect(
 	mapStateToProps,

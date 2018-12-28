@@ -51,7 +51,7 @@ export class Category extends Component {
 
 		if (reviews && reviews.length) {
 			renderReviews = reviews.map(review => (
-				<Comment>
+				<Comment key={review._id}>
 					<Comment.Content>
 						<Comment.Author>{review.author}</Comment.Author>
 						<Comment.Metadata>
