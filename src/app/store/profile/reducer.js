@@ -7,14 +7,13 @@ const [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL] = types.signIn;
 
 const [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL] = types.signUp;
 
+const [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL] = types.logout;
+
 const initialState = {
-	checkedAuth: false,
 	isLoggedIn: false,
 	profile: {},
-	loadingUserState: true,
 	error: {},
 	loading: false,
-	requestSuccess: {},
 };
 
 export default (state = initialState, action) => {
@@ -29,8 +28,6 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				profile: _.get(action.result, 'user', {}),
-				loadingUserState: false,
-				checkedAuth: true,
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
 				error: {},
 			};
@@ -89,6 +86,38 @@ export default (state = initialState, action) => {
 				error: {},
 			};
 		case SIGNUP_FAIL:
+			return {
+				...state,
+				error: {
+					type: _.get(action.result, 'response.data.type', 'server'),
+					message: _.get(
+						action.result,
+						'response.data.message',
+						'Oops... Something went wrong 😔'
+					),
+					formData: _.get(
+						action.result,
+						'response.data.formData',
+						{}
+					),
+				},
+				loading: false,
+			};
+
+		case LOGOUT:
+			return {
+				...state,
+				loading: true,
+				error: {},
+			};
+		case LOGOUT_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				isLoggedIn: false,
+				error: {},
+			};
+		case LOGOUT_FAIL:
 			return {
 				...state,
 				error: {

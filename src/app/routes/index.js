@@ -5,6 +5,8 @@ import { Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import NotFound from './not-found';
+import Authenticated from '../components/authenticated';
+import Unauthenticated from '../components/unauthenticated';
 
 export const Homepage = Loadable({
 	loader: () => import(/* webpackChunkName: "homepage" */ './homepage'),
@@ -16,6 +18,13 @@ export const About = Loadable({
 	loader: () => import(/* webpackChunkName: "about" */ './about'),
 	loading: () => null,
 	modules: ['about'],
+});
+
+export const Authentication = Loadable({
+	loader: () =>
+		import(/* webpackChunkName: "authentication" */ './authentication'),
+	loading: () => null,
+	modules: ['authentication'],
 });
 
 export const AddProduct = Loadable({
@@ -68,9 +77,14 @@ export default () => (
 	<Switch>
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
-		<Route exact path="/add" component={AddProduct} />
+		<Authenticated exact path="/add" component={AddProduct} />
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />
+		<Unauthenticated
+			exact
+			path="/authentication"
+			component={Authentication}
+		/>
 		{/* <Route exact path="/product/:slug/" component={AddProduct} /> */}
 		<Route exact path="/cart" component={Cart} />
 

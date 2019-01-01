@@ -10,6 +10,11 @@ ProfileActions.getProfile = () => ({
 	promise: client => client.get('/profile'),
 });
 
+ProfileActions.logout = () => ({
+	types: types.logout,
+	promise: client => client.get('/logout'),
+});
+
 ProfileActions.signin = data => ({
 	types: types.signIn,
 	promise: client => client.post('signin', { data }),

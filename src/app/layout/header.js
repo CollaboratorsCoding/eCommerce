@@ -11,7 +11,7 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from '../hocs/customLink';
-import { Homepage, About, AddProduct, Cart } from '../routes';
+import { Homepage, About, AddProduct, Cart, Authentication } from '../routes';
 import logo from '../assets/logo.png';
 
 const unAuthLinks = [
@@ -105,7 +105,7 @@ export default class Header extends Component {
 
 	render() {
 		const { menuFixed } = this.state;
-		const { current, totalQty, user } = this.props;
+		const { current, totalQty, user, logout } = this.props;
 		const links = user.isLoggedIn ? authLinks : unAuthLinks;
 		return (
 			<div>
@@ -182,48 +182,22 @@ export default class Header extends Component {
 									>
 										<Dropdown.Menu>
 											<Dropdown.Item>
-												List Item
+												Profile
 											</Dropdown.Item>
-											<Dropdown.Item>
-												List Item
-											</Dropdown.Item>
+
 											<Dropdown.Divider />
-											<Dropdown.Header>
-												Header Item
-											</Dropdown.Header>
-											<Dropdown.Item>
-												<i className="dropdown icon" />
-												<span className="text">
-													Submenu
-												</span>
-												<Dropdown.Menu>
-													<Dropdown.Item>
-														List Item
-													</Dropdown.Item>
-													<Dropdown.Item>
-														List Item
-													</Dropdown.Item>
-												</Dropdown.Menu>
-											</Dropdown.Item>
-											<Dropdown.Item>
-												List Item
+											<Dropdown.Item onClick={logout}>
+												Logout
 											</Dropdown.Item>
 										</Dropdown.Menu>
 									</Dropdown>
 								) : (
-									<>
-										<HeaderLink
-											current={current}
-											to="/signin"
-											text="SignIn"
-										/>
-
-										<HeaderLink
-											current={current}
-											to="/signup"
-											text="SignUp"
-										/>
-									</>
+									<HeaderLink
+										current={current}
+										to="/authentication"
+										text="Authentication"
+										componentPromise={Authentication}
+									/>
 								)}
 							</Menu.Menu>
 						</Container>

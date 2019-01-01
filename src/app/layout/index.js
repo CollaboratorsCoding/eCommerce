@@ -12,7 +12,7 @@ import MarketActions from '../store/market/actions';
 import ProfileActions from '../store/profile/actions';
 
 const { getCart } = MarketActions;
-const { getProfile } = ProfileActions;
+const { getProfile, logout } = ProfileActions;
 
 const frontload = async props => {
 	await props.getCart();
@@ -39,6 +39,7 @@ class StickyLayout extends Component {
 				<LoaderContext.Provider value={this.setLoader}>
 					<Header
 						user={this.props.user}
+						logout={this.props.logout}
 						totalQty={this.props.cart.totalQty}
 						current={this.props.current}
 					/>
@@ -56,7 +57,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getCart, getProfile }, dispatch);
+	bindActionCreators({ getCart, getProfile, logout }, dispatch);
 
 export default connect(
 	mapStateToProps,
