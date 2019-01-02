@@ -1,0 +1,17 @@
+.form-container {
+	margin: 100px auto;
+	width: 320px;
+	padding: 30px;
+	border-radius: 5px;
+	box-shadow: 0 15px 40px rgba(#000, 0.15);
+}
+
+.form {
+	&-switch {
+		color: #5592d6;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}

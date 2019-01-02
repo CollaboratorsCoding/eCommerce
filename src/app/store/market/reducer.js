@@ -1,4 +1,34 @@
-// import cartTypes from './type';
+// import types from './type';
+
+// const [GET_CART, GET_CART_SUCCESS, GET_CART_FAIL] = types.getCart;
+// const [
+// 	ADD_TO_CART_PRODUCT,
+// 	ADD_TO_CART_PRODUCT_SUCCESS,
+// 	ADD_TO_CART_PRODUCT_FAIL,
+// ] = types.addToCartProduct;
+// const [
+// 	REMOVE_CART_PRODUC,
+// 	REMOVE_CART_PRODUCT_SUCCESS,
+// 	REMOVE_CART_PRODUC_FAIL,
+// ] = types.removeCartProduct;
+// const [
+// 	REDUCE_CART_PRODUCT,
+// 	REDUCE_CART_PRODUCT_SUCCESS,
+// 	REDUCE_CART_PRODUCT_FAIL,
+// ] = types.reduceCartProduct;
+
+// const [
+// 	GET_CATEGORIES,
+// 	GET_CATEGORIES_SUCCESS,
+// 	GET_CATEGORIES_FAIL,
+// ] = types.getCategories;
+// const [
+// 	GET_PRODUCTS,
+// 	GET_PRODUCTS_SUCCESS,
+// 	GET_PRODUCTS_FAIL,
+// ] = types.getProducts;
+// const [GET_PRODUCT, GET_PRODUCT_SUCCESS, GET_PRODUCT_FAIL] = types.getProduct;
+// const [ADD_REVIEW, ADD_REVIEW_SUCCESS, ADD_REVIEW_FAIL] = types.addReview;
 
 const initialState = {
 	categories: {},

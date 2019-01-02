@@ -80,7 +80,7 @@ export default (req, res) => {
         data for that page. We take all that information and compute the appropriate state to send to the user. This is
         then loaded into the correct components and sent as a Promise to be handled below.
       */
-			frontloadServerRender(() =>
+			return frontloadServerRender(() =>
 				renderToString(
 					<Loadable.Capture report={m => modules.push(m)}>
 						<Provider store={store}>
@@ -150,8 +150,12 @@ export default (req, res) => {
 					connectExist,
 				});
 
+				if (context.url) {
+					return res.redirect(302, context.url);
+				}
+
 				// We have all the final HTML, let's send it to the user already!
-				res.send(html);
+				return res.send(html);
 			});
 		}
 	);
