@@ -7,6 +7,7 @@ import Page from '../../components/page';
 import Reviews from '../../components/reviews';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
+import { setQuery } from '../../utils';
 
 const { getProduct, addToCartProduct, addReview, getReviews } = MarketActions;
 
@@ -16,6 +17,10 @@ const frontload = async props =>
 export class Category extends Component {
 	componentDidMount = () => {
 		console.log('COMPONENT', this.props.product);
+	};
+
+	handleTabChange = queryName => {
+		setQuery('tab', queryName, this.props.history);
 	};
 
 	render() {
@@ -29,14 +34,12 @@ export class Category extends Component {
 
 		const panes = [
 			{
-				menuItem: {
-					key: 'description',
-					icon: 'info circle',
-					content: 'Description',
-				},
+				queryTab: 'description',
+				menuItem: <Menu.Item key="description">Description</Menu.Item>,
 				render: () => <Tab.Pane>{description}</Tab.Pane>,
 			},
 			{
+				queryTab: 'reviews',
 				menuItem: (
 					<Menu.Item key="reviews">
 						Reviews<Label>{reviewCount}</Label>
@@ -44,6 +47,7 @@ export class Category extends Component {
 				),
 				render: () => (
 					<Tab.Pane>
+						<div>reviews</div>
 						<Reviews
 							query={query}
 							product={product}
@@ -53,7 +57,20 @@ export class Category extends Component {
 					</Tab.Pane>
 				),
 			},
+			{
+				queryTab: 'test',
+				menuItem: <Menu.Item key="test">Test</Menu.Item>,
+				render: () => (
+					<Tab.Pane active>
+						<div>Rofel</div>
+					</Tab.Pane>
+				),
+			},
 		];
+
+		const activeTabIndex = panes.findIndex(
+			tab => tab.queryTab === query.tab
+		);
 		return (
 			<Page
 				id="product"
@@ -76,7 +93,10 @@ export class Category extends Component {
 					<img src={imagePath} alt={title} />
 					<Tab
 						panes={panes}
-						defaultActiveIndex={query.reviews ? 1 : 0}
+						defaultActiveIndex={activeTabIndex}
+						onTabChange={(e, { activeIndex }) =>
+							this.handleTabChange(panes[activeIndex].queryTab)
+						}
 					/>
 				</div>
 			</Page>

@@ -1,3 +1,4 @@
+import { setAutoFreeze } from 'immer';
 import types from './type';
 
 const [GET_CART] = types.getCart;
@@ -43,7 +44,12 @@ export default (state = initialState, action) => {
 				...state,
 				product: {
 					...state.product,
-					reviews: [action.result.review, ...state.product.reviews],
+					reviews: {
+						1: {
+							...action.result.review,
+							...state.product.reviews['1'],
+						},
+					},
 				},
 			};
 		}

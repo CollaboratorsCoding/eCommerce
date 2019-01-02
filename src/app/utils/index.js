@@ -13,7 +13,6 @@ export const setQuery = (query, value, history) => {
 	}
 
 	history.push({
-		pathname: history.location.pathname,
 		search: `?${searchParams.toString()}`,
 	});
 };

@@ -9,12 +9,12 @@ export default function clientMiddleware(client) {
 			return next(action);
 		}
 
-		const genTypes =
+		const generatedTypes =
 			types.length === 1
 				? [types[0], `${types[0]}_SUCCESS`, `${types[0]}_FAILURE`]
 				: types;
 
-		const [REQUEST, SUCCESS, FAILURE] = genTypes;
+		const [REQUEST, SUCCESS, FAILURE] = generatedTypes;
 		next({ ...rest, type: REQUEST });
 
 		const actionPromise = promise(client);
