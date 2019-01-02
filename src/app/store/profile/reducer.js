@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import types from './type';
 
-const [GET_PROFILE, GET_PROFILE_SUCCESS, GET_PROFILE_FAIL] = types.getProfile;
+const [GET_PROFILE] = types.getProfile;
 
-const [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAIL] = types.signIn;
+const [SIGNIN] = types.signIn;
 
-const [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL] = types.signUp;
+const [SIGNUP] = types.signUp;
 
-const [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL] = types.logout;
+const [LOGOUT] = types.logout;
 
 const initialState = {
 	isLoggedIn: false,
@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
 				error: {},
 			};
 
-		case GET_PROFILE_SUCCESS:
+		case `${GET_PROFILE}_SUCCESS`:
 			return {
 				...state,
 				profile: _.get(action.result, 'user', {}),
@@ -32,7 +32,7 @@ export default (state = initialState, action) => {
 				error: {},
 			};
 
-		case GET_PROFILE_FAIL:
+		case `${GET_PROFILE}_FAIL`:
 			return {
 				...state,
 				loading: false,
@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
 				loading: true,
 				error: {},
 			};
-		case SIGNIN_SUCCESS:
+		case `${SIGNIN}_SUCCESS`:
 			return {
 				...state,
 				profile: _.get(action.result, 'user', {}),
@@ -52,7 +52,7 @@ export default (state = initialState, action) => {
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
 				error: {},
 			};
-		case SIGNIN_FAIL:
+		case `${SIGNIN}_FAIL`:
 			return {
 				...state,
 				error: {
@@ -77,7 +77,7 @@ export default (state = initialState, action) => {
 				loading: true,
 				error: {},
 			};
-		case SIGNUP_SUCCESS:
+		case `${SIGNUP}_SUCCESS`:
 			return {
 				...state,
 				profile: _.get(action.result, 'user', {}),
@@ -85,7 +85,7 @@ export default (state = initialState, action) => {
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
 				error: {},
 			};
-		case SIGNUP_FAIL:
+		case `${SIGNUP}_FAIL`:
 			return {
 				...state,
 				error: {
@@ -110,14 +110,14 @@ export default (state = initialState, action) => {
 				loading: true,
 				error: {},
 			};
-		case LOGOUT_SUCCESS:
+		case `${LOGOUT}_SUCCESS`:
 			return {
 				...state,
 				loading: false,
 				isLoggedIn: false,
 				error: {},
 			};
-		case LOGOUT_FAIL:
+		case `${LOGOUT}_FAIL`:
 			return {
 				...state,
 				error: {
