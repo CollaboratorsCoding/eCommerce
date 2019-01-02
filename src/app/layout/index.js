@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
-import Loading from 'react-loading-bar';
+import Loading from '../components/loader';
 import Header from './header';
 import Footer from './footer';
 import LoaderContext from '../context';
