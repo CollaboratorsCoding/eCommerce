@@ -14,7 +14,7 @@ export default class Loading extends Component {
 		const { show } = nextProps;
 		if (show) {
 			this.show();
-		} else {
+		} else if (this.state.active) {
 			this.hide();
 		}
 	}

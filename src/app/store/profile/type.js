@@ -1,10 +1,6 @@
 const ProfileTypes = {};
 
-ProfileTypes.getProfile = [
-	'GET_PROFILE',
-	'GET_PROFILE_SUCCESS',
-	'GET_PROFILE_FAIL',
-];
+ProfileTypes.getProfile = ['GET_PROFILE'];
 
 ProfileTypes.signIn = ['SIGNIN', 'SIGNIN_SUCCESS', 'SIGNIN_FAIL'];
 
