@@ -3,7 +3,7 @@
 const initialState = {
 	categories: {},
 	products: [],
-	product: null,
+	product: {},
 	cart: {},
 };
 
@@ -22,9 +22,10 @@ export default (state = initialState, action) => {
 		}
 
 		case 'GET_PRODUCT_SUCCESS': {
+			// TODO: reviews
 			return {
 				...state,
-				product: action.result.product,
+				product: { ...state.product, ...action.result.product },
 			};
 		}
 		case 'ADD_REVIEW_SUCCESS': {
@@ -34,6 +35,25 @@ export default (state = initialState, action) => {
 					...state.product,
 					reviews: [action.result.review, ...state.product.reviews],
 				},
+			};
+		}
+
+		case 'GET_REVIEWS_SUCCESS': {
+			// TODO: reviews
+			const { result } = action;
+			const { page, reviews } = result;
+
+			const product = {
+				...state.product,
+				reviews: {
+					...state.product.reviews,
+					[page]: reviews,
+				},
+			};
+
+			return {
+				...state,
+				product,
 			};
 		}
 		case 'GET_CART_SUCCESS':
