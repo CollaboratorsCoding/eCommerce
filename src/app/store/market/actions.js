@@ -45,6 +45,6 @@ MarketActions.addReview = (data, id) => ({
 
 MarketActions.getReviews = (p, l, id) => ({
 	types: MarketTypes.getReviews,
-	promise: client => client.get(`get-reviews/${id}?p=${p}&l=${l}/`),
+	promise: client => client.get(`get-reviews/${id}?p=${p}&l=${l}`),
 });
 export default MarketActions;

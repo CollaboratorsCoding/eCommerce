@@ -1,4 +1,4 @@
-import { setAutoFreeze } from 'immer';
+import _ from 'lodash';
 import types from './type';
 
 const [GET_CART] = types.getCart;
@@ -15,7 +15,12 @@ const [GET_REVIEWS] = types.getReviews;
 const initialState = {
 	categories: {},
 	products: [],
-	product: {},
+	product: {
+		reviews: {
+			'1': [],
+		},
+		reviewsCount: 0,
+	},
 	cart: {},
 };
 
@@ -40,16 +45,25 @@ export default (state = initialState, action) => {
 			};
 		}
 		case `${ADD_REVIEW}_SUCCESS`: {
+			let lastItem;
+			const newReviews = _.mapValues(
+				state.product.reviews,
+				(val, key) => {
+					lastItem = val[val.length - 1];
+					val.unshift(key === '1' ? action.result.review : lastItem);
+					if (val.length > 10) {
+						val.pop();
+					}
+					return val;
+				}
+			);
+
 			return {
 				...state,
 				product: {
 					...state.product,
-					reviews: {
-						1: {
-							...action.result.review,
-							...state.product.reviews['1'],
-						},
-					},
+					reviews: newReviews,
+					reviewsCount: state.product.reviewsCount + 1,
 				},
 			};
 		}

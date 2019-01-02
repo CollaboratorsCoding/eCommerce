@@ -28,7 +28,7 @@ export class Category extends Component {
 
 		if (!product) return null;
 
-		const { description, imagePath, price, title, reviewCount } = product;
+		const { description, imagePath, price, title, reviewsCount } = product;
 
 		const query = queryString.parse(location.search);
 
@@ -42,12 +42,11 @@ export class Category extends Component {
 				queryTab: 'reviews',
 				menuItem: (
 					<Menu.Item key="reviews">
-						Reviews<Label>{reviewCount}</Label>
+						Reviews<Label>{reviewsCount}</Label>
 					</Menu.Item>
 				),
 				render: () => (
 					<Tab.Pane>
-						<div>reviews</div>
 						<Reviews
 							query={query}
 							product={product}

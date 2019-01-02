@@ -21,55 +21,62 @@ class Review extends Component {
 	}
 
 	handlePaginationChange = (e, { activePage }) => {
-		console.log(activePage);
 		setQuery('p', activePage, this.props.history);
 		this.setState({ activePage });
+		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
+			this.props.onGetReviews(activePage, 10, this.props.product._id);
+		}
 	};
 
-	countPages = items => Math.round(items / 10);
+	countPages = items => Math.ceil(items / 10);
 
 	render() {
 		const { product, onAddReview } = this.props;
 		const { activePage } = this.state;
-		console.log(this.countPages(product.reviewCount));
+
 		let renderReviews = null;
-		if (_.get(product, `reviews[${activePage}]`)) {
+		if (_.get(product, `reviews[${activePage}].length`, null)) {
 			renderReviews = product.reviews[activePage].map(review => (
 				<ReviewItem key={review._id} review={review} />
 			));
 		}
+		console.log(renderReviews);
 		return (
 			<div>
 				{renderReviews ? (
-					<Comment.Group>{renderReviews}</Comment.Group>
-				) : null}
-				<Pagination
-					activePage={activePage}
-					boundaryRange={1}
-					onPageChange={this.handlePaginationChange}
-					ellipsisItem={{
-						content: <Icon name="ellipsis horizontal" />,
-						icon: true,
-					}}
-					firstItem={{
-						content: <Icon name="angle double left" />,
-						icon: true,
-					}}
-					lastItem={{
-						content: <Icon name="angle double right" />,
-						icon: true,
-					}}
-					prevItem={{
-						content: <Icon name="angle left" />,
-						icon: true,
-					}}
-					nextItem={{
-						content: <Icon name="angle right" />,
-						icon: true,
-					}}
-					totalPages={this.countPages(product.reviewCount)}
-				/>
-				<ReviewForm addReview={onAddReview} />{' '}
+					<div>
+						<Comment.Group>{renderReviews}</Comment.Group>
+						<Pagination
+							activePage={activePage}
+							boundaryRange={1}
+							onPageChange={this.handlePaginationChange}
+							ellipsisItem={{
+								content: <Icon name="ellipsis horizontal" />,
+								icon: true,
+							}}
+							firstItem={{
+								content: <Icon name="angle double left" />,
+								icon: true,
+							}}
+							lastItem={{
+								content: <Icon name="angle double right" />,
+								icon: true,
+							}}
+							prevItem={{
+								content: <Icon name="angle left" />,
+								icon: true,
+							}}
+							nextItem={{
+								content: <Icon name="angle right" />,
+								icon: true,
+							}}
+							totalPages={this.countPages(product.reviewsCount)}
+						/>
+					</div>
+				) : (
+					'No reviews yet... Be first!'
+				)}
+				<ReviewForm productId={product._id} addReview={onAddReview} />{' '}
 			</div>
 		);
 	}

@@ -28,7 +28,7 @@ ProductController.getProduct = (req, res) => {
 			},
 			(error, count) => {
 				res.json({
-					product: { ...product.toJSON(), reviewCount: count },
+					product: { ...product.toJSON(), reviewsCount: count },
 				});
 			}
 		);
@@ -36,7 +36,7 @@ ProductController.getProduct = (req, res) => {
 };
 
 ProductController.getReviews = (req, res) => {
-	let limit = 20;
+	let limit = 10;
 	let page = 1;
 	if (parseFloat(req.query.l)) {
 		limit = req.query.l;
@@ -45,10 +45,11 @@ ProductController.getReviews = (req, res) => {
 		page = req.query.p;
 	}
 	const offset = (page - 1) * limit;
+	console.log(offset);
 	const query = Review.find({ parentId: req.params.id })
 		.sort({ date: -1 })
 		.skip(parseFloat(offset))
-		.limit(limit);
+		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
 		console.log(reviews);
 		res.json({
