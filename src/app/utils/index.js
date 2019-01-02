@@ -4,6 +4,20 @@ export const isServer = !(
 	window.document.createElement
 );
 
+export const setQuery = (query, value, history) => {
+	const searchParams = new URLSearchParams(history.location.search);
+	if (searchParams.has(query)) {
+		searchParams.set(query, value);
+	} else {
+		searchParams.append(query, value);
+	}
+
+	history.push({
+		pathname: history.location.pathname,
+		search: `?${searchParams.toString()}`,
+	});
+};
+
 export const weekDayFormat = n => {
 	switch (n) {
 		case 0:

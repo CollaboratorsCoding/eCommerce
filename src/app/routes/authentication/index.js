@@ -9,6 +9,8 @@ import Page from '../../components/page';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 
+import { setQuery } from '../../utils';
+
 import './style/index.scss';
 
 const { signin, signup } = ProfileActions;
@@ -20,22 +22,7 @@ class Authentication extends PureComponent {
 
 	switchForm = form => {
 		this.setState({ queryForm: form });
-		this.setQuery('form', form);
-	};
-
-	setQuery = (query, value) => {
-		const searchParams = new URLSearchParams(this.props.location.search);
-
-		if (searchParams.has(query)) {
-			searchParams.set(query, value);
-		} else {
-			searchParams.append(query, value);
-		}
-
-		this.props.history.push({
-			pathname: this.props.location.pathname,
-			search: `?${searchParams.toString()}`,
-		});
+		setQuery('form', form, this.props.history);
 	};
 
 	handleSubmit = e => {
