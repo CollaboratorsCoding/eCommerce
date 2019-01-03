@@ -24,8 +24,11 @@ const bundlePath = path.resolve(
 );
 
 let nodemon;
-fs.copySync(paths.serverAssets, paths.appBuildServer);
+
 console.log(chalk.cyan('\nWebpack starts to build and watch your files...\n'));
+
+fs.emptyDirSync(paths.appBuildServer);
+fs.copySync(paths.serverAssets, paths.appBuildServer);
 
 compiler.watch(null, (err, stats) => {
 	if (err) {

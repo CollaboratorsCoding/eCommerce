@@ -8,6 +8,7 @@ const paths = require('../config/paths');
 // removes react-dev-utils/webpackHotDevClient.js at first in the array
 config.entry.shift();
 config.output.path = paths.appBuild;
+fs.emptyDirSync(paths.appBuild);
 
 function copyPublicFolder() {
 	fs.copySync(paths.appPublic, paths.appBuild, {
