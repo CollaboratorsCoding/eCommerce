@@ -25,22 +25,6 @@ class Authentication extends PureComponent {
 		setQuery('form', form, this.props.history);
 	};
 
-	handleSubmit = e => {
-		const formData = new FormData(e.target);
-		const data = {};
-
-		e.preventDefault();
-
-		/* eslint-disable-next-line */
-		for (const entry of formData.entries()) {
-			data[entry[0]] = entry[1];
-		}
-		if (this.state.queryForm === 'signup') {
-			return this.props.signup(data);
-		}
-		return this.props.signin(data);
-	};
-
 	render() {
 		const { queryForm } = this.state;
 		return (
@@ -53,12 +37,12 @@ class Authentication extends PureComponent {
 					{!queryForm || queryForm === 'signin' ? (
 						<SignIn
 							switchForm={this.switchForm}
-							handleSubmit={this.handleSubmit}
+							handleSignIn={this.props.signin}
 						/>
 					) : (
 						<SignUp
 							switchForm={this.switchForm}
-							handleSubmit={this.handleSubmit}
+							handleSignUp={this.props.signup}
 						/>
 					)}
 				</div>
