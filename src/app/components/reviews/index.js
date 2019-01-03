@@ -9,6 +9,10 @@ import { setQuery } from '../../utils';
 
 const frontload = async props => {
 	const { p, l } = props.query;
+	// if (!_.get(props, `product.reviews[${p || '1'}].length`)) {
+	// 	await props.onGetReviews(p, l, props.product._id);
+	// }
+
 	await props.onGetReviews(p, l, props.product._id);
 };
 
@@ -40,7 +44,7 @@ class Review extends Component {
 				<ReviewItem key={review._id} review={review} />
 			));
 		}
-		console.log(renderReviews);
+
 		return (
 			<div>
 				{renderReviews ? (

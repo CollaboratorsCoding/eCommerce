@@ -15,10 +15,6 @@ const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Category extends Component {
-	componentDidMount = () => {
-		console.log('COMPONENT', this.props.product);
-	};
-
 	handleTabChange = queryName => {
 		setQuery('tab', queryName, this.props.history);
 	};

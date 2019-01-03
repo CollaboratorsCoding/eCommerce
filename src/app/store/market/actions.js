@@ -28,14 +28,14 @@ MarketActions.getCategories = () => ({
 	promise: client => client.get('get-categories'),
 });
 
-MarketActions.getProducts = category => ({
+MarketActions.getProducts = (p, l, category) => ({
 	types: MarketTypes.getProducts,
-	promise: client => client.get(`get-products?c=${category}`),
+	promise: client => client.get(`get-products/${category}?p=${p}&l=${l}`),
 });
 
 MarketActions.getProduct = slug => ({
 	types: MarketTypes.getProduct,
-	promise: client => client.get(`get-product?p=${slug}`),
+	promise: client => client.get(`get-product/${slug}`),
 });
 
 MarketActions.addReview = (data, id) => ({

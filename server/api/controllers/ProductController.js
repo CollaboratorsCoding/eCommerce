@@ -13,16 +13,40 @@ ProductController.addProduct = (req, res) => {
 };
 
 ProductController.getProducts = (req, res) => {
-	Product.find({ category: req.query.c }, (err, products) => {
-		res.json({
-			products,
-		});
+	let limit = 20;
+	let page = 1;
+	if (parseFloat(req.query.l)) {
+		limit = req.query.l;
+	}
+	if (parseFloat(req.query.p)) {
+		page = req.query.p;
+	}
+	const offset = (page - 1) * limit;
+	const categorySlug = req.params.category_slug;
+	const query = Product.find({ category: categorySlug })
+		// .sort({ date: -1 })
+		.skip(parseFloat(offset))
+		.limit(parseFloat(limit));
+	query.exec((error, products) => {
+		Product.countDocuments(
+			{
+				category: categorySlug,
+			},
+			(errors, count) => {
+				res.json({
+					page,
+					products,
+					category: categorySlug,
+					productsCount: count,
+				});
+			}
+		);
 	});
 };
 
 ProductController.getProduct = (req, res) => {
-	Product.findOne({ slug: req.query.p }, (err, product) => {
-		Review.estimatedDocumentCount(
+	Product.findOne({ slug: req.params.slug }, (err, product) => {
+		Review.countDocuments(
 			{
 				parentId: product._id,
 			},
@@ -45,13 +69,12 @@ ProductController.getReviews = (req, res) => {
 		page = req.query.p;
 	}
 	const offset = (page - 1) * limit;
-	console.log(offset);
+
 	const query = Review.find({ parentId: req.params.id })
 		.sort({ date: -1 })
 		.skip(parseFloat(offset))
 		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
-		console.log(reviews);
 		res.json({
 			page,
 			reviews,

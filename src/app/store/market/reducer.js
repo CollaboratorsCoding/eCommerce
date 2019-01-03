@@ -14,7 +14,9 @@ const [GET_REVIEWS] = types.getReviews;
 
 const initialState = {
 	categories: {},
-	products: [],
+	products: {
+		'1': [],
+	},
 	product: {
 		reviews: {
 			'1': [],
@@ -26,15 +28,44 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case `${GET_CATEGORIES}_SUCCESS`:
+		case `${GET_CATEGORIES}_SUCCESS`: {
+			const categories = {};
+			action.result.categories.forEach(cat => {
+				categories[cat.slug] = {
+					...cat,
+					products: {
+						'1': [],
+					},
+				};
+			});
 			return {
 				...state,
-				categories: action.result.categories,
+				categories,
 			};
+		}
+
 		case `${GET_PRODUCTS}_SUCCESS`: {
+			const { result } = action;
+			const { page, products, category, productsCount } = result;
+			const oldProducts = _.get(
+				state,
+				`categories[${category}].products`,
+				{}
+			);
+			const newProducts = {
+				...oldProducts,
+				[page]: products,
+			};
 			return {
 				...state,
-				products: action.result.products,
+				categories: {
+					...state.categories,
+					[category]: {
+						...state.categories[category],
+						products: newProducts,
+						productsCount,
+					},
+				},
 			};
 		}
 
@@ -45,16 +76,20 @@ export default (state = initialState, action) => {
 			};
 		}
 		case `${ADD_REVIEW}_SUCCESS`: {
-			let lastItem;
+			let prevLastItem;
 			const newReviews = _.mapValues(
 				state.product.reviews,
 				(val, key) => {
-					lastItem = val[val.length - 1];
-					val.unshift(key === '1' ? action.result.review : lastItem);
-					if (val.length > 10) {
-						val.pop();
+					let newVal = [...val];
+
+					newVal.unshift(
+						key === '1' ? action.result.review : prevLastItem
+					);
+					if (newVal.length > 9) {
+						prevLastItem = newVal[newVal.length - 1];
+						newVal = newVal.slice(0, -1);
 					}
-					return val;
+					return newVal;
 				}
 			);
 
