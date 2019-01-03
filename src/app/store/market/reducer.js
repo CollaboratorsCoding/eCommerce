@@ -14,9 +14,6 @@ const [GET_REVIEWS] = types.getReviews;
 
 const initialState = {
 	categories: {},
-	products: {
-		'1': [],
-	},
 	product: {
 		reviews: {
 			'1': [],
@@ -46,7 +43,7 @@ export default (state = initialState, action) => {
 
 		case `${GET_PRODUCTS}_SUCCESS`: {
 			const { result } = action;
-			const { page, products, category, productsCount } = result;
+			const { page, products, category, productsCount, filters } = result;
 			const oldProducts = _.get(
 				state,
 				`categories[${category}].products`,
@@ -64,6 +61,7 @@ export default (state = initialState, action) => {
 						...state.categories[category],
 						products: newProducts,
 						productsCount,
+						filters,
 					},
 				},
 			};

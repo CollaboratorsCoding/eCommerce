@@ -23,25 +23,48 @@ ProductController.getProducts = (req, res) => {
 	}
 	const offset = (page - 1) * limit;
 	const categorySlug = req.params.category_slug;
-	const query = Product.find({ category: categorySlug })
-		// .sort({ date: -1 })
-		.skip(parseFloat(offset))
-		.limit(parseFloat(limit));
-	query.exec((error, products) => {
-		Product.countDocuments(
+
+	Product.aggregate(
+		[
+			{ $match: { category: categorySlug } },
 			{
-				category: categorySlug,
+				$group: {
+					_id: null,
+					max: { $max: '$price' },
+					min: { $min: '$price' },
+					count: {
+						$sum: 1,
+					},
+					doc: { $push: '$$ROOT' },
+				},
 			},
-			(errors, count) => {
-				res.json({
-					page,
-					products,
-					category: categorySlug,
-					productsCount: count,
-				});
-			}
-		);
-	});
+			{
+				$project: {
+					max: 1,
+					min: 1,
+					count: 1,
+					doc: {
+						$slice: ['$doc', parseFloat(offset), parseFloat(limit)],
+					},
+				},
+			},
+		],
+		(err, result) => {
+			console.log(result);
+			const resu = result[0];
+			const { count, max, min, doc } = resu;
+			res.json({
+				page,
+				products: doc,
+				category: categorySlug,
+				productsCount: count,
+				filters: {
+					max,
+					min,
+				},
+			});
+		}
+	);
 };
 
 ProductController.getProduct = (req, res) => {

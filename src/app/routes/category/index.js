@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { Icon, Pagination } from 'semantic-ui-react';
+import { Icon, Pagination, Grid, Segment } from 'semantic-ui-react';
 import _ from 'lodash';
 import { setQuery } from '../../utils';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
 import ProductsList from '../../components/products-list';
+import FiltersList from '../../components/filters';
 import Page from '../../components/page';
 
 const { getProducts } = MarketActions;
@@ -73,37 +74,59 @@ export class Category extends Component {
 			<Page id="category" title={categoryName} description={categoryName}>
 				<div>
 					{categoryName} Category
-					<ProductsList
-						products={currentCategory.products[activePage]}
-					/>
-					<Pagination
-						activePage={activePage}
-						boundaryRange={1}
-						onPageChange={this.handlePaginationChange}
-						ellipsisItem={{
-							content: <Icon name="ellipsis horizontal" />,
-							icon: true,
-						}}
-						firstItem={{
-							content: <Icon name="angle double left" />,
-							icon: true,
-						}}
-						lastItem={{
-							content: <Icon name="angle double right" />,
-							icon: true,
-						}}
-						prevItem={{
-							content: <Icon name="angle left" />,
-							icon: true,
-						}}
-						nextItem={{
-							content: <Icon name="angle right" />,
-							icon: true,
-						}}
-						totalPages={this.countPages(
-							currentCategory.productsCount
-						)}
-					/>
+					<Grid stackable columns={2}>
+						<Grid.Column width={4}>
+							<Segment>
+								<FiltersList
+									filters={currentCategory.filters}
+								/>
+							</Segment>
+						</Grid.Column>
+						<Grid.Column width={12}>
+							<Segment>
+								<ProductsList
+									products={
+										currentCategory.products[activePage]
+									}
+								/>
+
+								<Pagination
+									activePage={activePage}
+									boundaryRange={1}
+									onPageChange={this.handlePaginationChange}
+									ellipsisItem={{
+										content: (
+											<Icon name="ellipsis horizontal" />
+										),
+										icon: true,
+									}}
+									firstItem={{
+										content: (
+											<Icon name="angle double left" />
+										),
+										icon: true,
+									}}
+									lastItem={{
+										content: (
+											<Icon name="angle double right" />
+										),
+										icon: true,
+									}}
+									prevItem={{
+										content: <Icon name="angle left" />,
+										icon: true,
+									}}
+									nextItem={{
+										content: <Icon name="angle right" />,
+										icon: true,
+									}}
+									totalPages={this.countPages(
+										currentCategory.productsCount
+									)}
+								/>
+							</Segment>
+						</Grid.Column>
+					</Grid>
 				</div>
 			</Page>
 		);

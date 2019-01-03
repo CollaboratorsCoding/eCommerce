@@ -1,4 +1,5 @@
 import 'semantic-ui-css/semantic.min.css';
+import 'rc-slider/assets/index.css';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
