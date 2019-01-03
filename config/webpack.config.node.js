@@ -21,14 +21,8 @@ module.exports = {
 				options: {
 					limit: 10000,
 					name: '[name].[hash:8].[ext]',
-					publicPath:
-						NODE_ENV === 'production'
-							? '/static/media/'
-							: '/media/',
-					outputPath:
-						NODE_ENV === 'production'
-							? '/client/static/media/'
-							: '/client/media/',
+					publicPath: '/static/media/',
+					outputPath: '/client/static/media/',
 				},
 			},
 			{
