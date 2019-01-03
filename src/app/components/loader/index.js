@@ -20,7 +20,7 @@ export default class Loading extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.change || !_.isEqual(nextState, this.state);
+		return !_.isEqual(nextState, this.state);
 	}
 
 	getBarStyle() {
@@ -35,11 +35,8 @@ export default class Loading extends Component {
 	}
 
 	hide = () => {
-		if (this.state.active) {
-			clearInterval(this.interval);
-			this.interval = null;
-		}
-
+		clearInterval(this.interval);
+		this.interval = null;
 		this.setState({
 			size: 0,
 			percent: 1,

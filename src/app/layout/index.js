@@ -31,11 +31,7 @@ class StickyLayout extends Component {
 	render() {
 		return (
 			<div>
-				<Loading
-					show={this.state.load}
-					color="black"
-					showSpinner={false}
-				/>
+				<Loading show={this.state.load} color="black" />
 				<LoaderContext.Provider value={this.setLoader}>
 					<Header
 						user={this.props.user}
