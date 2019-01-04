@@ -40,6 +40,25 @@ export class Category extends Component {
 		};
 	}
 
+	componentDidUpdate = (prevProps, prevState) => {
+		const categoryName = this.props.match.params.slug_category;
+		if (
+			!_.get(
+				this.props,
+				`categories[${categoryName}].products[${
+					prevState.activePage
+				}].length`,
+				null
+			) &&
+			prevState.activePage !== 1
+		) {
+			setQuery('p', '1', this.props.history);
+			this.setState({
+				activePage: 1,
+			});
+		}
+	};
+
 	handlePaginationChange = (e, { activePage }) => {
 		const categoryName = this.props.match.params.slug_category;
 
@@ -144,7 +163,8 @@ export class Category extends Component {
 										icon: true,
 									}}
 									totalPages={this.countPages(
-										currentCategory.productsCount
+										currentCategory.filteredDocsCount ||
+											currentCategory.productsCount
 									)}
 								/>
 							</Segment>

@@ -50,6 +50,7 @@ export default (state = initialState, action) => {
 				productsCount,
 				filtersData,
 				filtersExisting,
+				filteredDocsCount,
 			} = result;
 			const oldProducts = _.get(
 				state,
@@ -70,6 +71,7 @@ export default (state = initialState, action) => {
 						productsCount,
 						filtersData,
 						filtersExisting,
+						filteredDocsCount,
 					},
 				},
 			};

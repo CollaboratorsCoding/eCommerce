@@ -73,18 +73,60 @@ ProductController.getProducts = (req, res) => {
 					return res.status(404).json({ error: true });
 				}
 				const { count, max, min } = resu;
-
-				return res.json({
-					page,
-					products,
-					category: categorySlug,
-					productsCount: count,
-					filtersData: {
-						max,
-						min,
-					},
-					filtersExisting: filters,
-				});
+				if (!_.isEmpty(filters)) {
+					Product.countDocuments(
+						{
+							category: categorySlug,
+							...(_.get(filters, 'price')
+								? {
+										price: {
+											...(_.get(filters, 'price.min')
+												? {
+														$gte: parseFloat(
+															filters.price.min
+														),
+												  }
+												: {}),
+											...(_.get(filters, 'price.max')
+												? {
+														$lte: parseFloat(
+															filters.price.max
+														),
+												  }
+												: {}),
+										},
+								  }
+								: {}),
+						},
+						(err2, count2) => {
+							return res.json({
+								page,
+								products,
+								category: categorySlug,
+								productsCount: count,
+								filtersData: {
+									max,
+									min,
+								},
+								filtersExisting: filters,
+								filteredDocsCount: count2,
+							});
+						}
+					);
+				} else {
+					return res.json({
+						page,
+						products,
+						category: categorySlug,
+						productsCount: count,
+						filtersData: {
+							max,
+							min,
+						},
+						filtersExisting: filters,
+						filteredDocsCount: null,
+					});
+				}
 			}
 		);
 	});
