@@ -16,12 +16,20 @@ const { getProducts } = MarketActions;
 const frontload = async props => {
 	const query = queryString.parse(props.location.search);
 	const categoryName = props.match.params.slug_category;
-	const { p, l } = query;
-	// if (!_.get(props, `product.reviews[${p || '1'}].length`)) {
-	// 	await props.onGetReviews(p, l, props.product._id);
-	// }
-
-	await props.getProducts(p, l, categoryName);
+	const { p, l, price } = query;
+	if (
+		!_.get(
+			props,
+			`categories[${categoryName}].products[${p || '1'}].length`
+		)
+	) {
+		await props.getProducts(
+			p,
+			l,
+			categoryName,
+			price ? `price=${price}` : ''
+		);
+	}
 };
 export class Category extends Component {
 	constructor(props) {
@@ -52,6 +60,17 @@ export class Category extends Component {
 		}
 	};
 
+	handleApplyFilters = filterQuery => {
+		const { activePage } = this.state;
+		setQuery('price', filterQuery.split('=')[1], this.props.history);
+		this.props.getProducts(
+			activePage,
+			20,
+			this.props.match.params.slug_category,
+			filterQuery
+		);
+	};
+
 	countPages = items => Math.ceil(items / 20);
 
 	render() {
@@ -78,7 +97,11 @@ export class Category extends Component {
 						<Grid.Column width={4}>
 							<Segment>
 								<FiltersList
-									filters={currentCategory.filters}
+									handleApplyFilters={this.handleApplyFilters}
+									filtersData={currentCategory.filtersData}
+									filtersExisting={
+										currentCategory.filtersExisting
+									}
 								/>
 							</Segment>
 						</Grid.Column>

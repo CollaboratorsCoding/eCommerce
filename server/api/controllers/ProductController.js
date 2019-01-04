@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import Product from '../../models/product.model';
 import Review from '../../models/review.model';
+import generateFilters from '../../utils/generateFilters';
 
 const ProductController = {};
 
@@ -19,52 +21,73 @@ ProductController.getProducts = (req, res) => {
 		limit = req.query.l;
 	}
 	if (parseFloat(req.query.p)) {
-		page = req.query.p;
+		page = parseFloat(req.query.p);
 	}
-	const offset = (page - 1) * limit;
+	const offset = parseFloat((page - 1) * limit);
 	const categorySlug = req.params.category_slug;
 
-	Product.aggregate(
-		[
-			{ $match: { category: categorySlug } },
-			{
-				$group: {
-					_id: null,
-					max: { $max: '$price' },
-					min: { $min: '$price' },
-					count: {
-						$sum: 1,
+	const filters = generateFilters(req.query);
+	const query = Product.find({
+		category: categorySlug,
+		...(_.get(filters, 'price')
+			? {
+					price: {
+						...(_.get(filters, 'price.min')
+							? {
+									$gte: parseFloat(filters.price.min),
+							  }
+							: {}),
+						...(_.get(filters, 'price.max')
+							? {
+									$lte: parseFloat(filters.price.max),
+							  }
+							: {}),
 					},
-					doc: { $push: '$$ROOT' },
-				},
-			},
-			{
-				$project: {
-					max: 1,
-					min: 1,
-					count: 1,
-					doc: {
-						$slice: ['$doc', parseFloat(offset), parseFloat(limit)],
+			  }
+			: {}),
+	})
+		.skip(parseFloat(offset))
+		.limit(parseFloat(limit));
+	query.exec((error, products) => {
+		Product.aggregate(
+			[
+				{
+					$match: {
+						category: categorySlug,
 					},
 				},
-			},
-		],
-		(err, result) => {
-			console.log(result);
-			const resu = result[0];
-			const { count, max, min, doc } = resu;
-			res.json({
-				page,
-				products: doc,
-				category: categorySlug,
-				productsCount: count,
-				filters: {
-					max,
-					min,
+				{
+					$group: {
+						_id: null,
+						max: { $max: '$price' },
+						min: { $min: '$price' },
+						count: {
+							$sum: 1,
+						},
+					},
 				},
-			});
-		}
-	);
+			],
+			(err, result) => {
+				const resu = result[0];
+				if (!result.length) {
+					return res.status(404).json({ error: true });
+				}
+				const { count, max, min } = resu;
+
+				return res.json({
+					page,
+					products,
+					category: categorySlug,
+					productsCount: count,
+					filtersData: {
+						max,
+						min,
+					},
+					filtersExisting: filters,
+				});
+			}
+		);
+	});
 };
 
 ProductController.getProduct = (req, res) => {

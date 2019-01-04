@@ -43,7 +43,14 @@ export default (state = initialState, action) => {
 
 		case `${GET_PRODUCTS}_SUCCESS`: {
 			const { result } = action;
-			const { page, products, category, productsCount, filters } = result;
+			const {
+				page,
+				products,
+				category,
+				productsCount,
+				filtersData,
+				filtersExisting,
+			} = result;
 			const oldProducts = _.get(
 				state,
 				`categories[${category}].products`,
@@ -61,7 +68,8 @@ export default (state = initialState, action) => {
 						...state.categories[category],
 						products: newProducts,
 						productsCount,
-						filters,
+						filtersData,
+						filtersExisting,
 					},
 				},
 			};

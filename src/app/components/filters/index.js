@@ -11,15 +11,20 @@ export default class FilterList extends Component {
 
 		this.state = {
 			sliderValues: [
-				parseFloat(props.filters.min),
-				parseFloat(props.filters.max),
+				parseFloat(props.filtersExisting.price.min) ||
+					parseFloat(props.filtersData.min),
+				parseFloat(props.filtersExisting.price.max) ||
+					parseFloat(props.filtersData.max),
 			],
 		};
 	}
 
 	handleChange = sliderValues => {
-		const { filters } = this.props;
-		if (sliderValues[0] >= filters.min && sliderValues[1] <= filters.max) {
+		const { filtersData } = this.props;
+		if (
+			sliderValues[0] >= filtersData.min &&
+			sliderValues[1] <= filtersData.max
+		) {
 			this.setState({ sliderValues });
 		}
 	};
@@ -36,9 +41,16 @@ export default class FilterList extends Component {
 		}));
 	};
 
+	handleApplyFilters = () => {
+		const { sliderValues } = this.state;
+		this.props.handleApplyFilters(
+			`price=${sliderValues[0] || ''}-${sliderValues[1] || ''}`
+		);
+	};
+
 	render() {
 		const { sliderValues } = this.state;
-		const { filters } = this.props;
+		const { filtersData } = this.props;
 		return (
 			<div>
 				<Input
@@ -51,10 +63,12 @@ export default class FilterList extends Component {
 					value={sliderValues[1]}
 					onChange={this.handleMaxChange}
 				/>
-				<Button type="submit">OK</Button>
+				<Button type="submit" onClick={this.handleApplyFilters}>
+					OK
+				</Button>
 				<Range
-					min={filters.min}
-					max={filters.max}
+					min={filtersData.min}
+					max={filtersData.max}
 					onChange={this.handleChange}
 					value={sliderValues}
 					tipFormatter={value => (
