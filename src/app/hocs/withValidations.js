@@ -12,6 +12,23 @@ const withValidations = (validations = {}) => Component => {
 			};
 		}
 
+		componentDidUpdate(prevProps) {
+			const { serverError } = this.props;
+
+			if (
+				!_.isEmpty(serverError) &&
+				serverError.type === 'form' &&
+				prevProps.serverError.message !== serverError.message
+			) {
+				const name = _.get(serverError, 'formData.fieldName', '');
+				const errMessage = serverError.message;
+				const err = { [name]: errMessage };
+				this.setState({ errors: err });
+			}
+
+			console.log(this.state.errors);
+		}
+
 		validateField = e => {
 			const name = e.target.name;
 			const value = e.target.value;

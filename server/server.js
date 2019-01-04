@@ -46,19 +46,6 @@ const PORT = process.env.PORT || 3000;
 //   );
 // }
 
-const sessionConfig = session({
-	secret: process.env.SESSION_SECRET,
-	resave: false,
-	saveUninitialized: false,
-	store: new MongoStore({
-		mongooseConnection: mongoose.connection,
-	}),
-	cookie: {
-		maxAge: 24 * 60 * 60 * 1000,
-		httpOnly: true,
-	},
-});
-
 // Compress, parse, log, and raid the cookie jar
 app.use(compression());
 app.use(express.json());
@@ -66,7 +53,21 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(sessionConfig);
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		store: new MongoStore({
+			mongooseConnection: mongoose.connection,
+		}),
+		cookie: {
+			maxAge: 24 * 60 * 60 * 1000,
+			httpOnly: true,
+		},
+	})
+);
+
 passportConfig(passport);
 app.use(passport.initialize());
 

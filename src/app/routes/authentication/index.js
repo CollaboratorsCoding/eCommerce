@@ -37,11 +37,13 @@ class Authentication extends PureComponent {
 					{!queryForm || queryForm === 'signin' ? (
 						<SignIn
 							switchForm={this.switchForm}
+							serverError={this.props.serverError}
 							handleSignIn={this.props.signin}
 						/>
 					) : (
 						<SignUp
 							switchForm={this.switchForm}
+							serverError={this.props.serverError}
 							handleSignUp={this.props.signup}
 						/>
 					)}
@@ -53,6 +55,7 @@ class Authentication extends PureComponent {
 
 const mapStateToProps = state => ({
 	cart: state.market.cart,
+	serverError: state.profile.error,
 });
 
 const mapDispatchToProps = dispatch =>

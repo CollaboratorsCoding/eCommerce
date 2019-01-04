@@ -56,17 +56,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: {
-					type: _.get(action.result, 'response.data.type', 'server'),
+					type: _.get(action, 'error.type', 'server'),
 					message: _.get(
-						action.result,
-						'response.data.message',
+						action,
+						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					formData: _.get(action, 'error.formData', {}),
 				},
 				loading: false,
 			};
@@ -89,17 +85,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: {
-					type: _.get(action.result, 'response.data.type', 'server'),
+					type: _.get(action, 'error.type', 'server'),
 					message: _.get(
-						action.result,
-						'response.data.message',
+						action,
+						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					formData: _.get(action, 'error.formData', {}),
 				},
 				loading: false,
 			};

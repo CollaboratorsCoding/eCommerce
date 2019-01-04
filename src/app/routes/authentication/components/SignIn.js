@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'semantic-ui-react';
-import withValidations from '../../../hocs/validation';
+import _ from 'lodash';
+import withValidations from '../../../hocs/withValidations';
 
 const userTypes = require('../../../../../server/type_models/user.types');
 
@@ -17,11 +18,13 @@ class SignIn extends Component {
 			data[entry[0]] = entry[1];
 		}
 		await validateForm(data);
+		if (_.isEmpty(this.props.errors)) {
+			this.props.handleSignIn(data);
+		}
 	};
 
 	render() {
-		const { errors, switchForm } = this.props;
-		console.log(errors);
+		const { errors, switchForm, validateField } = this.props;
 		return (
 			<Form onSubmit={this.handleSubmit}>
 				<h1>Login</h1>
@@ -30,7 +33,7 @@ class SignIn extends Component {
 					label={errors.email}
 					iconPosition="left"
 					placeholder="Email"
-					onChange={this.props.validateField}
+					onChange={validateField}
 					name="email"
 				/>
 				<Form.Input
@@ -38,7 +41,7 @@ class SignIn extends Component {
 					type="password"
 					name="password"
 					label={errors.password}
-					onChange={this.props.validateField}
+					onChange={validateField}
 					iconPosition="left"
 					placeholder="Password"
 				/>
