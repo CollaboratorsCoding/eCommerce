@@ -1,20 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
-const validate = require('../utils/validate').validate;
 // const genToken = require('../utils/generateToken').genToken;
 const User = require('../models/user.model');
-const UserTypes = require('../type_models/user.types');
 
 const passportConfig = passport => {
-	passport.serializeUser((user, done) => {
-		done(null, user.id);
-	});
-
-	passport.deserializeUser((id, done) => {
-		User.findById(id, (err, user) => {
-			done(err, user);
-		});
-	});
-
 	passport.use(
 		'local.signup',
 		new LocalStrategy(
@@ -25,16 +13,6 @@ const passportConfig = passport => {
 			},
 			(req, email, password, done) => {
 				const SignUpform = { ...req.body };
-				const errors = validate(SignUpform, UserTypes.SignUpForm);
-
-				if (errors.error) {
-					// #TODO: changed to 'form' and handle on client errors from JOI ALL
-					return done(
-						{ type: 'server', message: errors.error, status: 401 },
-						false
-					);
-				}
-
 				return User.findOne({ email }, (err, user) => {
 					if (err) {
 						return done({
@@ -82,21 +60,8 @@ const passportConfig = passport => {
 				passwordField: 'password',
 				passReqToCallback: true,
 			},
-			(req, email, password, done) => {
-				const SignInform = { ...req.body };
-				const errors = validate(SignInform, UserTypes.SignInForm);
-				if (errors.error) {
-					return done(
-						{
-							// #TODO: changed to 'form' and handle on client errors from JOI ALL
-							type: 'server',
-							message: errors.error,
-							status: 401,
-						},
-						false
-					);
-				}
-				return User.findOne({ email }, (err, user) => {
+			(req, email, password, done) =>
+				User.findOne({ email }, (err, user) => {
 					if (err) {
 						return done(
 							{
@@ -137,8 +102,7 @@ const passportConfig = passport => {
 						);
 					}
 					return done(null, user);
-				});
-			}
+				})
 		)
 	);
 };

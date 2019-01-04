@@ -106,7 +106,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
-				isLoggedIn: false,
+				isLoggedIn: _.get(action.result, 'isLoggedIn', false),
 				error: {},
 			};
 		case `${LOGOUT}_FAIL`:
