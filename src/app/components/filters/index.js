@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { Input, Button } from 'semantic-ui-react';
 
 const Slider = require('rc-slider');
@@ -11,9 +12,9 @@ export default class FilterList extends Component {
 
 		this.state = {
 			sliderValues: [
-				parseFloat(props.filtersExisting.price.min) ||
+				parseFloat(_.get(props, 'filtersExisting.price.min')) ||
 					parseFloat(props.filtersData.min),
-				parseFloat(props.filtersExisting.price.max) ||
+				parseFloat(_.get(props, 'filtersExisting.price.max')) ||
 					parseFloat(props.filtersData.max),
 			],
 		};
