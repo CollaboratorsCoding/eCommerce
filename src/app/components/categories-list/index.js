@@ -1,13 +1,15 @@
 import React from 'react';
 import { Grid, Segment } from 'semantic-ui-react';
+import _ from 'lodash';
 import { Category } from '../../routes';
 import CustomLink from '../../hocs/customLink';
 import './index.scss';
 
 export default function CategoriesList({ categories }) {
-	if (!categories.length) return null;
+	if (!_.size(categories)) return null;
+	const categoriesArr = _.values(categories);
 
-	const categoriestList = categories.map(category => (
+	const categoriestList = categoriesArr.map(category => (
 		<Grid.Column key={category.title}>
 			<CustomLink
 				componentPromise={Category}

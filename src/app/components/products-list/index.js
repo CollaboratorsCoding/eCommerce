@@ -11,7 +11,7 @@ export default function ProductsList({ products }) {
 			<CustomLink
 				componentPromise={Product}
 				className="category-item"
-				to={`/p/${product.slug}`}
+				to={`/p/${product.slug}?tab=description`}
 			>
 				<Segment>{product.title}</Segment>
 			</CustomLink>

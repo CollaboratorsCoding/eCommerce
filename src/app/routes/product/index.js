@@ -1,82 +1,71 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import queryString from 'query-string';
 import { connect } from 'react-redux';
-import { Button, Rating, Comment } from 'semantic-ui-react';
+import { Button, Label, Menu, Tab } from 'semantic-ui-react';
 import Page from '../../components/page';
+import Reviews from '../../components/reviews';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
-import { weekDayFormat } from '../../utils';
+import { setQuery } from '../../utils';
 
-const { getProduct, addToCartProduct, addReview } = MarketActions;
+const { getProduct, addToCartProduct, addReview, getReviews } = MarketActions;
 
 const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
+
 export class Category extends Component {
-	state = {
-		rating: 0,
-	};
-
-	componentDidMount = () => {
-		console.log('COMPONENT', this.props.product);
-	};
-
-	handleRate = (e, { rating }) => this.setState({ rating });
-
-	handleSubmit = e => {
-		const formData = new FormData(e.target);
-		let data = {};
-
-		e.preventDefault();
-
-		/* eslint-disable-next-line */
-		for (const entry of formData.entries()) {
-			data[entry[0]] = entry[1];
-		}
-		if (this.state.rating) {
-			data = {
-				...data,
-				rating: this.state.rating,
-			};
-		}
-
-		this.props.addReview(data, this.props.product._id);
+	handleTabChange = queryName => {
+		setQuery('tab', queryName, this.props.history);
 	};
 
 	render() {
-		const { product, addToCart } = this.props;
+		const { product, addToCart, location } = this.props;
+
 		if (!product) return null;
-		const { description, imagePath, price, title, reviews } = product;
 
-		let renderReviews = null;
+		const { description, imagePath, price, title, reviewsCount } = product;
 
-		if (reviews && reviews.length) {
-			renderReviews = reviews.map(review => (
-				<Comment key={review._id}>
-					<Comment.Content>
-						<Comment.Author>{review.author}</Comment.Author>
-						<Comment.Metadata>
-							<div>
-								{weekDayFormat(
-									new Date(review.date).getUTCDay()
-								)}
-							</div>
-							<div>
-								{review.rating ? (
-									<Rating
-										rating={review.rating}
-										maxRating={5}
-										disabled
-									/>
-								) : (
-									'Not Rated'
-								)}
-							</div>
-						</Comment.Metadata>
-						<Comment.Text>{review.text}</Comment.Text>
-					</Comment.Content>
-				</Comment>
-			));
-		}
+		const query = queryString.parse(location.search);
+
+		const panes = [
+			{
+				queryTab: 'description',
+				menuItem: <Menu.Item key="description">Description</Menu.Item>,
+				render: () => <Tab.Pane>{description}</Tab.Pane>,
+			},
+			{
+				queryTab: 'reviews',
+				menuItem: (
+					<Menu.Item key="reviews">
+						Reviews<Label>{reviewsCount}</Label>
+					</Menu.Item>
+				),
+				render: () => (
+					<Tab.Pane>
+						<Reviews
+							query={query}
+							product={product}
+							onGetReviews={this.props.getReviews}
+							onAddReview={this.props.addReview}
+						/>
+					</Tab.Pane>
+				),
+			},
+			{
+				queryTab: 'test',
+				menuItem: <Menu.Item key="test">Test</Menu.Item>,
+				render: () => (
+					<Tab.Pane active>
+						<div>Rofel</div>
+					</Tab.Pane>
+				),
+			},
+		];
+
+		const activeTabIndex = panes.findIndex(
+			tab => tab.queryTab === query.tab
+		);
 		return (
 			<Page
 				id="product"
@@ -97,31 +86,13 @@ export class Category extends Component {
 						Add to Cart
 					</Button>
 					<img src={imagePath} alt={title} />
-					<div>{description}</div>
-					<section>Reviews ({reviews.length})</section>
-					{renderReviews ? (
-						<Comment.Group>{renderReviews}</Comment.Group>
-					) : null}
-					<div>Add Review</div>
-					<form onSubmit={this.handleSubmit}>
-						<input
-							type="text"
-							name="author"
-							placeholder="Enter Your Name"
-						/>
-						<input
-							type="text"
-							name="text"
-							placeholder="Write Review Here"
-						/>
-						<Rating
-							icon="star"
-							rating={this.state.rating}
-							maxRating={5}
-							onRate={this.handleRate}
-						/>
-						<button type="submit">Send</button>
-					</form>
+					<Tab
+						panes={panes}
+						defaultActiveIndex={activeTabIndex}
+						onTabChange={(e, { activeIndex }) =>
+							this.handleTabChange(panes[activeIndex].queryTab)
+						}
+					/>
 				</div>
 			</Page>
 		);
@@ -133,7 +104,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
-		{ getProduct, addToCart: addToCartProduct, addReview },
+		{ getProduct, addToCart: addToCartProduct, addReview, getReviews },
 		dispatch
 	);
 

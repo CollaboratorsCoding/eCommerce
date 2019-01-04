@@ -24,7 +24,6 @@ CartController.addToCart = (req, res) => {
 };
 
 CartController.getItemsCart = (req, res) => {
-	console.log('SESSION>>>', req.session.cart);
 	if (!req.session.cart) {
 		return res
 			.status(200)

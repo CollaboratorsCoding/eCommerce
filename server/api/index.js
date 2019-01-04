@@ -18,8 +18,9 @@ api.get('/get-categories', CategoryController.getCategories);
 
 api.post('/add-product', ProductController.addProduct);
 api.post('/add-review/:id', ProductController.addReview);
-api.get('/get-products', ProductController.getProducts);
-api.get('/get-product', ProductController.getProduct);
+api.get('/get-reviews/:id', ProductController.getReviews);
+api.get('/get-products/:category_slug', ProductController.getProducts);
+api.get('/get-product/:slug', ProductController.getProduct);
 
 // CART API
 

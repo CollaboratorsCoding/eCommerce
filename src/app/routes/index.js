@@ -43,6 +43,7 @@ export const Product = Loadable({
 	loading: () => null,
 	modules: ['p'],
 });
+
 export const Cart = Loadable({
 	loader: () => import(/* webpackChunkName: "cart" */ './shopping-cart'),
 	loading: () => null,
@@ -80,6 +81,7 @@ export default () => (
 		<Authenticated exact path="/add" component={AddProduct} />
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />
+
 		<Unauthenticated
 			exact
 			path="/authentication"
