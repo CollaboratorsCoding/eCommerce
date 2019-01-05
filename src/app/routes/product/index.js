@@ -20,8 +20,7 @@ export class Category extends Component {
 	};
 
 	render() {
-		const { product, addToCart, location } = this.props;
-
+		const { product, addToCart, location, match } = this.props;
 		if (!product) return null;
 
 		const { description, imagePath, price, title, reviewsCount } = product;
@@ -46,6 +45,7 @@ export class Category extends Component {
 						<Reviews
 							query={query}
 							product={product}
+							productSlug={match.params.slug_product}
 							onGetReviews={this.props.getReviews}
 							onAddReview={this.props.addReview}
 						/>

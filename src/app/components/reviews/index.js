@@ -13,7 +13,7 @@ const frontload = async props => {
 	// 	await props.onGetReviews(p, l, props.product._id);
 	// }
 
-	await props.onGetReviews(p, l, props.product._id);
+	await props.onGetReviews(p, l, props.productSlug);
 };
 
 class Review extends Component {
@@ -28,14 +28,14 @@ class Review extends Component {
 		setQuery('p', activePage, this.props.history);
 		this.setState({ activePage });
 		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
-			this.props.onGetReviews(activePage, 10, this.props.product._id);
+			this.props.onGetReviews(activePage, 10, this.props.product_slug);
 		}
 	};
 
 	countPages = items => Math.ceil(items / 10);
 
 	render() {
-		const { product, onAddReview } = this.props;
+		const { product, onAddReview, productSlug } = this.props;
 		const { activePage } = this.state;
 
 		let renderReviews = null;
@@ -80,7 +80,7 @@ class Review extends Component {
 				) : (
 					'No reviews yet... Be first!'
 				)}
-				<ReviewForm productId={product._id} addReview={onAddReview} />{' '}
+				<ReviewForm productSlug={productSlug} addReview={onAddReview} />{' '}
 			</div>
 		);
 	}

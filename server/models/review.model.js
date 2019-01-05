@@ -5,7 +5,7 @@ const ReviewSchema = new mongoose.Schema({
 	text: { type: String, required: true },
 	rating: { type: Number },
 	upvotes: { type: [mongoose.Schema.Types.ObjectId], default: [] },
-	parentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+	parentSlug: { type: String, required: true },
 	parentReviewId: { type: mongoose.Schema.Types.ObjectId },
 	date: { type: Date, default: Date.now },
 });

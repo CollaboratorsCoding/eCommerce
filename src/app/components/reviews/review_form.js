@@ -23,7 +23,7 @@ export default class ReviewForm extends Component {
 			};
 		}
 
-		this.props.addReview(data, this.props.productId);
+		this.props.addReview(data, this.props.productSlug);
 		this.setState({
 			rating: null,
 		});
