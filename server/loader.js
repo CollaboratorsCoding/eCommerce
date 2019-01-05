@@ -31,14 +31,29 @@ export default (req, res) => {
 
 	const injectHTML = (
 		data,
-		{ html, title, meta, body, css, scripts, state, connectExist }
+		{
+			html,
+			title,
+			meta,
+			body,
+			css,
+			scripts,
+			state,
+			connectExist,
+			frontloadsCount,
+		}
 	) => {
+		const frontLoad = JSON.stringify({
+			connectExist,
+			frontloadsCount,
+		}).replace(/</g, '\\u003c');
+
 		data = data.replace('<html>', `<html ${html}>`);
 		data = data.replace(/<title>.*?<\/title>/g, title);
 		data = data.replace('</head>', `${meta}${css}</head>`);
 		data = data.replace(
 			'<div id="root"></div>',
-			`<div id="root">${body}</div><script>window.__CONNECTED_EXIST__ = ${connectExist}; window.__PRELOADED_STATE__ = ${state}</script>`
+			`<div id="root">${body}</div><script>window.__CONNECTED_EXIST__ = ${frontLoad}; window.__PRELOADED_STATE__ = ${state}</script>`
 		);
 		data = data.replace('</body>', `${scripts.join('')}</body>`);
 
@@ -92,9 +107,8 @@ export default (req, res) => {
 						</Provider>
 					</Loadable.Capture>
 				)
-			).then(({ routeMarkup, connectExist }) => {
+			).then(({ routeMarkup, connectExist, frontloadsCount }) => {
 				// Otherwise, we carry on...
-
 				// Let's give ourself a function to load all our page-specific JS assets for code splitting
 				const extractAssets = (assets, chunks) =>
 					Object.keys(assets)
@@ -134,7 +148,6 @@ export default (req, res) => {
 				// Let's output the title, just to see SSR is working as intended
 				console.log('THE TITLE', helmet.title.toString());
 				console.log('state >>>', store.getState());
-				console.log(extraChunks);
 				// Pass all this nonsense into our HTML formatting function above
 				const html = injectHTML(htmlData, {
 					html: helmet.htmlAttributes.toString(),
@@ -148,6 +161,7 @@ export default (req, res) => {
 						'\\u003c'
 					),
 					connectExist,
+					frontloadsCount,
 				});
 
 				if (context.url) {

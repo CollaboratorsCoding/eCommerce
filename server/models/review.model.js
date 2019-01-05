@@ -6,6 +6,7 @@ const ReviewSchema = new mongoose.Schema({
 	rating: { type: Number },
 	upvotes: { type: [mongoose.Schema.Types.ObjectId], default: [] },
 	parentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+	parentReviewId: { type: mongoose.Schema.Types.ObjectId },
 	date: { type: Date, default: Date.now },
 });
 
