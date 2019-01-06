@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 import { Category } from '../../routes';
 import CustomLink from '../../hocs/customLink';
@@ -10,19 +10,18 @@ export default function CategoriesList({ categories }) {
 	const categoriesArr = _.values(categories);
 
 	const categoriestList = categoriesArr.map(category => (
-		<Grid.Column key={category.title}>
+		<li className="categories-item-list">
 			<CustomLink
 				componentPromise={Category}
 				className="category-item"
 				to={`/c/${category.slug}`}
 			>
-				<Segment>{category.title}</Segment>
+				<span className="left-text"> {category.title}</span>
+				<span className="right-text">
+					<Icon name="angle right" size="large" />
+				</span>
 			</CustomLink>
-		</Grid.Column>
+		</li>
 	));
-	return (
-		<Grid stackable columns={2}>
-			{categoriestList}
-		</Grid>
-	);
+	return <ul className="categories-wrapper">{categoriestList}</ul>;
 }

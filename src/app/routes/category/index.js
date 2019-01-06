@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { Icon, Pagination, Grid, Segment } from 'semantic-ui-react';
+import { Icon, Pagination, Grid, Segment, Button } from 'semantic-ui-react';
 import _ from 'lodash';
 import { setQuery } from '../../utils';
 import { frontloadConnect } from '../../hocs/frontLoad';
@@ -11,7 +11,11 @@ import ProductsList from '../../components/products-list';
 import FiltersList from '../../components/filters';
 import Page from '../../components/page';
 
-const { getProducts } = MarketActions;
+// import CategoriesList from '../../components/categories-list';
+
+import './category.scss';
+
+const { getProducts, addToCartProduct } = MarketActions;
 
 const frontload = async props => {
 	const query = queryString.parse(props.location.search);
@@ -94,7 +98,7 @@ export class Category extends Component {
 
 	render() {
 		const categoryName = this.props.match.params.slug_category;
-		const { categories } = this.props;
+		const { categories, addToCart } = this.props;
 		const { activePage } = this.state;
 
 		if (
@@ -110,23 +114,40 @@ export class Category extends Component {
 
 		return (
 			<Page id="category" title={categoryName} description={categoryName}>
-				<div>
-					{categoryName} Category
-					<Grid stackable columns={2}>
-						<Grid.Column width={4}>
-							<Segment>
-								<FiltersList
-									handleApplyFilters={this.handleApplyFilters}
-									filtersData={currentCategory.filtersData}
-									filtersExisting={
-										currentCategory.filtersExisting
-									}
-								/>
-							</Segment>
+				<Grid>
+					<Grid.Row>
+						<Grid.Column width={3}>
+							<Button>Categories</Button>
+							{/* <CategoriesList categories={categories} /> */}
 						</Grid.Column>
-						<Grid.Column width={12}>
+						<Grid.Column
+							width={13}
+							className="category-label-wrapper"
+						>
+							<div className="category-label">{categoryName}</div>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column
+							width={3}
+							style={{
+								background: '#fff',
+								padding: 0,
+							}}
+						>
+							<FiltersList
+								handleApplyFilters={this.handleApplyFilters}
+								filtersData={currentCategory.filtersData}
+								filtersExisting={
+									currentCategory.filtersExisting
+								}
+							/>
+						</Grid.Column>
+
+						<Grid.Column width={13}>
 							<Segment>
 								<ProductsList
+									addToCart={addToCart}
 									products={
 										currentCategory.products[activePage]
 									}
@@ -169,8 +190,8 @@ export class Category extends Component {
 								/>
 							</Segment>
 						</Grid.Column>
-					</Grid>
-				</div>
+					</Grid.Row>
+				</Grid>
 			</Page>
 		);
 	}
@@ -180,7 +201,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getProducts }, dispatch);
+	bindActionCreators({ getProducts, addToCart: addToCartProduct }, dispatch);
 
 export default connect(
 	mapStateToProps,

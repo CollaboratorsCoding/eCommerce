@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'semantic-ui-react';
+import { Image, Grid } from 'semantic-ui-react';
 import Slider from 'react-slick';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -20,14 +20,13 @@ class HomePage extends Component {
 
 	render() {
 		const settings = {
-			// infinite: false,
-			className: 'slider variable-width',
 			dots: false,
 			infinite: true,
-			centerMode: true,
+
 			slidesToShow: 1,
 			slidesToScroll: 1,
-			variableWidth: true,
+
+			adaptiveHeight: true,
 			autoplay: true,
 			autoplaySpeed: 4000,
 			onInit: () => {
@@ -36,7 +35,26 @@ class HomePage extends Component {
 				});
 			},
 		};
-
+		const slider = (
+			<Slider {...settings}>
+				<div className="slider-item">
+					<Image src={require('../../assets/1.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/2.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/4.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/5.jpg')} />
+					<div className="slider-text">Top apple product</div>
+				</div>
+			</Slider>
+		);
 		return (
 			<Page id="homepage">
 				<div
@@ -45,26 +63,34 @@ class HomePage extends Component {
 						opacity: this.state.loaded ? 1 : 0,
 					}}
 				>
-					<Slider {...settings}>
-						<div className="slider-item">
-							<Image src={require('../../assets/1.jpg')} />
-							<div className="slider-text">Top apple product</div>
-						</div>
-						<div className="slider-item">
-							<Image src={require('../../assets/2.jpg')} />
-							<div className="slider-text">Top apple product</div>
-						</div>
-						<div className="slider-item">
-							<Image src={require('../../assets/4.jpg')} />
-							<div className="slider-text">Top apple product</div>
-						</div>
-						<div className="slider-item">
-							<Image src={require('../../assets/5.jpg')} />
-							<div className="slider-text">Top apple product</div>
-						</div>
-					</Slider>
+					<Grid>
+						<Grid.Row>
+							<Grid.Column
+								width={3}
+								style={{
+									background: '#fff',
+									padding: 0,
+								}}
+								className="column-shadow-block"
+							>
+								<CategoriesList
+									categories={this.props.categories}
+								/>
+							</Grid.Column>
+							<Grid.Column width={13}>{slider}</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={16}>
+								<div>Recomended</div>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={16}>
+								<div>Promotions</div>
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
 				</div>
-				<CategoriesList categories={this.props.categories} />
 			</Page>
 		);
 	}
