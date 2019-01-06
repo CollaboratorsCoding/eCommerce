@@ -39,19 +39,23 @@ class HomePage extends Component {
 			<Slider {...settings}>
 				<div className="slider-item">
 					<Image src={require('../../assets/1.jpg')} />
-					<div className="slider-text">Top apple product</div>
+					<div className="slider-text">Welcome</div>
+				</div>
+				<div className="slider-item">
+					<Image src={require('../../assets/3.jpg')} />
+					<div className="slider-text">Hot Holidays Discounts</div>
 				</div>
 				<div className="slider-item">
 					<Image src={require('../../assets/2.jpg')} />
-					<div className="slider-text">Top apple product</div>
+					<div className="slider-text">Newbalance Trends</div>
 				</div>
 				<div className="slider-item">
 					<Image src={require('../../assets/4.jpg')} />
-					<div className="slider-text">Top apple product</div>
+					<div className="slider-text">Chose your tag</div>
 				</div>
 				<div className="slider-item">
 					<Image src={require('../../assets/5.jpg')} />
-					<div className="slider-text">Top apple product</div>
+					<div className="slider-text">And more...</div>
 				</div>
 			</Slider>
 		);
