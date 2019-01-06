@@ -118,31 +118,6 @@ UserController.editProfile = (req, res) => {
 	);
 };
 
-UserController.getuserprofile = (req, res) => {
-	User.findById(req.params.id, (err, user) => {
-		if (err)
-			return res.status(500).json({
-				type: 'server',
-				message: err,
-			});
-		if (!user)
-			return res.status(404).json({
-				type: 'server',
-				message: 'User not found',
-			});
-
-		const userObject = user.toObject();
-		return res.json({
-			userPageData: _.pick(userObject, [
-				'_id',
-				'imageURL',
-				'name',
-				'age',
-			]),
-		});
-	});
-};
-
 UserController.sendresetPassword = (req, res) => {
 	const errors = validate(req.body.email, UserTypes.SignInForm.email);
 

@@ -7,11 +7,11 @@ export default function ProductsList({ products }) {
 	if (!products.length) return null;
 
 	const productsList = products.map(product => (
-		<Grid.Column key={product.title}>
+		<Grid.Column key={product._id}>
 			<CustomLink
 				componentPromise={Product}
 				className="category-item"
-				to={`/p/${product.slug}`}
+				to={`/p/${product.slug}?tab=description`}
 			>
 				<Segment>{product.title}</Segment>
 			</CustomLink>

@@ -11,10 +11,23 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from '../hocs/customLink';
-import { Homepage, About, AddProduct, Cart } from '../routes';
+import { Homepage, About, AddProduct, Cart, Authentication } from '../routes';
 import logo from '../assets/logo.png';
 
-const links = [
+const unAuthLinks = [
+	{
+		to: '/',
+		text: 'Homepage',
+		componentPromise: Homepage,
+	},
+	{
+		to: '/about',
+		text: 'About',
+		componentPromise: About,
+	},
+];
+
+const authLinks = [
 	{
 		to: '/',
 		text: 'Homepage',
@@ -92,7 +105,8 @@ export default class Header extends Component {
 
 	render() {
 		const { menuFixed } = this.state;
-		const { current, totalQty } = this.props;
+		const { current, totalQty, user, logout } = this.props;
+		const links = user.isLoggedIn ? authLinks : unAuthLinks;
 		return (
 			<div>
 				{/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
@@ -159,35 +173,32 @@ export default class Header extends Component {
 										</Icon.Group>
 									</CustomLink>
 								</Menu.Item>
-								<Dropdown
-									text="Profile"
-									pointing
-									className="link item"
-								>
-									<Dropdown.Menu>
-										<Dropdown.Item>List Item</Dropdown.Item>
-										<Dropdown.Item>List Item</Dropdown.Item>
-										<Dropdown.Divider />
-										<Dropdown.Header>
-											Header Item
-										</Dropdown.Header>
-										<Dropdown.Item>
-											<i className="dropdown icon" />
-											<span className="text">
-												Submenu
-											</span>
-											<Dropdown.Menu>
-												<Dropdown.Item>
-													List Item
-												</Dropdown.Item>
-												<Dropdown.Item>
-													List Item
-												</Dropdown.Item>
-											</Dropdown.Menu>
-										</Dropdown.Item>
-										<Dropdown.Item>List Item</Dropdown.Item>
-									</Dropdown.Menu>
-								</Dropdown>
+
+								{user.isLoggedIn ? (
+									<Dropdown
+										text={user.profile.name}
+										pointing
+										className="link item"
+									>
+										<Dropdown.Menu>
+											<Dropdown.Item>
+												Profile
+											</Dropdown.Item>
+
+											<Dropdown.Divider />
+											<Dropdown.Item onClick={logout}>
+												Logout
+											</Dropdown.Item>
+										</Dropdown.Menu>
+									</Dropdown>
+								) : (
+									<HeaderLink
+										current={current}
+										to="/authentication"
+										text="Authentication"
+										componentPromise={Authentication}
+									/>
+								)}
 							</Menu.Menu>
 						</Container>
 					</Menu>

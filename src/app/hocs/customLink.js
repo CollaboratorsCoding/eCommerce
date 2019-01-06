@@ -9,10 +9,16 @@ class CustomLink extends PureComponent {
 		const { componentPromise, history, to } = this.props;
 		if (componentPromise) {
 			await setLoader(true);
-			componentPromise.preload().then(() => {
-				history.push(to);
-				setLoader(false);
-			});
+			componentPromise
+				.preload()
+				.then(() => {
+					history.push(to);
+					setLoader(false);
+				})
+				.catch(error => {
+					console.log(error);
+					setLoader(false);
+				});
 		} else {
 			history.push(to);
 		}
