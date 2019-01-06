@@ -9,7 +9,13 @@ import { frontloadConnect } from '../../hocs/frontLoad';
 import MarketActions from '../../store/market/actions';
 import { setQuery } from '../../utils';
 
-const { getProduct, addToCartProduct, addReview, getReviews } = MarketActions;
+const {
+	getProduct,
+	addToCartProduct,
+	addReview,
+	addReply,
+	getReviews,
+} = MarketActions;
 
 const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
@@ -48,6 +54,7 @@ export class Category extends Component {
 							productSlug={match.params.slug_product}
 							onGetReviews={this.props.getReviews}
 							onAddReview={this.props.addReview}
+							onAddReply={this.props.addReply}
 						/>
 					</Tab.Pane>
 				),
@@ -104,7 +111,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
-		{ getProduct, addToCart: addToCartProduct, addReview, getReviews },
+		{
+			getProduct,
+			addToCart: addToCartProduct,
+			addReview,
+			getReviews,
+			addReply,
+		},
 		dispatch
 	);
 

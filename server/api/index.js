@@ -18,6 +18,7 @@ api.get('/get-categories', CategoryController.getCategories);
 
 api.post('/add-product', ProductController.addProduct);
 api.post('/add-review/:slug', ProductController.addReview);
+api.post('/add-reply', ProductController.addReply);
 api.get('/get-reviews/:slug', ProductController.getReviews);
 api.get('/get-products/:category_slug', ProductController.getProducts);
 api.get('/get-product/:slug', ProductController.getProduct);

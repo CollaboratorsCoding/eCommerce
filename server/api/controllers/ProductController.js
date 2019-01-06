@@ -162,9 +162,27 @@ ProductController.getReviews = (req, res) => {
 		.skip(parseFloat(offset))
 		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
-		res.json({
-			page,
-			reviews,
+		const parentIds = reviews.map(i => i._id);
+		const repliesQuery = Review.find({ parentReviewId: { $in: parentIds } })
+			.sort({ date: -1 })
+			.limit(3);
+		repliesQuery.exec((erro, replies) => {
+			console.log(replies);
+			const reviewsWithReplies = _.map(reviews, review => {
+				const repliesToReview = _.filter(
+					replies,
+					reply => String(reply.parentReviewId) == String(review._id)
+				);
+				console.log(repliesToReview);
+				return _.assign(review.toObject(), {
+					replies: repliesToReview,
+				});
+			});
+
+			res.json({
+				page,
+				reviews: reviewsWithReplies,
+			});
 		});
 	});
 };
@@ -182,4 +200,15 @@ ProductController.addReview = (req, res) => {
 	});
 };
 
+ProductController.addReply = (req, res) => {
+	const replyBody = req.body;
+
+	const review = new Review({
+		...replyBody,
+		parentSlug: 'review',
+	});
+	review.save((error, savedReply) => {
+		res.json({ reply: savedReply });
+	});
+};
 export default ProductController;

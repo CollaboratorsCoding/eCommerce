@@ -10,6 +10,7 @@ const [GET_CATEGORIES] = types.getCategories;
 const [GET_PRODUCTS] = types.getProducts;
 const [GET_PRODUCT] = types.getProduct;
 const [ADD_REVIEW] = types.addReview;
+// const [ADD_REPLY] = types.addReply;
 const [GET_REVIEWS] = types.getReviews;
 
 const initialState = {
@@ -110,6 +111,25 @@ export default (state = initialState, action) => {
 				},
 			};
 		}
+
+		// case `${ADD_REPLY}_SUCCESS`: {
+		// 	const newReviews = _.mapValues(state.product.reviews, val => {
+		// 		const foundParent = val.filter(
+		// 			r => r._id == action.result.reply.parentReviewId
+		// 		);
+		// 		if (foundParent.length) {
+		// 			return [...action.result.reply, ...val];
+		// 		}
+		// 		return val;
+		// 	});
+		// 	return {
+		// 		...state,
+		// 		product: {
+		// 			...state.product,
+		// 			reviews: newReviews,
+		// 		},
+		// 	};
+		// }
 		case `${GET_REVIEWS}_SUCCESS`: {
 			// TODO: reviews
 			const { result } = action;

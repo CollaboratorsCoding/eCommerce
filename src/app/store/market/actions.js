@@ -46,6 +46,11 @@ MarketActions.addReview = (data, slug) => ({
 	promise: client => client.post(`add-review/${slug}`, { data }),
 });
 
+MarketActions.addReply = data => ({
+	types: MarketTypes.addReply,
+	promise: client => client.post(`add-reply`, { data }),
+});
+
 MarketActions.getReviews = (p, l, slug) => ({
 	types: MarketTypes.getReviews,
 	promise: client => client.get(`get-reviews/${slug}?p=${p}&l=${l}`),
