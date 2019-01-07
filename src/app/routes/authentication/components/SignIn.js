@@ -26,7 +26,7 @@ class SignIn extends Component {
 	render() {
 		const { errors, switchForm, validateField } = this.props;
 		return (
-			<Form onSubmit={this.handleSubmit}>
+			<Form className="form" onSubmit={this.handleSubmit}>
 				<h1>Login</h1>
 				<Form.Input
 					icon="mail"
@@ -35,6 +35,7 @@ class SignIn extends Component {
 					placeholder="Email"
 					onChange={validateField}
 					name="email"
+					error={errors.email}
 				/>
 				<Form.Input
 					icon="key"
@@ -44,6 +45,7 @@ class SignIn extends Component {
 					onChange={validateField}
 					iconPosition="left"
 					placeholder="Password"
+					error={errors.password}
 				/>
 
 				<Button

@@ -20,13 +20,11 @@ const withValidations = (validations = {}) => Component => {
 				serverError.type === 'form' &&
 				prevProps.serverError.message !== serverError.message
 			) {
-				const name = _.get(serverError, 'formData.fieldName', '');
+				const name = _.get(serverError, 'fieldName', '');
 				const errMessage = serverError.message;
 				const err = { [name]: errMessage };
 				this.setState({ errors: err });
 			}
-
-			console.log(this.state.errors);
 		}
 
 		validateField = e => {
