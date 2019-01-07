@@ -1,41 +1,69 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import _ from 'lodash';
+import withValidations from '../../../hocs/withValidations';
 
-function SignIn({ handleSubmit, switchForm }) {
-	return (
-		<Form onSubmit={handleSubmit}>
-			<h1>Login</h1>
-			<Form.Input
-				icon="mail"
-				iconPosition="left"
-				placeholder="Email"
-				name="email"
-			/>
-			<Form.Input
-				icon="key"
-				type="password"
-				name="password"
-				iconPosition="left"
-				placeholder="Password"
-			/>
+const userTypes = require('../../../../../server/type_models/user.types');
 
-			<Button
-				content="Sign In"
-				icon="sign-in"
-				labelPosition="left"
-				type="submit"
-			/>
-			<p>
-				Not registered?{' '}
-				<span
-					onClick={() => switchForm('signup')}
-					className="form-switch"
-				>
-					Create an account
-				</span>
-			</p>
-		</Form>
-	);
+class SignIn extends Component {
+	handleSubmit = async e => {
+		const { validateForm } = this.props;
+		const formData = new FormData(e.target);
+		const data = {};
+
+		e.preventDefault();
+
+		/* eslint-disable-next-line */
+		for (const entry of formData.entries()) {
+			data[entry[0]] = entry[1];
+		}
+		await validateForm(data);
+		if (_.isEmpty(this.props.errors)) {
+			this.props.handleSignIn(data);
+		}
+	};
+
+	render() {
+		const { errors, switchForm, validateField } = this.props;
+		return (
+			<Form onSubmit={this.handleSubmit}>
+				<h1>Login</h1>
+				<Form.Input
+					icon="mail"
+					label={errors.email}
+					iconPosition="left"
+					placeholder="Email"
+					onChange={validateField}
+					name="email"
+				/>
+				<Form.Input
+					icon="key"
+					type="password"
+					name="password"
+					label={errors.password}
+					onChange={validateField}
+					iconPosition="left"
+					placeholder="Password"
+				/>
+
+				<Button
+					content="Sign In"
+					icon="sign-in"
+					labelPosition="left"
+					type="submit"
+				/>
+				<p>
+					Not registered?{' '}
+					<span
+						onClick={() => switchForm('signup')}
+						className="form-switch"
+					>
+						Create an account
+					</span>
+				</p>
+			</Form>
+		);
+	}
 }
 
-export default SignIn;
+export default withValidations(userTypes.SignInForm)(SignIn);
