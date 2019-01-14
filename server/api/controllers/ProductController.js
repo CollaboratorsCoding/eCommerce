@@ -196,7 +196,19 @@ ProductController.addReview = (req, res) => {
 		parentSlug: productSlug,
 	});
 	review.save((error, savedReview) => {
-		res.json({ review: savedReview });
+		Product.findOneAndUpdate(
+			{ slug: productSlug },
+			{
+				$inc: {
+					votes: 1,
+					rating: savedReview.rating,
+				},
+			},
+			{ new: true },
+			(err, product) => {
+				res.json({ review: savedReview, product });
+			}
+		);
 	});
 };
 

@@ -34,6 +34,7 @@ export default function ReviewItem({ review, handleReplyClick }) {
 					<div>
 						{review.rating ? (
 							<Rating
+								icon="star"
 								rating={review.rating}
 								maxRating={5}
 								disabled

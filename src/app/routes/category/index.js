@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { Icon, Pagination, Grid, Segment, Button } from 'semantic-ui-react';
+import {
+	Icon,
+	Pagination,
+	Grid,
+	Segment,
+	Button,
+	Loader,
+	Popup,
+	Breadcrumb,
+} from 'semantic-ui-react';
 import _ from 'lodash';
 import { setQuery } from '../../utils';
 import { frontloadConnect } from '../../hocs/frontLoad';
@@ -10,12 +19,13 @@ import MarketActions from '../../store/market/actions';
 import ProductsList from '../../components/products-list';
 import FiltersList from '../../components/filters';
 import Page from '../../components/page';
-
-// import CategoriesList from '../../components/categories-list';
+import CustomLink from '../../hocs/customLink';
+import { Homepage } from '../index';
+import CategoriesList from '../../components/categories-list';
 
 import './category.scss';
 
-const { getProducts, addToCartProduct } = MarketActions;
+const { getProducts, addToCartProduct, getCategories } = MarketActions;
 
 const frontload = async props => {
 	const query = queryString.parse(props.location.search);
@@ -33,6 +43,10 @@ const frontload = async props => {
 			categoryName,
 			price ? `price=${price}` : ''
 		);
+	}
+
+	if (!_.size(props.categories) || _.size(props.categories) === 1) {
+		await props.handleGetCategories();
 	}
 };
 export class Category extends Component {
@@ -98,9 +112,37 @@ export class Category extends Component {
 
 	render() {
 		const categoryName = this.props.match.params.slug_category;
-		const { categories, addToCart } = this.props;
+		const { categories, addToCart, loading, loadingCart } = this.props;
 		const { activePage } = this.state;
-
+		const upperRow = (
+			<Grid.Row verticalAlign="middle" textAlign="center">
+				<Grid.Column width={3}>
+					<Popup
+						trigger={<Button icon>Categories</Button>}
+						flowing
+						hoverable
+						position="bottom center"
+					>
+						<CategoriesList className="hover-categories" />
+					</Popup>
+				</Grid.Column>
+				<Grid.Column width={13} className="category-label-wrapper">
+					<div className="category-label">{categoryName}</div>
+				</Grid.Column>
+				<Breadcrumb size="large">
+					<Breadcrumb.Section link>
+						{' '}
+						<CustomLink componentPromise={Homepage} to="/">
+							Home
+						</CustomLink>
+					</Breadcrumb.Section>
+					<Breadcrumb.Divider icon="right chevron" />
+					<Breadcrumb.Section active>
+						{categoryName}
+					</Breadcrumb.Section>
+				</Breadcrumb>
+			</Grid.Row>
+		);
 		if (
 			!_.get(
 				this.props,
@@ -108,31 +150,26 @@ export class Category extends Component {
 				null
 			)
 		) {
-			return 'Loading';
+			return (
+				<Grid>
+					{upperRow}
+					<Grid.Row>Not Found</Grid.Row>
+				</Grid>
+			);
 		}
+
 		const currentCategory = categories[categoryName];
 
 		return (
 			<Page id="category" title={categoryName} description={categoryName}>
 				<Grid>
-					<Grid.Row>
-						<Grid.Column width={3}>
-							<Button>Categories</Button>
-							{/* <CategoriesList categories={categories} /> */}
-						</Grid.Column>
-						<Grid.Column
-							width={13}
-							className="category-label-wrapper"
-						>
-							<div className="category-label">{categoryName}</div>
-						</Grid.Column>
-					</Grid.Row>
+					{upperRow}
 					<Grid.Row>
 						<Grid.Column
 							width={3}
 							style={{
 								background: '#fff',
-								padding: 0,
+								padding: '15px',
 							}}
 						>
 							<FiltersList
@@ -145,8 +182,12 @@ export class Category extends Component {
 						</Grid.Column>
 
 						<Grid.Column width={13}>
-							<Segment>
+							<Segment
+								className={loading ? 'loading-segment' : ''}
+							>
+								<Loader active={loading} />
 								<ProductsList
+									loadingCart={loadingCart}
 									addToCart={addToCart}
 									products={
 										currentCategory.products[activePage]
@@ -198,10 +239,19 @@ export class Category extends Component {
 }
 const mapStateToProps = state => ({
 	categories: state.market.categories,
+	loading: state.market.loading,
+	loadingCart: state.market.loadingCart,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getProducts, addToCart: addToCartProduct }, dispatch);
+	bindActionCreators(
+		{
+			getProducts,
+			addToCart: addToCartProduct,
+			handleGetCategories: getCategories,
+		},
+		dispatch
+	);
 
 export default connect(
 	mapStateToProps,

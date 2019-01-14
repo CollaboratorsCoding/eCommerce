@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import { Image, Grid } from 'semantic-ui-react';
 import Slider from 'react-slick';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { frontloadConnect } from '../../hocs/frontLoad';
+
 import Page from '../../components/page';
 import CategoriesList from '../../components/categories-list';
-import MarketActions from '../../store/market/actions';
 
 import './homepage.scss';
 
-const { getCategories } = MarketActions;
-
-const frontload = async props => await props.getCategories();
-class HomePage extends Component {
+export default class HomePage extends Component {
 	state = {
 		loaded: false,
 	};
@@ -77,9 +71,7 @@ class HomePage extends Component {
 								}}
 								className="column-shadow-block"
 							>
-								<CategoriesList
-									categories={this.props.categories}
-								/>
+								<CategoriesList />
 							</Grid.Column>
 							<Grid.Column width={13}>{slider}</Grid.Column>
 						</Grid.Row>
@@ -99,19 +91,3 @@ class HomePage extends Component {
 		);
 	}
 }
-const mapStateToProps = state => ({
-	categories: state.market.categories,
-});
-
-const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getCategories }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(
-	frontloadConnect(frontload, {
-		onMount: true,
-		onUpdate: false,
-	})(HomePage)
-);

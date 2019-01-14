@@ -14,6 +14,9 @@ const [ADD_REVIEW] = types.addReview;
 const [GET_REVIEWS] = types.getReviews;
 
 const initialState = {
+	loading: false,
+	loadingCart: false,
+	error: {},
 	categories: {},
 	product: {
 		reviews: {
@@ -27,21 +30,40 @@ const initialState = {
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case `${GET_CATEGORIES}_SUCCESS`: {
-			const categories = {};
+			const newCategories = {};
 			action.result.categories.forEach(cat => {
-				categories[cat.slug] = {
+				newCategories[cat.slug] = {
 					...cat,
-					products: {
-						'1': [],
-					},
+					...state.categories[cat.slug],
+					products: _.get(state, `categories[${cat.slug}]`, null)
+						? state.categories[cat.slug].products
+						: {
+								'1': [],
+						  },
 				};
 			});
 			return {
 				...state,
-				categories,
+				categories: {
+					...newCategories,
+				},
 			};
 		}
 
+		case GET_PRODUCTS: {
+			return {
+				...state,
+				loading: true,
+				error: {},
+			};
+		}
+
+		case `${GET_PRODUCTS}_FAILURE`: {
+			return {
+				...state,
+				loading: false,
+			};
+		}
 		case `${GET_PRODUCTS}_SUCCESS`: {
 			const { result } = action;
 			const {
@@ -64,6 +86,7 @@ export default (state = initialState, action) => {
 			};
 			return {
 				...state,
+				loading: false,
 				categories: {
 					...state.categories,
 					[category]: {
@@ -78,9 +101,16 @@ export default (state = initialState, action) => {
 			};
 		}
 
+		case GET_PRODUCT: {
+			return {
+				...state,
+				loading: true,
+			};
+		}
 		case `${GET_PRODUCT}_SUCCESS`: {
 			return {
 				...state,
+				loading: false,
 				product: { ...state.product, ...action.result.product },
 			};
 		}
@@ -153,10 +183,16 @@ export default (state = initialState, action) => {
 				...state,
 				cart: action.result.cart,
 			};
+		case ADD_TO_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
+			};
 		case `${ADD_TO_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
 			};
 		case `${REMOVE_CART_PRODUCT}_SUCCESS`:
 			return {
