@@ -6,6 +6,7 @@ import { frontloadConnect } from '../../hocs/frontLoad';
 import ReviewItem from './review_item';
 import ReviewForm from './review_form';
 import { setQuery } from '../../utils';
+import './index.scss';
 
 const frontload = async props => {
 	const { p, l } = props.query;
@@ -59,7 +60,7 @@ class Review extends Component {
 		}
 
 		return (
-			<div>
+			<>
 				{replyFormActive && (
 					<div>
 						FORM FOR REPLY:
@@ -71,7 +72,7 @@ class Review extends Component {
 					</div>
 				)}
 				{renderReviews ? (
-					<div>
+					<>
 						<Comment.Group>{renderReviews}</Comment.Group>
 						<Pagination
 							activePage={activePage}
@@ -99,12 +100,12 @@ class Review extends Component {
 							}}
 							totalPages={this.countPages(product.reviewsCount)}
 						/>
-					</div>
+					</>
 				) : (
 					'No reviews yet... Be first!'
 				)}
 				<ReviewForm productSlug={productSlug} addReview={onAddReview} />{' '}
-			</div>
+			</>
 		);
 	}
 }
