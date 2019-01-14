@@ -57,6 +57,6 @@ export default connect(
 )(
 	frontloadConnect(frontload, {
 		onMount: true,
-		onUpdate: true,
+		onUpdate: false,
 	})(CategoriesList)
 );
