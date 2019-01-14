@@ -22,7 +22,6 @@ const checkJwt = (req, res, next) => {
 					req.user = FindUser;
 					next();
 				} else {
-					req.logout();
 					req.session.token = null;
 					res.status(404).json({
 						error: {

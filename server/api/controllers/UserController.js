@@ -27,6 +27,7 @@ UserController.signup = (req, res, next) => {
 
 		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 		req.session.token = token;
+		req.session.user_id = user._id;
 		return res.json({
 			isLoggedIn: true,
 			user: _.omit(user.toObject(), [
@@ -54,9 +55,7 @@ UserController.signin = (req, res, next) => {
 		}
 		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 		req.session.token = token;
-		req.session.adminData = {
-			name: user.name,
-		};
+		req.session.user_id = user._id;
 		const userObject = user.toObject();
 		return res.json({
 			isLoggedIn: true,

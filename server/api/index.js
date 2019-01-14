@@ -2,6 +2,7 @@ import express from 'express';
 import CartController from './controllers/CartController';
 import UserController from './controllers/UserController';
 import ProductController from './controllers/ProductController';
+import OrderController from './controllers/OrderController';
 import CategoryController from './controllers/CategoryController';
 import checkJwt from '../middlewares/jwt.middleware';
 
@@ -38,6 +39,9 @@ api.post('/resetPassword', UserController.resetPassword);
 api.post('/signin', UserController.signin);
 api.post('/signup', UserController.signup);
 api.get('/logout', UserController.logout);
+
+// ORDER API
+api.post('/order', OrderController.newOrder);
 
 /* ... */
 
