@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 // Action creators and helpers
-
+import ScrollTop from './hocs/scrollTop';
 import Layout from './layout';
 import Routes from './routes';
 
@@ -17,11 +17,13 @@ class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Layout current={this.props.location.pathname}>
-					<div id="content">
-						<Routes />
-					</div>
-				</Layout>
+				<ScrollTop>
+					<Layout current={this.props.location.pathname}>
+						<div id="content">
+							<Routes />
+						</div>
+					</Layout>
+				</ScrollTop>
 			</div>
 		);
 	}

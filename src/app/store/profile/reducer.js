@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
 						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(action, 'error.formData', {}),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};
@@ -91,7 +91,7 @@ export default (state = initialState, action) => {
 						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(action, 'error.formData', {}),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};
@@ -119,11 +119,7 @@ export default (state = initialState, action) => {
 						'response.data.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};

@@ -234,7 +234,8 @@ class FrontloadConnectedComponent extends React.Component {
 							? 'mount'
 							: 'update'
 				  }]`;
-		if (isServer || !window.__CONNECTED_EXIST__) {
+
+		if (isServer || !window.__CONNECTED_EXIST__.connectExist) {
 			this.context.frontload.pushFrontload(
 				this.props.frontload,
 				this.props.options,
@@ -242,8 +243,12 @@ class FrontloadConnectedComponent extends React.Component {
 				this.props.componentProps,
 				logMessage
 			);
-		} else {
+			return;
+		} else if (window.__CONNECTED_EXIST__.frontloadsCount === 1) {
 			window.__CONNECTED_EXIST__ = false;
+			return;
+		} else {
+			window.__CONNECTED_EXIST__.frontloadsCount--;
 		}
 	};
 
@@ -280,6 +285,9 @@ export const frontloadServerRender = (render, withLogging) => {
 	// the true flag here signals that this render is just a "dry-run"
 	render(true);
 	const isConnected = !!(FRONTLOAD_QUEUES[0] && FRONTLOAD_QUEUES[0].length);
+	const frontloadsCount = FRONTLOAD_QUEUES[0]
+		? [...FRONTLOAD_QUEUES][0].length
+		: 0;
 	if (process.env.NODE_ENV !== 'production' && withLogging) {
 		log(
 			'frontloadServerRender info',
@@ -319,7 +327,11 @@ export const frontloadServerRender = (render, withLogging) => {
 			);
 		}
 
-		return { routeMarkup: output, connectExist: isConnected };
+		return {
+			routeMarkup: output,
+			connectExist: isConnected,
+			frontloadsCount,
+		};
 	});
 
 	return rendered;

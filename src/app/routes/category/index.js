@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
-import { Icon, Pagination, Grid, Segment } from 'semantic-ui-react';
+import {
+	Icon,
+	Pagination,
+	Grid,
+	Segment,
+	Button,
+	Loader,
+	Popup,
+	Breadcrumb,
+} from 'semantic-ui-react';
 import _ from 'lodash';
 import { setQuery } from '../../utils';
 import { frontloadConnect } from '../../hocs/frontLoad';
@@ -10,8 +19,13 @@ import MarketActions from '../../store/market/actions';
 import ProductsList from '../../components/products-list';
 import FiltersList from '../../components/filters';
 import Page from '../../components/page';
+import CustomLink from '../../hocs/customLink';
+import { Homepage } from '../index';
+import CategoriesList from '../../components/categories-list';
 
-const { getProducts } = MarketActions;
+import './category.scss';
+
+const { getProducts, addToCartProduct, getCategories } = MarketActions;
 
 const frontload = async props => {
 	const query = queryString.parse(props.location.search);
@@ -30,6 +44,10 @@ const frontload = async props => {
 			price ? `price=${price}` : ''
 		);
 	}
+
+	if (!_.size(props.categories) || _.size(props.categories) === 1) {
+		await props.handleGetCategories();
+	}
 };
 export class Category extends Component {
 	constructor(props) {
@@ -39,6 +57,25 @@ export class Category extends Component {
 			activePage: query.p || 1,
 		};
 	}
+
+	componentDidUpdate = (prevProps, prevState) => {
+		const categoryName = this.props.match.params.slug_category;
+		if (
+			!_.get(
+				this.props,
+				`categories[${categoryName}].products[${
+					prevState.activePage
+				}].length`,
+				null
+			) &&
+			prevState.activePage !== 1
+		) {
+			setQuery('p', '1', this.props.history);
+			this.setState({
+				activePage: 1,
+			});
+		}
+	};
 
 	handlePaginationChange = (e, { activePage }) => {
 		const categoryName = this.props.match.params.slug_category;
@@ -75,9 +112,37 @@ export class Category extends Component {
 
 	render() {
 		const categoryName = this.props.match.params.slug_category;
-		const { categories } = this.props;
+		const { categories, addToCart, loading, loadingCart } = this.props;
 		const { activePage } = this.state;
-
+		const upperRow = (
+			<Grid.Row verticalAlign="middle" textAlign="center">
+				<Grid.Column width={3}>
+					<Popup
+						trigger={<Button icon>Categories</Button>}
+						flowing
+						hoverable
+						position="bottom center"
+					>
+						<CategoriesList className="hover-categories" />
+					</Popup>
+				</Grid.Column>
+				<Grid.Column width={13} className="category-label-wrapper">
+					<div className="category-label">{categoryName}</div>
+				</Grid.Column>
+				<Breadcrumb size="large">
+					<Breadcrumb.Section link>
+						{' '}
+						<CustomLink componentPromise={Homepage} to="/">
+							Home
+						</CustomLink>
+					</Breadcrumb.Section>
+					<Breadcrumb.Divider icon="right chevron" />
+					<Breadcrumb.Section active>
+						{categoryName}
+					</Breadcrumb.Section>
+				</Breadcrumb>
+			</Grid.Row>
+		);
 		if (
 			!_.get(
 				this.props,
@@ -85,29 +150,45 @@ export class Category extends Component {
 				null
 			)
 		) {
-			return 'Loading';
+			return (
+				<Grid>
+					{upperRow}
+					<Grid.Row>Not Found</Grid.Row>
+				</Grid>
+			);
 		}
+
 		const currentCategory = categories[categoryName];
 
 		return (
 			<Page id="category" title={categoryName} description={categoryName}>
-				<div>
-					{categoryName} Category
-					<Grid stackable columns={2}>
-						<Grid.Column width={4}>
-							<Segment>
-								<FiltersList
-									handleApplyFilters={this.handleApplyFilters}
-									filtersData={currentCategory.filtersData}
-									filtersExisting={
-										currentCategory.filtersExisting
-									}
-								/>
-							</Segment>
+				<Grid>
+					{upperRow}
+					<Grid.Row>
+						<Grid.Column
+							width={3}
+							style={{
+								background: '#fff',
+								padding: '15px',
+							}}
+						>
+							<FiltersList
+								handleApplyFilters={this.handleApplyFilters}
+								filtersData={currentCategory.filtersData}
+								filtersExisting={
+									currentCategory.filtersExisting
+								}
+							/>
 						</Grid.Column>
-						<Grid.Column width={12}>
-							<Segment>
+
+						<Grid.Column width={13}>
+							<Segment
+								className={loading ? 'loading-segment' : ''}
+							>
+								<Loader active={loading} />
 								<ProductsList
+									loadingCart={loadingCart}
+									addToCart={addToCart}
 									products={
 										currentCategory.products[activePage]
 									}
@@ -144,23 +225,33 @@ export class Category extends Component {
 										icon: true,
 									}}
 									totalPages={this.countPages(
-										currentCategory.productsCount
+										currentCategory.filteredDocsCount ||
+											currentCategory.productsCount
 									)}
 								/>
 							</Segment>
 						</Grid.Column>
-					</Grid>
-				</div>
+					</Grid.Row>
+				</Grid>
 			</Page>
 		);
 	}
 }
 const mapStateToProps = state => ({
 	categories: state.market.categories,
+	loading: state.market.loading,
+	loadingCart: state.market.loadingCart,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ getProducts }, dispatch);
+	bindActionCreators(
+		{
+			getProducts,
+			addToCart: addToCartProduct,
+			handleGetCategories: getCategories,
+		},
+		dispatch
+	);
 
 export default connect(
 	mapStateToProps,

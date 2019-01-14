@@ -1,0 +1,10 @@
+.input-wrapper {
+	display: flex;
+	.min-input,
+	.max-input {
+		flex: 0 1 40%;
+	}
+	button {
+		flex: 0 1 20%;
+	}
+}

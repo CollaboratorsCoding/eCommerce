@@ -15,6 +15,8 @@ const products = [
 		description:
 			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque perspiciatis deleniti quam est unde ad non quidem iste blanditiis, maxime fugit, tempore dolorem voluptatem commodi, dignissimos sequi praesentium architecto accusantium!',
 		price: 1300,
+		category: 'phones',
+		slug: 'iphone1',
 	},
 	{
 		imagePath:
@@ -25,6 +27,8 @@ const products = [
 		description:
 			'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam numquam inventore, dolor nemo asperiores officia omnis ea commodi, eveniet nostrum vel. Beatae fugiat saepe dolores ipsum odit deleniti, culpa porro!',
 		price: 1300,
+		category: 'phones',
+		slug: 'iphone12',
 	},
 	{
 		imagePath:
@@ -35,6 +39,8 @@ const products = [
 		description:
 			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab veritatis numquam voluptate deleniti mollitia. Aut ullam esse quaerat vitae neque dignissimos, ipsa facilis eum dolores? Earum mollitia impedit inventore eligendi.',
 		price: 1000,
+		category: 'phones',
+		slug: 'iphone13',
 	},
 	{
 		imagePath:
@@ -45,6 +51,8 @@ const products = [
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque laborum doloremque, mollitia excepturi voluptas commodi, distinctio laudantium nulla quisquam tenetur sed cum natus. Quae, quidem illo? Dolores cum necessitatibus omnis.',
 		price: 1500,
+		category: 'phones',
+		slug: 'iphone14',
 	},
 	{
 		imagePath:
@@ -55,6 +63,8 @@ const products = [
 		description:
 			'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit ea, a temporibus, cumque ducimus veritatis excepturi deleniti aperiam aliquid aliquam tempora exercitationem numquam debitis et repudiandae officiis saepe odit doloremque?',
 		price: 2000,
+		category: 'phones',
+		slug: 'iphone15',
 	},
 	{
 		imagePath:
@@ -65,14 +75,14 @@ const products = [
 		description:
 			'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reprehenderit ea, a temporibus, cumque ducimus veritatis excepturi deleniti aperiam aliquid aliquam tempora exercitationem numquam debitis et repudiandae officiis saepe odit doloremque?',
 		price: 500,
+		category: 'phones',
+		slug: 'iphone16',
 	},
 ];
 
 let done = 0;
 for (let i = 0; i < products.length; i++) {
-	console.log(products.length, done, i);
 	new Product(products[i]).save((err, result) => {
-		console.log(err, result);
 		done++;
 		if (done === products.length) {
 			exit();

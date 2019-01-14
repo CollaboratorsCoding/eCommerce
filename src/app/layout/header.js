@@ -69,7 +69,7 @@ const HeaderLink = ({ to, text, componentPromise, current }) => (
 const menuStyle = {
 	border: 'none',
 	borderRadius: 0,
-	boxShadow: 'none',
+	boxShadow: '0 0 8px 0 rgba(0,0,0,.1)',
 
 	transition: 'box-shadow 0.5s ease, padding 0.5s ease',
 };
@@ -77,7 +77,7 @@ const menuStyle = {
 const fixedMenuStyle = {
 	backgroundColor: '#fff',
 	border: '1px solid #ddd',
-	boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
+	boxShadow: '0 0 8px 0 rgba(0,0,0,.1)',
 };
 
 export default class Header extends Component {
@@ -112,11 +112,6 @@ export default class Header extends Component {
 				{/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
             background color.
           */}
-				<style>{`
-          html, body {
-            background: #fff;
-          }
-        `}</style>
 
 				{/* Attaching the top menu is a simple operation, we only switch `fixed` prop and add another style if it has
             gone beyond the scope of visibility
@@ -133,7 +128,7 @@ export default class Header extends Component {
 					>
 						<Container>
 							<Menu.Item>
-								<Image size="mini" src={logo} />
+								<Image size="tiny" src={logo} />
 							</Menu.Item>
 							<Menu.Item header>JabkoStore</Menu.Item>
 							{links.map(link => {

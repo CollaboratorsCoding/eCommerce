@@ -35,6 +35,7 @@ class SignUp extends Component {
 					placeholder="Email"
 					onChange={validateField}
 					name="email"
+					error={errors.email}
 				/>
 
 				<Form.Input
@@ -44,6 +45,7 @@ class SignUp extends Component {
 					iconPosition="left"
 					onChange={validateField}
 					placeholder="Name"
+					error={errors.name}
 				/>
 
 				<Form.Input
@@ -53,6 +55,7 @@ class SignUp extends Component {
 					iconPosition="left"
 					onChange={validateField}
 					placeholder="Address"
+					error={errors.address}
 				/>
 				<Form.Input
 					name="phone"
@@ -61,6 +64,7 @@ class SignUp extends Component {
 					iconPosition="left"
 					onChange={validateField}
 					placeholder="Phone"
+					error={errors.phone}
 				/>
 				<Form.Input
 					icon="key"
@@ -70,6 +74,7 @@ class SignUp extends Component {
 					iconPosition="left"
 					onChange={validateField}
 					placeholder="Password"
+					error={errors.password}
 				/>
 
 				<Button

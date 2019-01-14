@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Input, Button } from 'semantic-ui-react';
+import './index.scss';
 
 const Slider = require('rc-slider');
 
@@ -31,15 +32,27 @@ export default class FilterList extends Component {
 	};
 
 	handleMinChange = (e, data) => {
-		this.setState(({ sliderValues }) => ({
-			sliderValues: [parseFloat(data.value), sliderValues[1]],
-		}));
+		const { filtersData } = this.props;
+		if (
+			parseFloat(data.value) >= filtersData.min &&
+			parseFloat(data.value) <= filtersData.max
+		) {
+			this.setState(({ sliderValues }) => ({
+				sliderValues: [parseFloat(data.value), sliderValues[1]],
+			}));
+		}
 	};
 
 	handleMaxChange = (e, data) => {
-		this.setState(({ sliderValues }) => ({
-			sliderValues: [sliderValues[0], parseFloat(data.value)],
-		}));
+		const { filtersData } = this.props;
+		if (
+			parseFloat(data.value) >= filtersData.min &&
+			parseFloat(data.value) <= filtersData.max
+		) {
+			this.setState(({ sliderValues }) => ({
+				sliderValues: [sliderValues[0], parseFloat(data.value)],
+			}));
+		}
 	};
 
 	handleApplyFilters = () => {
@@ -54,19 +67,27 @@ export default class FilterList extends Component {
 		const { filtersData } = this.props;
 		return (
 			<div>
-				<Input
-					placeholder="min"
-					value={sliderValues[0]}
-					onChange={this.handleMinChange}
-				/>
-				<Input
-					placeholder="max"
-					value={sliderValues[1]}
-					onChange={this.handleMaxChange}
-				/>
-				<Button type="submit" onClick={this.handleApplyFilters}>
-					OK
-				</Button>
+				<div>Price Range</div>
+				<div className="input-wrapper">
+					<Input
+						fluid
+						className="min-input"
+						placeholder="min"
+						value={sliderValues[0]}
+						onChange={this.handleMinChange}
+					/>
+					<Input
+						fluid
+						className="max-input"
+						placeholder="max"
+						value={sliderValues[1]}
+						onChange={this.handleMaxChange}
+					/>
+					<Button type="submit" onClick={this.handleApplyFilters}>
+						OK
+					</Button>
+				</div>
+
 				<Range
 					min={filtersData.min}
 					max={filtersData.max}

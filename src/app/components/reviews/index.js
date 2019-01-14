@@ -13,7 +13,7 @@ const frontload = async props => {
 	// 	await props.onGetReviews(p, l, props.product._id);
 	// }
 
-	await props.onGetReviews(p, l, props.product._id);
+	await props.onGetReviews(p, l, props.productSlug);
 };
 
 class Review extends Component {
@@ -21,6 +21,8 @@ class Review extends Component {
 		super(props);
 		this.state = {
 			activePage: props.query.p || 1,
+			parentReviewId: null,
+			replyFormActive: false,
 		};
 	}
 
@@ -28,25 +30,46 @@ class Review extends Component {
 		setQuery('p', activePage, this.props.history);
 		this.setState({ activePage });
 		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
-			this.props.onGetReviews(activePage, 10, this.props.product._id);
+			this.props.onGetReviews(activePage, 10, this.props.product_slug);
 		}
 	};
 
 	countPages = items => Math.ceil(items / 10);
 
+	handleReplyClick = parentReviewId => {
+		this.setState({
+			parentReviewId,
+			replyFormActive: true,
+		});
+	};
+
 	render() {
-		const { product, onAddReview } = this.props;
-		const { activePage } = this.state;
+		const { product, onAddReview, productSlug, onAddReply } = this.props;
+		const { activePage, parentReviewId, replyFormActive } = this.state;
 
 		let renderReviews = null;
 		if (_.get(product, `reviews[${activePage}].length`, null)) {
 			renderReviews = product.reviews[activePage].map(review => (
-				<ReviewItem key={review._id} review={review} />
+				<ReviewItem
+					handleReplyClick={this.handleReplyClick}
+					key={review._id}
+					review={review}
+				/>
 			));
 		}
 
 		return (
 			<div>
+				{replyFormActive && (
+					<div>
+						FORM FOR REPLY:
+						<ReviewForm
+							reply
+							parentReviewId={parentReviewId}
+							addReply={onAddReply}
+						/>{' '}
+					</div>
+				)}
 				{renderReviews ? (
 					<div>
 						<Comment.Group>{renderReviews}</Comment.Group>
@@ -80,7 +103,7 @@ class Review extends Component {
 				) : (
 					'No reviews yet... Be first!'
 				)}
-				<ReviewForm productId={product._id} addReview={onAddReview} />{' '}
+				<ReviewForm productSlug={productSlug} addReview={onAddReview} />{' '}
 			</div>
 		);
 	}

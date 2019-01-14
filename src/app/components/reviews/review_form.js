@@ -23,14 +23,25 @@ export default class ReviewForm extends Component {
 			};
 		}
 
-		this.props.addReview(data, this.props.productId);
-		this.setState({
-			rating: null,
-		});
-		e.target.reset();
+		if (this.props.parentReviewId) {
+			data = {
+				...data,
+				parentReviewId: this.props.parentReviewId,
+			};
+		}
+		if (this.props.parentReviewId && this.props.reply) {
+			this.props.addReply(data);
+		} else {
+			this.props.addReview(data, this.props.productSlug);
+			this.setState({
+				rating: null,
+			});
+			e.target.reset();
+		}
 	};
 
 	render() {
+		const { reply } = this.props;
 		return (
 			<form onSubmit={this.handleSubmit}>
 				<input
@@ -43,12 +54,15 @@ export default class ReviewForm extends Component {
 					name="text"
 					placeholder="Write Review Here"
 				/>
-				<Rating
-					icon="star"
-					rating={this.state.rating}
-					maxRating={5}
-					onRate={this.handleRate}
-				/>
+				{!reply && (
+					<Rating
+						icon="star"
+						rating={this.state.rating}
+						maxRating={5}
+						onRate={this.handleRate}
+					/>
+				)}
+
 				<button type="submit">Send</button>
 			</form>
 		);

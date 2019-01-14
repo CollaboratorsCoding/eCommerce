@@ -26,10 +26,7 @@ const passportConfig = passport => {
 							{
 								type: 'form',
 								message: 'Email is already in use.',
-								formData: {
-									fieldName: 'email',
-									fieldValue: email,
-								},
+								fieldName: 'email',
 								status: 401,
 							},
 							false
@@ -78,10 +75,7 @@ const passportConfig = passport => {
 							{
 								type: 'form',
 								message: 'Email not found',
-								formData: {
-									fieldName: 'email',
-									fieldValue: email,
-								},
+								fieldName: 'email',
 								status: 401,
 							},
 							false
@@ -92,10 +86,7 @@ const passportConfig = passport => {
 							{
 								type: 'form',
 								message: 'Wrong Password',
-								formData: {
-									fieldName: 'password',
-									fieldValue: password,
-								},
+								fieldName: 'password',
 								status: 401,
 							},
 							false

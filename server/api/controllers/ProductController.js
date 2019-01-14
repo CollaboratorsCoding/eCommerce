@@ -73,18 +73,59 @@ ProductController.getProducts = (req, res) => {
 					return res.status(404).json({ error: true });
 				}
 				const { count, max, min } = resu;
-
-				return res.json({
-					page,
-					products,
-					category: categorySlug,
-					productsCount: count,
-					filtersData: {
-						max,
-						min,
-					},
-					filtersExisting: filters,
-				});
+				if (!_.isEmpty(filters)) {
+					Product.countDocuments(
+						{
+							category: categorySlug,
+							...(_.get(filters, 'price')
+								? {
+										price: {
+											...(_.get(filters, 'price.min')
+												? {
+														$gte: parseFloat(
+															filters.price.min
+														),
+												  }
+												: {}),
+											...(_.get(filters, 'price.max')
+												? {
+														$lte: parseFloat(
+															filters.price.max
+														),
+												  }
+												: {}),
+										},
+								  }
+								: {}),
+						},
+						(err2, count2) =>
+							res.json({
+								page,
+								products,
+								category: categorySlug,
+								productsCount: count,
+								filtersData: {
+									max,
+									min,
+								},
+								filtersExisting: filters,
+								filteredDocsCount: count2,
+							})
+					);
+				} else {
+					return res.json({
+						page,
+						products,
+						category: categorySlug,
+						productsCount: count,
+						filtersData: {
+							max,
+							min,
+						},
+						filtersExisting: filters,
+						filteredDocsCount: null,
+					});
+				}
 			}
 		);
 	});
@@ -94,7 +135,7 @@ ProductController.getProduct = (req, res) => {
 	Product.findOne({ slug: req.params.slug }, (err, product) => {
 		Review.countDocuments(
 			{
-				parentId: product._id,
+				parentSlug: product.slug,
 			},
 			(error, count) => {
 				res.json({
@@ -116,32 +157,70 @@ ProductController.getReviews = (req, res) => {
 	}
 	const offset = (page - 1) * limit;
 
-	const query = Review.find({ parentId: req.params.id })
+	const query = Review.find({ parentSlug: req.params.slug })
 		.sort({ date: -1 })
 		.skip(parseFloat(offset))
 		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
-		res.json({
-			page,
-			reviews,
+		const parentIds = reviews.map(i => i._id);
+		const repliesQuery = Review.find({ parentReviewId: { $in: parentIds } })
+			.sort({ date: -1 })
+			.limit(3);
+		repliesQuery.exec((erro, replies) => {
+			console.log(replies);
+			const reviewsWithReplies = _.map(reviews, review => {
+				const repliesToReview = _.filter(
+					replies,
+					reply => String(reply.parentReviewId) == String(review._id)
+				);
+				console.log(repliesToReview);
+				return _.assign(review.toObject(), {
+					replies: repliesToReview,
+				});
+			});
+
+			res.json({
+				page,
+				reviews: reviewsWithReplies,
+			});
 		});
 	});
 };
 
 ProductController.addReview = (req, res) => {
-	const productId = req.params.id;
+	const productSlug = req.params.slug;
 	const reviewBody = req.body;
-	Product.findOne({ _id: productId }, (err, product) => {
-		if (product) {
-			const review = new Review({
-				...reviewBody,
-				parentId: product._id,
-			});
-			review.save((error, savedReview) => {
-				res.json({ review: savedReview });
-			});
-		}
+
+	const review = new Review({
+		...reviewBody,
+		parentSlug: productSlug,
+	});
+	review.save((error, savedReview) => {
+		Product.findOneAndUpdate(
+			{ slug: productSlug },
+			{
+				$inc: {
+					votes: 1,
+					rating: savedReview.rating,
+				},
+			},
+			{ new: true },
+			(err, product) => {
+				res.json({ review: savedReview, product });
+			}
+		);
 	});
 };
 
+ProductController.addReply = (req, res) => {
+	const replyBody = req.body;
+
+	const review = new Review({
+		...replyBody,
+		parentSlug: 'review',
+	});
+	review.save((error, savedReply) => {
+		res.json({ reply: savedReply });
+	});
+};
 export default ProductController;
