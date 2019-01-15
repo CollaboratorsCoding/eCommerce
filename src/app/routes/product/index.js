@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
+
 import {
 	Button,
 	Label,
@@ -10,6 +11,8 @@ import {
 	Breadcrumb,
 	Dimmer,
 	Loader,
+	Grid,
+	Rating,
 } from 'semantic-ui-react';
 import Page from '../../components/page';
 import Reviews from '../../components/reviews';
@@ -19,6 +22,7 @@ import { setQuery } from '../../utils';
 
 import { Homepage, Category } from '../index';
 import CustomLink from '../../hocs/customLink';
+import './index.scss';
 
 const {
 	getProduct,
@@ -32,8 +36,23 @@ const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Product extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			backgroundImage: `url(${props.product.imagePath})`,
+			backgroundPosition: '0% 0%',
+		};
+	}
+
 	handleTabChange = queryName => {
 		setQuery('tab', queryName, this.props.history);
+	};
+
+	handleMouseMove = e => {
+		const { left, top, width, height } = e.target.getBoundingClientRect();
+		const x = ((e.pageX - left) / width) * 100;
+		const y = ((e.pageY - top) / height) * 100;
+		this.setState({ backgroundPosition: `${x}% ${y}%` });
 	};
 
 	render() {
@@ -62,7 +81,61 @@ export class Product extends Component {
 			{
 				queryTab: 'description',
 				menuItem: <Menu.Item key="description">Description</Menu.Item>,
-				render: () => <Tab.Pane>{description}</Tab.Pane>,
+				render: () => (
+					<Tab.Pane>
+						<Grid
+							style={{
+								background: '#fff',
+								padding: '15px',
+							}}
+						>
+							<Grid.Row>
+								<Grid.Column width={8}>
+									<section className="left-product-section">
+										<div className="product-img">
+											<figure
+												onMouseMove={
+													this.handleMouseMove
+												}
+												style={{
+													backgroundImage: this.state
+														.backgroundImage,
+													backgroundPosition: this
+														.state
+														.backgroundPosition,
+												}}
+											>
+												<img
+													alt="lel"
+													src={imagePath}
+												/>
+											</figure>
+										</div>
+										<div className="product-description">
+											{description}
+										</div>
+									</section>
+								</Grid.Column>
+								<Grid.Column width={8}>
+									<section className="right-product-section">
+										<div className="product-price">
+											${price}
+										</div>
+										<Button
+											onClick={() => {
+												addToCart(product._id);
+											}}
+											color="green"
+											className="product-buy"
+										>
+											Add to Cart
+										</Button>
+									</section>
+								</Grid.Column>
+							</Grid.Row>
+						</Grid>
+					</Tab.Pane>
+				),
 			},
 			{
 				queryTab: 'reviews',
@@ -73,23 +146,26 @@ export class Product extends Component {
 				),
 				render: () => (
 					<Tab.Pane>
-						<Reviews
-							query={query}
-							product={product}
-							productSlug={match.params.slug_product}
-							onGetReviews={this.props.getReviews}
-							onAddReview={this.props.addReview}
-							onAddReply={this.props.addReply}
-						/>
-					</Tab.Pane>
-				),
-			},
-			{
-				queryTab: 'test',
-				menuItem: <Menu.Item key="test">Test</Menu.Item>,
-				render: () => (
-					<Tab.Pane active>
-						<div>Rofel</div>
+						<Grid
+							style={{
+								background: '#fff',
+								padding: '15px',
+							}}
+						>
+							<Grid.Row>
+								<Grid.Column width={12}>
+									<Reviews
+										query={query}
+										product={product}
+										productSlug={match.params.slug_product}
+										onGetReviews={this.props.getReviews}
+										onAddReview={this.props.addReview}
+										onAddReply={this.props.addReply}
+									/>
+								</Grid.Column>
+								<Grid.Column width={4} />
+							</Grid.Row>
+						</Grid>
 					</Tab.Pane>
 				),
 			},
@@ -126,17 +202,14 @@ export class Product extends Component {
 						<Breadcrumb.Section active>{title}</Breadcrumb.Section>
 					</Breadcrumb>
 					<h1>{title}</h1>
-					<div>Price: {price}</div>
-					<Button
-						onClick={() => {
-							addToCart(product._id);
-						}}
-						basic
-						color="green"
-					>
-						Add to Cart
-					</Button>
-					<img src={imagePath} alt={title} />
+					<Rating
+						icon="star"
+						rating={
+							product.rating ? product.rating / product.votes : 0
+						}
+						maxRating={5}
+						disabled
+					/>
 					<Tab
 						panes={panes}
 						defaultActiveIndex={activeTabIndex}
