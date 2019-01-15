@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Table, Grid, Icon, Button, Container } from 'semantic-ui-react';
-
+import { Container } from 'semantic-ui-react';
+import queryString from 'query-string';
 import MarketActions from '../../store/market/actions';
 import Page from '../../components/page';
 
-import ItemCart from './components/ItemCart';
 import CartEmpty from './components/CartEmpty';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+
+import { setQuery } from '../../utils';
 
 import './styles/index.scss';
 
@@ -17,85 +20,53 @@ const {
 	removeCartProduct,
 } = MarketActions;
 
-function ShoppingCart({ cart, addToCart, reduceProduct, removeProduct }) {
-	const { totalPrice, totalQty, productsInCart } = cart;
-	return (
-		<Page id="shopping-cart" title="My shopping cart">
-			{totalQty ? (
-				<Container className="shopping-cart-section">
-					<Grid>
-						<Grid.Row className="shopping-cart-section-header">
-							<Grid.Column>
-								<h3>
-									<Icon name="shopping cart" />
-									My shopping cart
-								</h3>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row className="shopping-cart-section-body">
-							<Grid.Column>
-								<Table
-									className="shopping-cart-section-body-table"
-									basic="very"
-								>
-									<Table.Header className="shopping-cart-section-body-table-header">
-										<Table.Row>
-											<Table.HeaderCell>
-												Product
-											</Table.HeaderCell>
-											<Table.HeaderCell>
-												Quantity
-											</Table.HeaderCell>
-											<Table.HeaderCell>
-												Price
-											</Table.HeaderCell>
-											<Table.HeaderCell>
-												Subtotal
-											</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										{productsInCart.map(product => (
-											<ItemCart
-												key={product.item._id}
-												product={product}
-												handleAddProduct={addToCart}
-												handleRemoveProduct={
-													removeProduct
-												}
-												handleReduceProduct={
-													reduceProduct
-												}
-											/>
-										))}
-									</Table.Body>
-								</Table>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column>
-								<div className="shopping-cart-section-footer">
-									<div>
-										<Button color="teal">
-											<Icon name="arrow left" /> COUNTINUE
-											SHOPPING
-										</Button>
-										<Button primary>CHECKOUT</Button>
-									</div>
-									<h2>
-										TOTAL: <Icon name="usd" />
-										{totalPrice}
-									</h2>
-								</div>
-							</Grid.Column>
-						</Grid.Row>
-					</Grid>
-				</Container>
-			) : (
-				<CartEmpty />
-			)}
-		</Page>
-	);
+class ShoppingCart extends Component {
+	state = {
+		queryPage: queryString.parse(this.props.location.search).cartpage,
+	};
+
+	componentDidUpdate() {
+		if (
+			this.state.queryPage !==
+			queryString.parse(this.props.location.search).cartpage
+		) {
+			this.setState({
+				queryPage: queryString.parse(this.props.location.search)
+					.cartpage,
+			});
+		}
+	}
+
+	switchPage = page => {
+		setQuery('cartpage', page, this.props.history);
+	};
+
+	render() {
+		const { cart, addToCart, reduceProduct, removeProduct } = this.props;
+		const { totalQty } = cart;
+		const { queryPage } = this.state;
+		return (
+			<Page id="shopping-cart" title="My shopping cart">
+				{totalQty ? (
+					<Container>
+						{queryPage === 'checkout' ? (
+							<Checkout />
+						) : (
+							<Cart
+								addToCart={addToCart}
+								reduceProduct={reduceProduct}
+								removeProduct={removeProduct}
+								switchPage={this.switchPage}
+								cart={cart}
+							/>
+						)}
+					</Container>
+				) : (
+					<CartEmpty />
+				)}
+			</Page>
+		);
+	}
 }
 
 const mapStateToProps = state => ({

@@ -20,8 +20,18 @@ class Authentication extends PureComponent {
 		queryForm: queryString.parse(this.props.location.search).form,
 	};
 
+	componentDidUpdate() {
+		if (
+			this.state.queryForm !==
+			queryString.parse(this.props.location.search).form
+		) {
+			this.setState({
+				queryForm: queryString.parse(this.props.location.search).form,
+			});
+		}
+	}
+
 	switchForm = form => {
-		this.setState({ queryForm: form });
 		setQuery('form', form, this.props.history);
 	};
 
