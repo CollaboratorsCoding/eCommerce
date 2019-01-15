@@ -34,7 +34,7 @@ export default class Checkout extends Component {
 		const { current } = this.state;
 		return (
 			<div className="checkout">
-				<Steps status="process" current={current}>
+				<Steps current={current}>
 					{steps.map(item => (
 						<Step
 							key={item.title}
