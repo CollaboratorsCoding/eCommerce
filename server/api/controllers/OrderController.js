@@ -13,7 +13,7 @@ OrderContreller.newOrder = async (req, res) => {
 	const errors = validate(Orderform, OrderTypes.Orderform);
 
 	if (errors.error) {
-		return res.status(401).json({
+		return res.status(403).json({
 			// #TODO: changed to 'form' and handle on client errors from JOI ALL
 			type: 'server',
 			message: errors.error,
@@ -22,7 +22,7 @@ OrderContreller.newOrder = async (req, res) => {
 
 	const cart = new Cart(req.session.cart ? req.session.cart : {});
 	if (!cart.totalQty) {
-		return res.status(403).json({ message: 'Empty cart' });
+		return res.status(403).json({ message: 'Cart is empty' });
 	}
 
 	const cartArray = await cart.generateArray();
