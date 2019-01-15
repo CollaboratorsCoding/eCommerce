@@ -82,6 +82,7 @@ UserController.logout = (req, res) => {
 
 UserController.getprofile = async (req, res) => {
 	const userObject = req.user.toObject();
+
 	res.json({
 		user: _.omit(userObject, [
 			'password',
@@ -89,6 +90,7 @@ UserController.getprofile = async (req, res) => {
 			'resetPasswordExpires',
 		]),
 		isLoggedIn: !!req.user,
+		lastVisitedProducts: req.session.lastVisitedProducts,
 	});
 };
 

@@ -36,23 +36,8 @@ const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Product extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			backgroundImage: `url(${props.product.imagePath})`,
-			backgroundPosition: '0% 0%',
-		};
-	}
-
 	handleTabChange = queryName => {
 		setQuery('tab', queryName, this.props.history);
-	};
-
-	handleMouseMove = e => {
-		const { left, top, width, height } = e.target.getBoundingClientRect();
-		const x = ((e.pageX - left) / width) * 100;
-		const y = ((e.pageY - top) / height) * 100;
-		this.setState({ backgroundPosition: `${x}% ${y}%` });
 	};
 
 	render() {
@@ -93,43 +78,32 @@ export class Product extends Component {
 								<Grid.Column width={8}>
 									<section className="left-product-section">
 										<div className="product-img">
-											<figure
-												onMouseMove={
-													this.handleMouseMove
-												}
-												style={{
-													backgroundImage: this.state
-														.backgroundImage,
-													backgroundPosition: this
-														.state
-														.backgroundPosition,
-												}}
-											>
-												<img
-													alt="lel"
-													src={imagePath}
-												/>
-											</figure>
-										</div>
-										<div className="product-description">
-											{description}
+											<img alt="lel" src={imagePath} />
 										</div>
 									</section>
 								</Grid.Column>
 								<Grid.Column width={8}>
 									<section className="right-product-section">
-										<div className="product-price">
-											${price}
+										<div className="right-wrapper">
+											{' '}
+											<div className="product-description">
+												{description}
+											</div>
+											<div className="price-btn-wrapper">
+												<div className="product-price">
+													${price}
+												</div>
+												<Button
+													onClick={() => {
+														addToCart(product._id);
+													}}
+													color="green"
+													className="product-buy"
+												>
+													Add to Cart
+												</Button>
+											</div>
 										</div>
-										<Button
-											onClick={() => {
-												addToCart(product._id);
-											}}
-											color="green"
-											className="product-buy"
-										>
-											Add to Cart
-										</Button>
 									</section>
 								</Grid.Column>
 							</Grid.Row>
@@ -153,7 +127,7 @@ export class Product extends Component {
 							}}
 						>
 							<Grid.Row>
-								<Grid.Column width={12}>
+								<Grid.Column width={8}>
 									<Reviews
 										query={query}
 										product={product}
@@ -163,7 +137,7 @@ export class Product extends Component {
 										onAddReply={this.props.addReply}
 									/>
 								</Grid.Column>
-								<Grid.Column width={4} />
+								<Grid.Column width={8} />
 							</Grid.Row>
 						</Grid>
 					</Tab.Pane>
@@ -183,8 +157,7 @@ export class Product extends Component {
 			>
 				<div>
 					<Breadcrumb size="large">
-						<Breadcrumb.Section link>
-							{' '}
+						<Breadcrumb.Section>
 							<CustomLink componentPromise={Homepage} to="/">
 								Home
 							</CustomLink>
@@ -209,6 +182,7 @@ export class Product extends Component {
 						}
 						maxRating={5}
 						disabled
+						size="large"
 					/>
 					<Tab
 						panes={panes}

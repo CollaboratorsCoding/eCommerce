@@ -34,7 +34,11 @@ const checkJwt = (req, res, next) => {
 			}
 		});
 	} else {
-		res.json({ user: {}, isLoggedIn: false });
+		res.json({
+			user: {},
+			isLoggedIn: false,
+			lastVisitedProducts: req.session.lastVisitedProducts,
+		});
 	}
 };
 

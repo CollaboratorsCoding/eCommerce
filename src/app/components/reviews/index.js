@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Comment, Pagination, Icon } from 'semantic-ui-react';
+import { Pagination, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 import { frontloadConnect } from '../../hocs/frontLoad';
@@ -73,7 +73,7 @@ class Review extends Component {
 				)}
 				{renderReviews ? (
 					<>
-						<Comment.Group>{renderReviews}</Comment.Group>
+						<div className="reviews-wrapper">{renderReviews}</div>
 						<Pagination
 							activePage={activePage}
 							boundaryRange={1}

@@ -14,6 +14,7 @@ const initialState = {
 	profile: {},
 	error: {},
 	loading: false,
+	lastVisitedProducts: [],
 };
 
 export default (state = initialState, action) => {
@@ -29,6 +30,11 @@ export default (state = initialState, action) => {
 				...state,
 				profile: _.get(action.result, 'user', {}),
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
+				lastVisitedProducts: _.get(
+					action.result,
+					'lastVisitedProducts',
+					[]
+				),
 				error: {},
 			};
 

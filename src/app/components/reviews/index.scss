@@ -1,5 +1,55 @@
-.ui.comments {
+.reviews-wrapper {
 	display: flex;
 	flex-direction: column;
-	max-width: none !important;
+	.review-wrapper {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid #eee;
+
+		.review-header {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding-top: 17px;
+			.review-author {
+				font-weight: bolder;
+				font-size: 20px;
+			}
+			.review-rating {
+				margin-left: 23px;
+			}
+
+			.review-date {
+				margin-left: auto;
+			}
+		}
+		.review-actions {
+			display: flex;
+			justify-content: space-between;
+			padding-bottom: 17px;
+			cursor: pointer;
+			.review-reply-btn {
+				color: #00b5ad;
+				&:hover {
+					color: orangered;
+				}
+			}
+			.review-upvotes {
+				.review-up-btn {
+					color: #00b5ad;
+				}
+				.review-down-btn {
+					color: #da5f5f;
+				}
+			}
+		}
+
+		.review-content {
+			text-align: left;
+			margin: 15px 0;
+		}
+		.review-replies {
+			padding-left: 51px;
+		}
+	}
 }
