@@ -142,14 +142,12 @@ ProductController.getProduct = (req, res) => {
 			(error, count) => {
 				// SESSION LAST PRODUCT VISITED UPDATE
 				const lastVisitedProducts = req.session.lastVisitedProducts;
-				const itemIndex =
-					lastVisitedProducts && lastVisitedProducts.length
-						? lastVisitedProducts.findIndex(
-								item => String(item._id) === String(product._id)
-						  )
-						: [];
+				const itemIndex = lastVisitedProducts.findIndex(
+					item => String(item._id) === String(product._id)
+				);
+
 				if (itemIndex === -1) {
-					if (!req.session.lastVisitedProducts) {
+					if (!req.session.lastVisitedProducts.length) {
 						req.session.lastVisitedProducts = [product.toJSON()];
 					} else {
 						req.session.lastVisitedProducts.unshift(
