@@ -132,12 +132,34 @@ ProductController.getProducts = (req, res) => {
 };
 
 ProductController.getProduct = (req, res) => {
+	// console.log(req.session);
+	// req.session.g = 'g';
+	if (!req.params.slug) res.status(404).send('error');
 	Product.findOne({ slug: req.params.slug }, (err, product) => {
+		if (!product || err) res.status(404).send('error');
 		Review.countDocuments(
 			{
 				parentSlug: product.slug,
 			},
 			(error, count) => {
+				// if (!req.session || !req.session.lastVisitedProducts) {
+				// 	req.session.lastVisitedProducts = [];
+				// }
+				// req.session.lastVisitedProducts.push(product.toJSON());
+				// const lastVisitedProducts = req.session.lastVisitedProducts;
+				// const itemExist =
+				// 	lastVisitedProducts && lastVisitedProducts.length
+				// 		? lastVisitedProducts.filter(
+				// 			item => String(item._id) === String(product._id)
+				// 		  )
+				// 		: [];
+				// if (!itemExist.length) {
+				// 	if (!req.session.lastVisitedProducts) {
+				// 		req.session.lastVisitedProducts = [product.toJSON()];
+				// 	} else {
+
+				// 	}
+				// }
 				res.json({
 					product: { ...product.toJSON(), reviewsCount: count },
 				});

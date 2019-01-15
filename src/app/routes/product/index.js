@@ -36,23 +36,8 @@ const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Product extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			backgroundImage: `url(${props.product.imagePath})`,
-			backgroundPosition: '0% 0%',
-		};
-	}
-
 	handleTabChange = queryName => {
 		setQuery('tab', queryName, this.props.history);
-	};
-
-	handleMouseMove = e => {
-		const { left, top, width, height } = e.target.getBoundingClientRect();
-		const x = ((e.pageX - left) / width) * 100;
-		const y = ((e.pageY - top) / height) * 100;
-		this.setState({ backgroundPosition: `${x}% ${y}%` });
 	};
 
 	render() {
@@ -93,23 +78,7 @@ export class Product extends Component {
 								<Grid.Column width={8}>
 									<section className="left-product-section">
 										<div className="product-img">
-											<figure
-												onMouseMove={
-													this.handleMouseMove
-												}
-												style={{
-													backgroundImage: this.state
-														.backgroundImage,
-													backgroundPosition: this
-														.state
-														.backgroundPosition,
-												}}
-											>
-												<img
-													alt="lel"
-													src={imagePath}
-												/>
-											</figure>
+											<img alt="lel" src={imagePath} />
 										</div>
 										<div className="product-description">
 											{description}
@@ -153,7 +122,7 @@ export class Product extends Component {
 							}}
 						>
 							<Grid.Row>
-								<Grid.Column width={12}>
+								<Grid.Column width={8}>
 									<Reviews
 										query={query}
 										product={product}
@@ -163,7 +132,7 @@ export class Product extends Component {
 										onAddReply={this.props.addReply}
 									/>
 								</Grid.Column>
-								<Grid.Column width={4} />
+								<Grid.Column width={8} />
 							</Grid.Row>
 						</Grid>
 					</Tab.Pane>
@@ -183,8 +152,7 @@ export class Product extends Component {
 			>
 				<div>
 					<Breadcrumb size="large">
-						<Breadcrumb.Section link>
-							{' '}
+						<Breadcrumb.Section>
 							<CustomLink componentPromise={Homepage} to="/">
 								Home
 							</CustomLink>
@@ -209,6 +177,7 @@ export class Product extends Component {
 						}
 						maxRating={5}
 						disabled
+						size="large"
 					/>
 					<Tab
 						panes={panes}

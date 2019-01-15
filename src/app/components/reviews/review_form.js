@@ -60,6 +60,7 @@ export default class ReviewForm extends Component {
 						rating={this.state.rating}
 						maxRating={5}
 						onRate={this.handleRate}
+						size="large"
 					/>
 				)}
 

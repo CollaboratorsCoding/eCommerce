@@ -10,3 +10,12 @@ body {
 	color: #0d0d0d;
 	background: #f2f2f2;
 }
+
+.ui.star.rating {
+	.active.icon,
+	.icon.selected,
+	.icon.selected.active {
+		color: #00b5ad !important;
+		text-shadow: none !important;
+	}
+}
