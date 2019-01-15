@@ -12,50 +12,44 @@
 }
 .left-product-section {
 	.product-img {
-		figure {
-			width: 400px;
-			background-repeat: no-repeat;
-		}
-
-		figure:hover img {
-			opacity: 0;
-		}
-
 		img {
 			display: block;
-			width: 100%;
+			max-height: 600px;
+			max-width: 100%;
 			pointer-events: none;
+			margin: auto;
 		}
 	}
 }
 .right-product-section {
 	display: flex;
 	height: 100%;
-	.product-price,
-	.product-buy {
-		margin-top: auto;
-		margin-bottom: auto;
+	flex-direction: column;
+	border-left: 1px solid #eee;
+	padding-left: 20px;
+	.product-description {
+		margin-bottom: 47px;
+		font-size: 16px;
 	}
-	.product-price {
-		font-weight: bold;
-		color: #d20303;
-		font-size: 32px;
-		background: #ffebeb;
-		padding: 2px 13px;
-		border-radius: 7px;
-		margin-left: auto;
-		margin-right: 3px;
-	}
-	.product-buy {
-		margin-right: auto;
+	.right-wrapper {
+		margin: auto;
 	}
 
-	// .product-rating {
-	// 	display: flex;
-	// 	align-items: center;
-	// 	.product-reviews {
-	// 		margin-left: 3px;
-	// 		margin-bottom: 2px;
-	// 	}
-	// }
+	.price-btn-wrapper {
+		display: flex;
+		.product-price {
+			font-weight: bold;
+			color: #d20303;
+			font-size: 32px;
+			background: #ffebeb;
+			padding: 2px 13px;
+			border-radius: 7px;
+			margin-left: auto;
+			margin-right: 3px;
+		}
+
+		.product-buy {
+			margin-right: auto;
+		}
+	}
 }

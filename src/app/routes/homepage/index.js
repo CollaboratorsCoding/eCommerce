@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { Image, Grid } from 'semantic-ui-react';
 import Slider from 'react-slick';
+import { bindActionCreators } from 'redux';
+
+import { connect } from 'react-redux';
+import MarketActions from '../../store/market/actions';
 
 import Page from '../../components/page';
 import CategoriesList from '../../components/categories-list';
+import ProductsCarousel from '../../components/products-carousel';
 
 import './homepage.scss';
 
-export default class HomePage extends Component {
+const { addToCartProduct } = MarketActions;
+class HomePage extends Component {
 	state = {
 		loaded: false,
 	};
 
 	render() {
+		const { lastVisitedProducts, addToCart, loadingCart } = this.props;
 		const settings = {
 			dots: false,
 			infinite: true,
@@ -64,7 +71,7 @@ export default class HomePage extends Component {
 					<Grid>
 						<Grid.Row>
 							<Grid.Column
-								width={3}
+								width={5}
 								style={{
 									background: '#fff',
 									padding: 0,
@@ -73,11 +80,15 @@ export default class HomePage extends Component {
 							>
 								<CategoriesList />
 							</Grid.Column>
-							<Grid.Column width={13}>{slider}</Grid.Column>
+							<Grid.Column width={11}>{slider}</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
 							<Grid.Column width={16}>
-								<div>Recomended</div>
+								<ProductsCarousel
+									products={lastVisitedProducts}
+									addToCart={addToCart}
+									loadingCart={loadingCart}
+								/>
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
@@ -91,3 +102,21 @@ export default class HomePage extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	lastVisitedProducts: state.profile.lastVisitedProducts,
+	loadingCart: state.market.loadingCart,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(
+		{
+			addToCart: addToCartProduct,
+		},
+		dispatch
+	);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(HomePage);

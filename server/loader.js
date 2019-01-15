@@ -21,6 +21,9 @@ import manifest from '../build/client/asset-manifest.json';
 
 // LOADER
 export default (req, res) => {
+	if (!req.session || !req.session.lastVisitedProducts) {
+		req.session.lastVisitedProducts = [];
+	}
 	/*
     A simple helper function to prepare the HTML markup. This loads:
       - Page title
@@ -146,7 +149,7 @@ export default (req, res) => {
 
 				// NOTE: Disable if you desire
 				// Let's output the title, just to see SSR is working as intended
-				console.log('render server');
+
 				// Pass all this nonsense into our HTML formatting function above
 				const html = injectHTML(htmlData, {
 					html: helmet.htmlAttributes.toString(),

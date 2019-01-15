@@ -80,25 +80,30 @@ export class Product extends Component {
 										<div className="product-img">
 											<img alt="lel" src={imagePath} />
 										</div>
-										<div className="product-description">
-											{description}
-										</div>
 									</section>
 								</Grid.Column>
 								<Grid.Column width={8}>
 									<section className="right-product-section">
-										<div className="product-price">
-											${price}
+										<div className="right-wrapper">
+											{' '}
+											<div className="product-description">
+												{description}
+											</div>
+											<div className="price-btn-wrapper">
+												<div className="product-price">
+													${price}
+												</div>
+												<Button
+													onClick={() => {
+														addToCart(product._id);
+													}}
+													color="green"
+													className="product-buy"
+												>
+													Add to Cart
+												</Button>
+											</div>
 										</div>
-										<Button
-											onClick={() => {
-												addToCart(product._id);
-											}}
-											color="green"
-											className="product-buy"
-										>
-											Add to Cart
-										</Button>
 									</section>
 								</Grid.Column>
 							</Grid.Row>

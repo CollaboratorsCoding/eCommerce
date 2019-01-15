@@ -132,8 +132,6 @@ ProductController.getProducts = (req, res) => {
 };
 
 ProductController.getProduct = (req, res) => {
-	// console.log(req.session);
-	// req.session.g = 'g';
 	if (!req.params.slug) res.status(404).send('error');
 	Product.findOne({ slug: req.params.slug }, (err, product) => {
 		if (!product || err) res.status(404).send('error');
@@ -142,24 +140,33 @@ ProductController.getProduct = (req, res) => {
 				parentSlug: product.slug,
 			},
 			(error, count) => {
-				// if (!req.session || !req.session.lastVisitedProducts) {
-				// 	req.session.lastVisitedProducts = [];
-				// }
-				// req.session.lastVisitedProducts.push(product.toJSON());
-				// const lastVisitedProducts = req.session.lastVisitedProducts;
-				// const itemExist =
-				// 	lastVisitedProducts && lastVisitedProducts.length
-				// 		? lastVisitedProducts.filter(
-				// 			item => String(item._id) === String(product._id)
-				// 		  )
-				// 		: [];
-				// if (!itemExist.length) {
-				// 	if (!req.session.lastVisitedProducts) {
-				// 		req.session.lastVisitedProducts = [product.toJSON()];
-				// 	} else {
+				// SESSION LAST PRODUCT VISITED UPDATE
+				const lastVisitedProducts = req.session.lastVisitedProducts;
+				const itemIndex =
+					lastVisitedProducts && lastVisitedProducts.length
+						? lastVisitedProducts.findIndex(
+								item => String(item._id) === String(product._id)
+						  )
+						: [];
+				if (itemIndex === -1) {
+					if (!req.session.lastVisitedProducts) {
+						req.session.lastVisitedProducts = [product.toJSON()];
+					} else {
+						req.session.lastVisitedProducts.unshift(
+							product.toJSON()
+						);
+					}
+				} else if (lastVisitedProducts.length > 1) {
+					const temp = lastVisitedProducts[itemIndex];
+					const newlastVisitedProducts = lastVisitedProducts.filter(
+						i => i._id !== temp._id
+					);
+					newlastVisitedProducts.unshift(temp);
+					req.session.lastVisitedProducts = newlastVisitedProducts;
+				}
 
-				// 	}
-				// }
+				// SESSION END
+
 				res.json({
 					product: { ...product.toJSON(), reviewsCount: count },
 				});
@@ -189,13 +196,12 @@ ProductController.getReviews = (req, res) => {
 			.sort({ date: -1 })
 			.limit(3);
 		repliesQuery.exec((erro, replies) => {
-			console.log(replies);
 			const reviewsWithReplies = _.map(reviews, review => {
 				const repliesToReview = _.filter(
 					replies,
 					reply => String(reply.parentReviewId) == String(review._id)
 				);
-				console.log(repliesToReview);
+
 				return _.assign(review.toObject(), {
 					replies: repliesToReview,
 				});
