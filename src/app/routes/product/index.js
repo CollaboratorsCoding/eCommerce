@@ -13,6 +13,7 @@ import {
 	Loader,
 	Grid,
 	Rating,
+	Sticky,
 } from 'semantic-ui-react';
 import Page from '../../components/page';
 import Reviews from '../../components/reviews';
@@ -30,18 +31,24 @@ const {
 	addReview,
 	addReply,
 	getReviews,
+	addReviewRate,
 } = MarketActions;
 
 const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Product extends Component {
+	state = {};
+
 	handleTabChange = queryName => {
 		setQuery('tab', queryName, this.props.history);
 	};
 
+	handleContextRef = contextRef => this.setState({ contextRef });
+
 	render() {
 		const { product, addToCart, location, match, loading } = this.props;
+		const { contextRef } = this.state;
 		if (!product) return null;
 
 		if (loading)
@@ -85,7 +92,6 @@ export class Product extends Component {
 								<Grid.Column width={8}>
 									<section className="right-product-section">
 										<div className="right-wrapper">
-											{' '}
 											<div className="product-description">
 												{description}
 											</div>
@@ -135,9 +141,46 @@ export class Product extends Component {
 										onGetReviews={this.props.getReviews}
 										onAddReview={this.props.addReview}
 										onAddReply={this.props.addReply}
+										onHandleAddReviewRate={
+											this.props.addReviewRate
+										}
 									/>
 								</Grid.Column>
-								<Grid.Column width={8} />
+								<Grid.Column width={8}>
+									<div
+										style={{ height: '100%' }}
+										ref={this.handleContextRef}
+									>
+										<Sticky
+											context={contextRef}
+											offset={40}
+										>
+											<div className="product-img">
+												<img
+													alt="lel"
+													src={imagePath}
+												/>
+											</div>
+											<div className="product-description">
+												{description}
+											</div>
+											<div className="price-btn-wrapper">
+												<div className="product-price">
+													${price}
+												</div>
+												<Button
+													onClick={() => {
+														addToCart(product._id);
+													}}
+													color="green"
+													className="product-buy"
+												>
+													Add to Cart
+												</Button>
+											</div>
+										</Sticky>
+									</div>
+								</Grid.Column>
 							</Grid.Row>
 						</Grid>
 					</Tab.Pane>
@@ -158,13 +201,18 @@ export class Product extends Component {
 				<div>
 					<Breadcrumb size="large">
 						<Breadcrumb.Section>
-							<CustomLink componentPromise={Homepage} to="/">
+							<CustomLink
+								style={{ cursor: 'pointer' }}
+								componentPromise={Homepage}
+								to="/"
+							>
 								Home
 							</CustomLink>
 						</Breadcrumb.Section>
 						<Breadcrumb.Divider icon="right chevron" />
 						<Breadcrumb.Section>
 							<CustomLink
+								style={{ cursor: 'pointer' }}
 								componentPromise={Category}
 								to={`/c/${category}`}
 							>
@@ -209,6 +257,7 @@ const mapDispatchToProps = dispatch =>
 			addReview,
 			getReviews,
 			addReply,
+			addReviewRate,
 		},
 		dispatch
 	);

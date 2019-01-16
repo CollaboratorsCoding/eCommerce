@@ -190,9 +190,9 @@ ProductController.getReviews = (req, res) => {
 		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
 		const parentIds = reviews.map(i => i._id);
-		const repliesQuery = Review.find({ parentReviewId: { $in: parentIds } })
-			.sort({ date: -1 })
-			.limit(3);
+		const repliesQuery = Review.find({
+			parentReviewId: { $in: parentIds },
+		}).sort({ date: -1 });
 		repliesQuery.exec((erro, replies) => {
 			const reviewsWithReplies = _.map(reviews, review => {
 				const repliesToReview = _.filter(
@@ -249,4 +249,25 @@ ProductController.addReply = (req, res) => {
 		res.json({ reply: savedReply });
 	});
 };
+
+ProductController.addReviewRate = (req, res) => {
+	const rate = _.get(req.body, 'rate', null);
+	const reviewId = req.params.id;
+
+	if (!reviewId || (rate !== 1 && rate !== -1)) {
+		return res.status(404).send('error');
+	}
+	const prop = rate > 0 ? 'upvotes' : 'downvotes';
+	return Review.findOneAndUpdate(
+		{ _id: reviewId },
+		{
+			$inc: {
+				[prop]: 1,
+			},
+		},
+		{ new: true },
+		(err, review) => res.json({ review })
+	);
+};
+
 export default ProductController;

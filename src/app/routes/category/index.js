@@ -130,9 +130,12 @@ export class Category extends Component {
 					<div className="category-label">{categoryName}</div>
 				</Grid.Column>
 				<Breadcrumb size="large">
-					<Breadcrumb.Section link>
-						{' '}
-						<CustomLink componentPromise={Homepage} to="/">
+					<Breadcrumb.Section>
+						<CustomLink
+							style={{ cursor: 'pointer' }}
+							componentPromise={Homepage}
+							to="/"
+						>
 							Home
 						</CustomLink>
 					</Breadcrumb.Section>

@@ -6,6 +6,7 @@ import { frontloadConnect } from '../../hocs/frontLoad';
 import ReviewItem from './review_item';
 import ReviewForm from './review_form';
 import { setQuery } from '../../utils';
+
 import './index.scss';
 
 const frontload = async props => {
@@ -31,7 +32,7 @@ class Review extends Component {
 		setQuery('p', activePage, this.props.history);
 		this.setState({ activePage });
 		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
-			this.props.onGetReviews(activePage, 10, this.props.product_slug);
+			this.props.onGetReviews(activePage, 10, this.props.productSlug);
 		}
 	};
 
@@ -53,6 +54,7 @@ class Review extends Component {
 			renderReviews = product.reviews[activePage].map(review => (
 				<ReviewItem
 					handleReplyClick={this.handleReplyClick}
+					handleReviewRate={this.props.onHandleAddReviewRate}
 					key={review._id}
 					review={review}
 				/>

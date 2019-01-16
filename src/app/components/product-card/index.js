@@ -6,11 +6,27 @@ import './index.scss';
 
 export default function ProductCard({ product, addToCart, loadingCart }) {
 	if (!product) return null;
-
+	const tagsColors = {
+		'Hot Product': 'red',
+		'Great Deal': 'orange',
+	};
 	return (
 		<Card centered className="card-product">
 			<Card.Content>
 				<Card.Header>
+					<div className="product-tags">
+						{product.tags.map(tag => (
+							<span
+								className={`tag tag-${tag}`}
+								style={{
+									backgroundColor: tagsColors[tag],
+								}}
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+
 					<Image className="card-image" src={product.imagePath} />
 
 					<CustomLink
@@ -26,6 +42,7 @@ export default function ProductCard({ product, addToCart, loadingCart }) {
 					{product.description}
 				</Card.Description>
 			</Card.Content>
+
 			<Card.Content extra>
 				<div className="product-extra">
 					<div className="product-price">${product.price}</div>
