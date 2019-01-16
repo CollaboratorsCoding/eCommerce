@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Icon, Label } from 'semantic-ui-react';
+import { Table, Icon, Label, Image } from 'semantic-ui-react';
 
 export default function ItemCart({
 	product,
@@ -10,7 +10,16 @@ export default function ItemCart({
 	const { item, price, qty } = product;
 	return (
 		<Table.Row>
-			<Table.Cell>{item.title}</Table.Cell>
+			<Table.Cell>
+				<Image
+					className="title-wrapper--img"
+					size="mini"
+					src={item.imagePath}
+				/>
+			</Table.Cell>
+			<Table.Cell>
+				<div className="title-wrapper--text">{item.title}</div>
+			</Table.Cell>
 			<Table.Cell>
 				<Icon
 					color="grey"
@@ -38,14 +47,16 @@ export default function ItemCart({
 				{item.price}
 			</Table.Cell>
 			<Table.Cell>
-				<Icon name="usd" />
-				{price}
-				<Icon
-					className="shopping-cart-section-body-table__icon-delete"
-					onClick={() => handleRemoveProduct(item._id)}
-					color="red"
-					name="trash alternate outline"
-				/>
+				<div className="shopping-cart-section-body-table--wrapper">
+					<Icon name="usd" />
+					{price}
+					<Icon
+						className="shopping-cart-section-body-table--wrapper__icon-delete"
+						onClick={() => handleRemoveProduct(item._id)}
+						color="red"
+						name="trash alternate outline"
+					/>
+				</div>
 			</Table.Cell>
 		</Table.Row>
 	);

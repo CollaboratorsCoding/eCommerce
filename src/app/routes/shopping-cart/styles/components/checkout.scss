@@ -5,12 +5,34 @@
 
 .steps-content {
 	margin-top: 16px;
-	border: 1px dashed #e9e9e9;
-	border-radius: 6px;
-	background-color: #fafafa;
-	min-height: 200px;
-	text-align: center;
-	padding-top: 80px;
+	display: flex;
+	justify-content: space-between;
+	// background-color: #fafafa;
+	padding: 10px;
+
+	&--left {
+		width: 500px;
+	}
+
+	&--right {
+		width: 400px;
+
+		&--content {
+			padding: 20px;
+			border-radius: 5px;
+			border: 1px solid #c5c5c57a;
+			background-color: #fafafa;
+
+			& > p {
+				text-align: center;
+				color: #659be0;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
 }
 
 .steps-action {
@@ -26,4 +48,11 @@
 	.rc-steps-item-icon
 	> .rc-steps-icon {
 	color: teal;
+}
+
+.ui.list .list > .item > .icon + .content,
+.ui.list .list > .item > .image + .content,
+.ui.list > .item > .icon + .content,
+.ui.list > .item > .image + .content {
+	vertical-align: top !important;
 }

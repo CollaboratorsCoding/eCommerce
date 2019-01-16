@@ -35,7 +35,7 @@ class SignIn extends Component {
 					placeholder="Email"
 					onChange={validateField}
 					name="email"
-					error={errors.email}
+					error={!!errors.email}
 				/>
 				<Form.Input
 					icon="key"
@@ -45,7 +45,7 @@ class SignIn extends Component {
 					onChange={validateField}
 					iconPosition="left"
 					placeholder="Password"
-					error={errors.password}
+					error={!!errors.password}
 				/>
 
 				<Button

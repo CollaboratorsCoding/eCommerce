@@ -1,6 +1,17 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import _ from 'lodash';
 import Steps from 'rc-steps';
-import { Button, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import queryString from 'query-string';
+
+import withValidations from '../../../hocs/withValidations';
+
+import FormContact from './FormContact';
+import FormShipping from './FormShipping';
+import FormConfirm from './FormConfirm';
+import ProductList from './ProductList';
+
+const orderTypes = require('../../../../../server/type_models/order.types');
 
 const Step = Steps.Step;
 
@@ -19,22 +30,137 @@ const steps = [
 	},
 ];
 
-export default class Checkout extends Component {
+class Checkout extends PureComponent {
 	state = {
-		current: 0,
+		current:
+			Number(queryString.parse(this.props.location.search).step) || 1,
+		form: {
+			1: {
+				data: {
+					email: '',
+					name: '',
+					phone: '',
+				},
+				isValid: false,
+			},
+			2: {
+				data: {
+					address: '',
+				},
+				isValid: false,
+			},
+			3: {
+				isValid: true,
+			},
+		},
 	};
 
-	next = () =>
-		this.setState(prevState => ({ current: prevState.current + 1 }));
+	componentDidMount() {
+		const queryStep = Number(
+			queryString.parse(this.props.location.search).step
+		);
+		if (!queryStep || queryStep <= 0 || queryStep > 1) {
+			this.switchStep(1);
+		}
+	}
 
-	prev = () =>
-		this.setState(prevState => ({ current: prevState.current - 1 }));
+	componentDidUpdate(prevProps) {
+		const queryStep = Number(
+			queryString.parse(this.props.location.search).step
+		);
+		const step = this.state.current;
+		const form = this.state.form;
+
+		if (!_.isEqual(prevProps.errors, this.props.errors)) {
+			this.setState({
+				form: {
+					...form,
+					[step]: {
+						...form[step],
+						isValid: _.isEmpty(this.props.errors),
+					},
+				},
+			});
+		}
+		if (this.state.current !== queryStep) {
+			let allValid = true;
+			let invalidStep = null;
+
+			for (const key in form) {
+				if (form.hasOwnProperty(key) && key <= this.state.current) {
+					const element = form[key];
+					if (!element.isValid) {
+						allValid = false;
+						invalidStep = key;
+						break;
+					}
+				}
+			}
+			if (allValid) {
+				this.setState({
+					current: queryStep,
+				});
+			}
+			if (invalidStep && !allValid) {
+				this.switchStep(Number(invalidStep));
+				this.setState({
+					current: Number(invalidStep),
+				});
+			}
+
+			if (invalidStep >= queryStep && !allValid) {
+				this.switchStep(queryStep);
+				this.setState({
+					current: queryStep,
+				});
+			}
+		}
+	}
+
+	next = async () => {
+		const { validateForm } = this.props;
+		const step = this.state.current;
+		const form = this.state.form;
+		await validateForm(form[step].data);
+		if (_.isEmpty(this.props.errors) || form[step].isValid) {
+			await this.setState({
+				form: { ...form, [step]: { ...form[step], isValid: true } },
+			});
+			this.switchStep(this.state.current + 1);
+		}
+	};
+
+	prev = () => {
+		this.switchStep(this.state.current - 1);
+	};
+
+	switchStep = step => {
+		this.props.switchPage('step', step);
+	};
+
+	handleChange = e => {
+		this.props.validateField(e);
+		const name = e.target.name;
+		const value = e.target.value;
+		const step = this.state.current;
+		const form = this.state.form;
+		const currentForm = {
+			...form,
+			[step]: {
+				...form[step],
+				data: { ...form[step].data, [name]: value },
+			},
+		};
+
+		this.setState({ form: currentForm });
+	};
 
 	render() {
-		const { current } = this.state;
+		const { current, form } = this.state;
+		console.log(this.state);
 		return (
 			<div className="checkout">
-				<Steps current={current}>
+				<Steps current={current - 1}>
 					{steps.map(item => (
 						<Step
 							key={item.title}
@@ -43,8 +169,36 @@ export default class Checkout extends Component {
 						/>
 					))}
 				</Steps>
-				<div className="steps-content">test</div>
-				<div className="steps-action">
+				<div className="steps-content">
+					<div className="steps-content--left">
+						{current === 1 && (
+							<FormContact
+								form={form[1]}
+								errors={this.props.errors}
+								handleChange={this.handleChange}
+								handleSubmit={this.next}
+							/>
+						)}
+						{current === 2 && (
+							<FormShipping
+								errors={this.props.errors}
+								form={form[2]}
+								handleChange={this.handleChange}
+								handleSubmit={this.next}
+								prev={this.prev}
+							/>
+						)}
+						{current === 3 && <FormConfirm />}
+					</div>
+					<div className="steps-content--right">
+						<div className="steps-content--right--content">
+							<ProductList cart={this.props.cart} />
+							<br />
+							<p>Update cart</p>
+						</div>
+					</div>
+				</div>
+				{/* <div className="steps-action">
 					{current > 0 && (
 						<Button
 							style={{ marginLeft: 8 }}
@@ -61,8 +215,10 @@ export default class Checkout extends Component {
 							Next
 						</Button>
 					)}
-				</div>
+				</div> */}
 			</div>
 		);
 	}
 }
+
+export default withValidations(orderTypes.Orderform)(Checkout);

@@ -37,8 +37,8 @@ class ShoppingCart extends Component {
 		}
 	}
 
-	switchPage = page => {
-		setQuery('cartpage', page, this.props.history);
+	switchPage = (query, page) => {
+		setQuery(query, page, this.props.history);
 	};
 
 	render() {
@@ -50,7 +50,11 @@ class ShoppingCart extends Component {
 				{totalQty ? (
 					<Container>
 						{queryPage === 'checkout' ? (
-							<Checkout />
+							<Checkout
+								cart={cart}
+								switchPage={this.switchPage}
+								{...this.props}
+							/>
 						) : (
 							<Cart
 								addToCart={addToCart}

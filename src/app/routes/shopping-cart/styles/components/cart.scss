@@ -14,16 +14,32 @@
 			text-align: center !important;
 			font-size: 15px !important;
 
+			.title-wrapper {
+				display: flex;
+				align-items: center;
+				margin: auto;
+				&--text {
+					margin-right: auto;
+					margin-left: 5px;
+				}
+
+				&--img {
+					margin-left: 40px;
+				}
+			}
 			&-arrow:hover {
 				cursor: pointer;
 			}
 
-			&__icon-delete {
-				position: absolute;
-				right: 50px;
+			&--wrapper {
+				position: relative;
+				&__icon-delete {
+					position: absolute;
+					right: 5px;
 
-				&:hover {
-					cursor: pointer;
+					&:hover {
+						cursor: pointer;
+					}
 				}
 			}
 		}
