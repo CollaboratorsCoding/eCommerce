@@ -10,8 +10,9 @@ const [GET_CATEGORIES] = types.getCategories;
 const [GET_PRODUCTS] = types.getProducts;
 const [GET_PRODUCT] = types.getProduct;
 const [ADD_REVIEW] = types.addReview;
-// const [ADD_REPLY] = types.addReply;
+const [ADD_REPLY] = types.addReply;
 const [GET_REVIEWS] = types.getReviews;
+const [ADD_REVIEW_RATE] = types.addReviewRate;
 
 const initialState = {
 	loading: false,
@@ -142,26 +143,32 @@ export default (state = initialState, action) => {
 			};
 		}
 
-		// case `${ADD_REPLY}_SUCCESS`: {
-		// 	const newReviews = _.mapValues(state.product.reviews, val => {
-		// 		const foundParent = val.filter(
-		// 			r => r._id == action.result.reply.parentReviewId
-		// 		);
-		// 		if (foundParent.length) {
-		// 			return [...action.result.reply, ...val];
-		// 		}
-		// 		return val;
-		// 	});
-		// 	return {
-		// 		...state,
-		// 		product: {
-		// 			...state.product,
-		// 			reviews: newReviews,
-		// 		},
-		// 	};
-		// }
+		case `${ADD_REPLY}_SUCCESS`: {
+			const newReviews = _.mapValues(state.product.reviews, val => {
+				const reviewIndex = val.findIndex(
+					r => r._id === action.result.reply.parentReviewId
+				);
+
+				if (reviewIndex !== -1) {
+					const newVal = [...val];
+
+					newVal[reviewIndex].replies = [
+						action.result.reply,
+						...newVal[reviewIndex].replies,
+					];
+					return [...newVal];
+				}
+				return val;
+			});
+			return {
+				...state,
+				product: {
+					...state.product,
+					reviews: newReviews,
+				},
+			};
+		}
 		case `${GET_REVIEWS}_SUCCESS`: {
-			// TODO: reviews
 			const { result } = action;
 			const { page, reviews } = result;
 
@@ -178,6 +185,33 @@ export default (state = initialState, action) => {
 				product,
 			};
 		}
+		case `${ADD_REVIEW_RATE}_SUCCESS`: {
+			const { result } = action;
+			const { review } = result;
+
+			const newReviews = _.mapValues(state.product.reviews, val => {
+				const newVal = [...val];
+
+				const reviewIndex = newVal.findIndex(
+					rev => rev._id === review._id
+				);
+
+				if (reviewIndex !== -1) {
+					newVal[reviewIndex] = review;
+					return [...newVal];
+				}
+				return newVal;
+			});
+
+			return {
+				...state,
+				product: {
+					...state.product,
+					reviews: newReviews,
+				},
+			};
+		}
+
 		case `${GET_CART}_SUCCESS`:
 			return {
 				...state,

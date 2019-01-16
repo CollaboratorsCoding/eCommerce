@@ -27,19 +27,32 @@
 			display: flex;
 			justify-content: space-between;
 			padding-bottom: 17px;
-			cursor: pointer;
+
 			.review-reply-btn {
 				color: #00b5ad;
+				cursor: pointer;
 				&:hover {
 					color: orangered;
 				}
 			}
 			.review-upvotes {
-				.review-up-btn {
-					color: #00b5ad;
+				display: flex;
+				.review-up,
+				.review-down {
+					display: flex;
+					flex-direction: column-reverse;
 				}
-				.review-down-btn {
+				.review-up {
+					color: #00b5ad;
+					&-btn {
+						cursor: pointer;
+					}
+				}
+				.review-down {
 					color: #da5f5f;
+					&-btn {
+						cursor: pointer;
+					}
 				}
 			}
 		}
@@ -50,6 +63,13 @@
 		}
 		.review-replies {
 			padding-left: 51px;
+			.showmore-btn {
+				color: #00b5ad;
+				cursor: pointer;
+				&:hover {
+					color: orangered;
+				}
+			}
 		}
 	}
 }

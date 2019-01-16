@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Rating } from 'semantic-ui-react';
+import { Rating, Form, Button } from 'semantic-ui-react';
 
 export default class ReviewForm extends Component {
 	state = { rating: null };
@@ -43,17 +43,27 @@ export default class ReviewForm extends Component {
 	render() {
 		const { reply } = this.props;
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<input
+			<Form className="form" onSubmit={this.handleSubmit}>
+				<h1>Add Your {reply ? 'Reply' : 'Review'}</h1>
+				<Form.Input
+					icon="mail"
+					// label={errors.email}
+					iconPosition="left"
+					// onChange={validateField}
+
+					// error={errors.email}
 					type="text"
 					name="author"
 					placeholder="Enter Your Name"
 				/>
-				<input
+				<Form.Input
+					icon="key"
 					type="text"
 					name="text"
 					placeholder="Write Review Here"
+					iconPosition="left"
 				/>
+
 				{!reply && (
 					<Rating
 						icon="star"
@@ -64,8 +74,13 @@ export default class ReviewForm extends Component {
 					/>
 				)}
 
-				<button type="submit">Send</button>
-			</form>
+				<Button
+					content="Sign In"
+					icon="sign-in"
+					labelPosition="left"
+					type="submit"
+				/>
+			</Form>
 		);
 	}
 }
