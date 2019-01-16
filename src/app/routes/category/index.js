@@ -31,6 +31,7 @@ const frontload = async props => {
 	const query = queryString.parse(props.location.search);
 	const categoryName = props.match.params.slug_category;
 	const { p, l, price } = query;
+
 	if (
 		!_.get(
 			props,
@@ -60,6 +61,7 @@ export class Category extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		const categoryName = this.props.match.params.slug_category;
+		const prevCategoryName = prevProps.match.params.slug_category;
 		if (
 			!_.get(
 				this.props,
@@ -74,6 +76,20 @@ export class Category extends Component {
 			this.setState({
 				activePage: 1,
 			});
+		}
+
+		if (
+			categoryName !== prevCategoryName &&
+			!_.get(
+				this.props,
+				`categories[${categoryName}].products[${prevState.activePage ||
+					'1'}].length`
+			)
+		) {
+			this.setState({
+				activePage: 1,
+			});
+			this.props.getProducts(null, null, categoryName);
 		}
 	};
 

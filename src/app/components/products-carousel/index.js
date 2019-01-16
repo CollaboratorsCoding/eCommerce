@@ -20,6 +20,7 @@ export default function ProductsCarousel({ products, addToCart, loadingCart }) {
 		<Slider {...settings}>
 			{products.map(product => (
 				<ProductCard
+					key={product._id}
 					product={product}
 					addToCart={addToCart}
 					loadingCart={loadingCart}

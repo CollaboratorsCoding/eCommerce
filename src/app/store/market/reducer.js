@@ -154,7 +154,7 @@ export default (state = initialState, action) => {
 
 					newVal[reviewIndex].replies = [
 						action.result.reply,
-						...newVal[reviewIndex].replies,
+						...(newVal[reviewIndex].replies || []),
 					];
 					return [...newVal];
 				}
