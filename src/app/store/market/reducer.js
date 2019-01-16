@@ -197,7 +197,7 @@ export default (state = initialState, action) => {
 				);
 
 				if (reviewIndex !== -1) {
-					newVal[reviewIndex] = review;
+					newVal[reviewIndex] = { ...newVal[reviewIndex], ...review };
 					return [...newVal];
 				}
 				return newVal;
