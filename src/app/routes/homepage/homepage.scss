@@ -1,6 +1,6 @@
 @import '~slick-carousel/slick/slick.css';
 @import '~slick-carousel/slick/slick-theme.css';
-
+$small: 768px;
 .column-shadow-block {
 	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
@@ -26,6 +26,13 @@
 	/* font-weight: bold; */
 	background: #fff;
 	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+	@media only screen and (max-width: $small) {
+		bottom: 21px;
+		z-index: 200;
+		padding: 1px 31px;
+		font-size: 23px;
+		font-weight: 600;
+	}
 }
 
 .slider-wrapper {

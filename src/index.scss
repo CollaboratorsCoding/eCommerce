@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=cyrillic');
+$extrasmall: 420px;
+
+$small: 768px;
+$medium: 959px;
+$large: 1124px;
 body {
 	margin: 0;
 	padding: 0;
@@ -17,5 +22,26 @@ body {
 	.icon.selected.active {
 		color: #ff8252 !important;
 		text-shadow: none !important;
+	}
+}
+
+.section-header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.5rem;
+	width: 100%;
+}
+.main-container {
+	padding: 0 20px;
+	min-height: 60vh;
+	@media only screen and (max-width: $medium) {
+		padding: 0;
+	}
+}
+
+@media only screen and (max-width: $small) {
+	.ui.segment,
+	.mobile.column {
+		padding: 0 !important;
 	}
 }
