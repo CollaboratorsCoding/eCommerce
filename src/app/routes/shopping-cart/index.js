@@ -18,6 +18,7 @@ const {
 	addToCartProduct,
 	reduceCartProduct,
 	removeCartProduct,
+	addOrder,
 } = MarketActions;
 
 class ShoppingCart extends Component {
@@ -53,6 +54,7 @@ class ShoppingCart extends Component {
 							<Checkout
 								cart={cart}
 								switchPage={this.switchPage}
+								addOrder={this.props.addOrder}
 								{...this.props}
 							/>
 						) : (
@@ -83,6 +85,7 @@ const mapDispatchToProps = dispatch =>
 			addToCart: addToCartProduct,
 			reduceProduct: reduceCartProduct,
 			removeProduct: removeCartProduct,
+			addOrder,
 		},
 		dispatch
 	);

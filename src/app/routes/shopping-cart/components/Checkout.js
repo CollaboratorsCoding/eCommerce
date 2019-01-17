@@ -124,11 +124,16 @@ class Checkout extends PureComponent {
 		const step = this.state.current;
 		const form = this.state.form;
 		await validateForm(form[step].data);
+
 		if (_.isEmpty(this.props.errors) || form[step].isValid) {
-			await this.setState({
-				form: { ...form, [step]: { ...form[step], isValid: true } },
-			});
-			this.switchStep(this.state.current + 1);
+			if (!form[step + 1]) {
+				this.props.addOrder({ ...form[1].data, ...form[2].data });
+			} else {
+				await this.setState({
+					form: { ...form, [step]: { ...form[step], isValid: true } },
+				});
+				this.switchStep(this.state.current + 1);
+			}
 		}
 	};
 

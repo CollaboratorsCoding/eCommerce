@@ -65,4 +65,10 @@ MarketActions.getReviews = (p, l, slug) => ({
 	types: MarketTypes.getReviews,
 	promise: client => client.get(`get-reviews/${slug}?p=${p}&l=${l}`),
 });
+
+MarketActions.addOrder = data => ({
+	types: MarketTypes.addOrder,
+	promise: client => client.post(`order`, { data }),
+});
+
 export default MarketActions;

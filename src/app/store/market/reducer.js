@@ -13,6 +13,7 @@ const [ADD_REVIEW] = types.addReview;
 const [ADD_REPLY] = types.addReply;
 const [GET_REVIEWS] = types.getReviews;
 const [ADD_REVIEW_RATE] = types.addReviewRate;
+const [ADD_ORDER] = types.addOrder;
 
 const initialState = {
 	loading: false,
@@ -238,6 +239,13 @@ export default (state = initialState, action) => {
 				...state,
 				cart: action.result.cart,
 			};
+		case `${ADD_ORDER}_SUCCESS`: {
+			return {
+				...state,
+				loading: false,
+				cart: action.result.cart,
+			};
+		}
 		default:
 			return state;
 	}

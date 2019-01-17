@@ -12,5 +12,6 @@ MarketTypes.addReview = ['ADD_REVIEW'];
 MarketTypes.addReply = ['ADD_REPLY'];
 MarketTypes.getReviews = ['GET_REVIEWS'];
 MarketTypes.addReviewRate = ['ADD_REVIEW_RATE'];
+MarketTypes.addOrder = ['ADD_ORDER'];
 
 export default MarketTypes;

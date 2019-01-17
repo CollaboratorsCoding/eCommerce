@@ -2,13 +2,12 @@ import React from 'react';
 import { Button, List } from 'semantic-ui-react';
 
 export default function FormConfirm({ form, handleSubmit, prev }) {
-	console.log(form);
 	return (
-		<div>
+		<div className="confirm-order">
 			<List>
 				<List.Item>
-					<List.Icon name="users" />
-					<List.Content>Your Name: {form.name}</List.Content>
+					<List.Icon name="user" />
+					<List.Content>{form.name}</List.Content>
 				</List.Item>
 				<List.Item>
 					<List.Icon name="mail" />
@@ -25,9 +24,16 @@ export default function FormConfirm({ form, handleSubmit, prev }) {
 					<List.Content>{form.address}</List.Content>
 				</List.Item>
 			</List>
-
-			<Button onClick={prev}>Previous</Button>
-			<Button onClick={handleSubmit}>Confirm</Button>
+			<Button
+				content="Previous"
+				icon="arrow left"
+				labelPosition="left"
+				onClick={prev}
+				type="button"
+			/>
+			<Button color="teal" onClick={handleSubmit}>
+				Confirm
+			</Button>
 		</div>
 	);
 }
