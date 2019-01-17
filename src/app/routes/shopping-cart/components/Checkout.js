@@ -159,7 +159,6 @@ class Checkout extends PureComponent {
 
 	render() {
 		const { current, form } = this.state;
-		console.log(this.state);
 		return (
 			<div className="checkout">
 				<Steps current={current - 1}>
@@ -190,7 +189,13 @@ class Checkout extends PureComponent {
 								prev={this.prev}
 							/>
 						)}
-						{current === 3 && <FormConfirm />}
+						{current === 3 && (
+							<FormConfirm
+								form={{ ...form[1].data, ...form[2].data }}
+								handleSubmit={this.next}
+								prev={this.prev}
+							/>
+						)}
 					</div>
 					<div className="steps-content--right">
 						<div className="steps-content--right--content">

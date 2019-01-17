@@ -31,7 +31,6 @@ export default function Cart({
 						>
 							<Table.Header className="shopping-cart-section-body-table-header">
 								<Table.Row>
-									<Table.HeaderCell />
 									<Table.HeaderCell>Product</Table.HeaderCell>
 									<Table.HeaderCell>
 										Quantity

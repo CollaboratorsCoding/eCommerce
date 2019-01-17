@@ -16,15 +16,15 @@
 
 			.title-wrapper {
 				display: flex;
+				min-width: 200px;
 				align-items: center;
 				margin: auto;
 				&--text {
-					margin-right: auto;
-					margin-left: 5px;
+					margin: auto;
 				}
 
 				&--img {
-					margin-left: 40px;
+					left: 23%;
 				}
 			}
 			&-arrow:hover {

@@ -11,14 +11,14 @@ export default function ItemCart({
 	return (
 		<Table.Row>
 			<Table.Cell>
-				<Image
-					className="title-wrapper--img"
-					size="mini"
-					src={item.imagePath}
-				/>
-			</Table.Cell>
-			<Table.Cell>
-				<div className="title-wrapper--text">{item.title}</div>
+				<div className="title-wrapper">
+					<Image
+						className="title-wrapper--img"
+						size="mini"
+						src={item.imagePath}
+					/>
+					<div className="title-wrapper--text">{item.title}</div>
+				</div>
 			</Table.Cell>
 			<Table.Cell>
 				<Icon
