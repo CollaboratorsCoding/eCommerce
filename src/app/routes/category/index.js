@@ -72,7 +72,7 @@ export class Category extends Component {
 			) &&
 			prevState.activePage !== 1
 		) {
-			setQuery('p', '1', this.props.history);
+			setQuery({ p: 1 }, this.props.history);
 			this.setState({
 				activePage: 1,
 			});
@@ -96,7 +96,7 @@ export class Category extends Component {
 	handlePaginationChange = (e, { activePage }) => {
 		const categoryName = this.props.match.params.slug_category;
 
-		setQuery('p', activePage, this.props.history);
+		setQuery({ p: activePage }, this.props.history);
 		this.setState({ activePage });
 		if (
 			!_.get(
@@ -115,7 +115,7 @@ export class Category extends Component {
 
 	handleApplyFilters = filterQuery => {
 		const { activePage } = this.state;
-		setQuery('price', filterQuery.split('=')[1], this.props.history);
+		setQuery({ price: filterQuery.split('=')[1] }, this.props.history);
 		this.props.getProducts(
 			activePage,
 			20,

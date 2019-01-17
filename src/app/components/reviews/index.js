@@ -29,7 +29,7 @@ class Review extends Component {
 	}
 
 	handlePaginationChange = (e, { activePage }) => {
-		setQuery('p', activePage, this.props.history);
+		setQuery({ p: activePage }, this.props.history);
 		this.setState({ activePage });
 		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
 			this.props.onGetReviews(activePage, 10, this.props.productSlug);

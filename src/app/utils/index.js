@@ -1,16 +1,20 @@
+import _ from 'lodash';
+
 export const isServer = !(
 	typeof window !== 'undefined' &&
 	window.document &&
 	window.document.createElement
 );
 
-export const setQuery = (query, value, history) => {
+export const setQuery = (querys, history) => {
 	const searchParams = new URLSearchParams(history.location.search);
-	if (searchParams.has(query)) {
-		searchParams.set(query, value);
-	} else {
-		searchParams.append(query, value);
-	}
+	_.forEach(querys, (value, key) => {
+		if (searchParams.has(key)) {
+			searchParams.set(key, value);
+		} else {
+			searchParams.append(key, value);
+		}
+	});
 
 	history.push({
 		search: `?${searchParams.toString()}`,

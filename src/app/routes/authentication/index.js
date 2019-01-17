@@ -32,7 +32,7 @@ class Authentication extends PureComponent {
 	}
 
 	switchForm = form => {
-		setQuery('form', form, this.props.history);
+		setQuery({ form }, this.props.history);
 	};
 
 	render() {

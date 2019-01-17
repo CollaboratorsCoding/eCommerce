@@ -86,7 +86,9 @@ class Checkout extends PureComponent {
 			let allValid = true;
 			let invalidStep = null;
 
+			/* eslint-disable-next-line */
 			for (const key in form) {
+				/* eslint-disable-next-line */
 				if (form.hasOwnProperty(key) && key <= this.state.current) {
 					const element = form[key];
 					if (!element.isValid) {
@@ -101,17 +103,17 @@ class Checkout extends PureComponent {
 					current: queryStep,
 				});
 			}
-			if (invalidStep && !allValid) {
-				this.switchStep(Number(invalidStep));
+			if (!allValid && queryStep) {
+				this.switchStep(
+					Number(invalidStep) <= queryStep
+						? Number(invalidStep)
+						: queryStep
+				);
 				this.setState({
-					current: Number(invalidStep),
-				});
-			}
-
-			if (invalidStep >= queryStep && !allValid) {
-				this.switchStep(queryStep);
-				this.setState({
-					current: queryStep,
+					current:
+						Number(invalidStep) <= queryStep
+							? Number(invalidStep)
+							: queryStep,
 				});
 			}
 		}
@@ -135,7 +137,7 @@ class Checkout extends PureComponent {
 	};
 
 	switchStep = step => {
-		this.props.switchPage('step', step);
+		this.props.switchPage({ step });
 	};
 
 	handleChange = e => {

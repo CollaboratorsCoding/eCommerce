@@ -69,7 +69,10 @@ export default function Cart({
 								</Button>
 								<Button
 									onClick={() =>
-										switchPage('cartpage', 'checkout')
+										switchPage({
+											cartpage: 'checkout',
+											step: 1,
+										})
 									}
 									primary
 								>

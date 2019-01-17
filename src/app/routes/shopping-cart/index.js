@@ -37,8 +37,8 @@ class ShoppingCart extends Component {
 		}
 	}
 
-	switchPage = (query, page) => {
-		setQuery(query, page, this.props.history);
+	switchPage = querys => {
+		setQuery(querys, this.props.history);
 	};
 
 	render() {

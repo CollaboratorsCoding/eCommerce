@@ -52,7 +52,7 @@ export class Product extends Component {
 
 	handleTabChange = queryName => {
 		this.setState({ activeTab: queryName });
-		setQuery('tab', queryName, this.props.history);
+		setQuery({ tab: queryName }, this.props.history);
 	};
 
 	handleContextRef = contextRef => this.setState({ contextRef });
