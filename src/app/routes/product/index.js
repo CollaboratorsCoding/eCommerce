@@ -93,14 +93,22 @@ export class Product extends Component {
 							}}
 						>
 							<Grid.Row>
-								<Grid.Column width={8}>
+								<Grid.Column
+									mobile={16}
+									tablet={8}
+									computer={8}
+								>
 									<section className="left-product-section">
 										<div className="product-img">
 											<img alt="lel" src={imagePath} />
 										</div>
 									</section>
 								</Grid.Column>
-								<Grid.Column width={8}>
+								<Grid.Column
+									mobile={16}
+									tablet={8}
+									computer={8}
+								>
 									<section className="right-product-section">
 										<div className="right-wrapper">
 											<div className="product-description">
@@ -144,7 +152,11 @@ export class Product extends Component {
 							}}
 						>
 							<Grid.Row>
-								<Grid.Column width={8}>
+								<Grid.Column
+									mobile={16}
+									tablet={8}
+									computer={8}
+								>
 									<Reviews
 										query={query}
 										product={product}
@@ -157,7 +169,11 @@ export class Product extends Component {
 										}
 									/>
 								</Grid.Column>
-								<Grid.Column width={8}>
+								<Grid.Column
+									mobile={16}
+									tablet={8}
+									computer={8}
+								>
 									<div
 										style={{ height: '100%' }}
 										ref={this.handleContextRef}

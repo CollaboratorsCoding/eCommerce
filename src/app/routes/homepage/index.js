@@ -71,7 +71,9 @@ class HomePage extends Component {
 					<Grid>
 						<Grid.Row>
 							<Grid.Column
-								width={5}
+								mobile={16}
+								tablet={8}
+								computer={5}
 								style={{
 									background: '#fff',
 									padding: 0,
@@ -80,20 +82,20 @@ class HomePage extends Component {
 							>
 								<CategoriesList />
 							</Grid.Column>
-							<Grid.Column width={11}>{slider}</Grid.Column>
+							<Grid.Column mobile={16} tablet={8} computer={11}>
+								{slider}
+							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
+							<h1 className="section-header">
+								Last Visited Products
+							</h1>
 							<Grid.Column width={16}>
 								<ProductsCarousel
 									products={lastVisitedProducts}
 									addToCart={addToCart}
 									loadingCart={loadingCart}
 								/>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<div>Promotions</div>
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>

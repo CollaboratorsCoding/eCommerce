@@ -31,7 +31,7 @@ export default function ProductCard({ product, addToCart, loadingCart }) {
 
 					<CustomLink
 						componentPromise={Product}
-						className="category-item"
+						className="product-card-title"
 						to={`/p/${product.slug}?tab=description`}
 					>
 						{product.title}{' '}
@@ -67,7 +67,7 @@ export default function ProductCard({ product, addToCart, loadingCart }) {
 					onClick={() => {
 						addToCart(product._id);
 					}}
-					color="green"
+					color="teal"
 					className="product-buy"
 					fluid
 					disabled={loadingCart}

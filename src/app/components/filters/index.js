@@ -66,7 +66,7 @@ export default class FilterList extends Component {
 		const { sliderValues } = this.state;
 		const { filtersData } = this.props;
 		return (
-			<div>
+			<section className="filters-wrapper">
 				<div>Price Range</div>
 				<div className="input-wrapper">
 					<Input
@@ -97,7 +97,7 @@ export default class FilterList extends Component {
 						<span className="tooltip">${value}</span>
 					)}
 				/>
-			</div>
+			</section>
 		);
 	}
 }

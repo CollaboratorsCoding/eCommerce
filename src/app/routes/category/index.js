@@ -132,7 +132,7 @@ export class Category extends Component {
 		const { activePage } = this.state;
 		const upperRow = (
 			<Grid.Row verticalAlign="middle" textAlign="center">
-				<Grid.Column width={3}>
+				<Grid.Column mobile={16} tablet={7} computer={3}>
 					<Popup
 						trigger={<Button icon>Categories</Button>}
 						flowing
@@ -142,7 +142,12 @@ export class Category extends Component {
 						<CategoriesList className="hover-categories" />
 					</Popup>
 				</Grid.Column>
-				<Grid.Column width={13} className="category-label-wrapper">
+				<Grid.Column
+					mobile={16}
+					tablet={9}
+					computer={13}
+					className="category-label-wrapper"
+				>
 					<div className="category-label">{categoryName}</div>
 				</Grid.Column>
 				<Breadcrumb size="large">
@@ -185,10 +190,12 @@ export class Category extends Component {
 					{upperRow}
 					<Grid.Row>
 						<Grid.Column
-							width={3}
+							mobile={16}
+							tablet={7}
+							computer={3}
 							style={{
 								background: '#fff',
-								padding: '15px',
+								boxShadow: '0 1px 2px 0 rgba(34,36,38,.15)',
 							}}
 						>
 							<FiltersList
@@ -200,7 +207,7 @@ export class Category extends Component {
 							/>
 						</Grid.Column>
 
-						<Grid.Column width={13}>
+						<Grid.Column mobile={16} tablet={9} computer={13}>
 							<Segment
 								className={loading ? 'loading-segment' : ''}
 							>

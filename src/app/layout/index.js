@@ -39,10 +39,7 @@ class StickyLayout extends Component {
 						totalQty={this.props.cart.totalQty}
 						current={this.props.current}
 					/>
-					<Container
-						fluid
-						style={{ padding: '0 20px', minHeight: '60vh' }}
-					>
+					<Container fluid className="main-container">
 						{this.props.children}
 					</Container>
 					<Footer />
