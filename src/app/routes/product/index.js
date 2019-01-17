@@ -38,9 +38,20 @@ const frontload = async props =>
 	await props.getProduct(props.match.params.slug_product);
 
 export class Product extends Component {
-	state = {};
+	state = {
+		activeTab: queryString.parse(this.props.location.search).tab,
+	};
+
+	componentDidUpdate = (prevProps, prevState) => {
+		const query = queryString.parse(this.props.location.search).tab;
+
+		if (query !== prevState.activeTab) {
+			this.setState({ activeTab: query });
+		}
+	};
 
 	handleTabChange = queryName => {
+		this.setState({ activeTab: queryName });
 		setQuery('tab', queryName, this.props.history);
 	};
 
@@ -189,7 +200,7 @@ export class Product extends Component {
 		];
 
 		const activeTabIndex = panes.findIndex(
-			tab => tab.queryTab === query.tab
+			tab => tab.queryTab === this.state.activeTab
 		);
 		return (
 			<Page
@@ -234,7 +245,7 @@ export class Product extends Component {
 					/>
 					<Tab
 						panes={panes}
-						defaultActiveIndex={activeTabIndex}
+						activeIndex={activeTabIndex}
 						onTabChange={(e, { activeIndex }) =>
 							this.handleTabChange(panes[activeIndex].queryTab)
 						}

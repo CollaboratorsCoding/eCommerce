@@ -154,7 +154,7 @@ export default (state = initialState, action) => {
 
 					newVal[reviewIndex].replies = [
 						action.result.reply,
-						...newVal[reviewIndex].replies,
+						...(newVal[reviewIndex].replies || []),
 					];
 					return [...newVal];
 				}
@@ -197,7 +197,7 @@ export default (state = initialState, action) => {
 				);
 
 				if (reviewIndex !== -1) {
-					newVal[reviewIndex] = review;
+					newVal[reviewIndex] = { ...newVal[reviewIndex], ...review };
 					return [...newVal];
 				}
 				return newVal;
