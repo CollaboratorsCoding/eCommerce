@@ -7,6 +7,7 @@ export default function ProductsList({ products, addToCart, loadingCart }) {
 
 	const productsList = products.map(product => (
 		<ProductCard
+			key={product._id}
 			product={product}
 			addToCart={addToCart}
 			loadingCart={loadingCart}

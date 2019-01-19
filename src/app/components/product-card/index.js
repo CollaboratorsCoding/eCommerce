@@ -17,6 +17,7 @@ export default function ProductCard({ product, addToCart, loadingCart }) {
 					<div className="product-tags">
 						{product.tags.map(tag => (
 							<span
+								key={tag}
 								className={`tag tag-${tag}`}
 								style={{
 									backgroundColor: tagsColors[tag],

@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 
+import { withRouter } from 'react-router';
+
 import {
 	Container,
 	Dropdown,
@@ -80,9 +82,21 @@ const fixedMenuStyle = {
 	boxShadow: '0 0 8px 0 rgba(0,0,0,.1)',
 };
 
-export default class Header extends Component {
+class Header extends Component {
 	state = {
 		menuFixed: false,
+		showMobile: false,
+	};
+
+	componentDidUpdate = (prevProps, prevState) => {
+		if (
+			prevState.showMobile &&
+			prevProps.location.pathname !== this.props.location.pathname
+		) {
+			this.setState({
+				showMobile: false,
+			});
+		}
 	};
 
 	handleOverlayRef = c => {
@@ -104,7 +118,7 @@ export default class Header extends Component {
 	unStickTopMenu = () => this.setState({ menuFixed: false });
 
 	render() {
-		const { menuFixed } = this.state;
+		const { menuFixed, showMobile } = this.state;
 		const { current, totalQty, user, logout } = this.props;
 		const links = user.isLoggedIn ? authLinks : unAuthLinks;
 		return (
@@ -112,11 +126,108 @@ export default class Header extends Component {
 				{/* Heads up, style below isn't necessary for correct work of example, simply our docs defines other
             background color.
           */}
-
 				{/* Attaching the top menu is a simple operation, we only switch `fixed` prop and add another style if it has
             gone beyond the scope of visibility
-		  */}
+		  */}{' '}
 				<Visibility
+					className="mobile-menu"
+					onBottomPassed={this.stickTopMenu}
+					onBottomVisible={this.unStickTopMenu}
+					once={false}
+				>
+					<Menu
+						borderless
+						vertical
+						fluid
+						fixed={menuFixed ? 'top' : undefined}
+						style={menuFixed ? fixedMenuStyle : menuStyle}
+					>
+						<Container>
+							<Menu.Item header>
+								<Image size="tiny" src={logo} />
+								JabkoStore
+								<Icon
+									className="mobile-bars"
+									name="bars"
+									onClick={() => {
+										this.setState(prevState => ({
+											showMobile: !prevState.showMobile,
+										}));
+									}}
+								/>
+							</Menu.Item>
+
+							{showMobile && (
+								<>
+									{links.map(link => {
+										const TheLink = (
+											<HeaderLink
+												key={link.text}
+												current={current}
+												{...link}
+											/>
+										);
+
+										return TheLink;
+									})}
+
+									<Menu.Item>
+										<CustomLink
+											to="/cart"
+											componentPromise={Cart}
+										>
+											<Icon.Group size="big">
+												<Icon
+													className="cart--menu"
+													color="black"
+													name="shopping basket"
+												/>
+												{totalQty ? (
+													<Label
+														circular
+														size="mini"
+														color="teal"
+														floating
+													>
+														{totalQty}
+													</Label>
+												) : null}
+											</Icon.Group>
+										</CustomLink>
+									</Menu.Item>
+
+									{user.isLoggedIn ? (
+										<Dropdown
+											text={user.profile.name}
+											pointing
+											className="link item"
+										>
+											<Dropdown.Menu>
+												<Dropdown.Item>
+													Profile
+												</Dropdown.Item>
+
+												<Dropdown.Divider />
+												<Dropdown.Item onClick={logout}>
+													Logout
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown>
+									) : (
+										<HeaderLink
+											current={current}
+											to="/authentication"
+											text="Authentication"
+											componentPromise={Authentication}
+										/>
+									)}
+								</>
+							)}
+						</Container>
+					</Menu>
+				</Visibility>
+				<Visibility
+					className="lg-menu"
 					onBottomPassed={this.stickTopMenu}
 					onBottomVisible={this.unStickTopMenu}
 					once={false}
@@ -202,3 +313,4 @@ export default class Header extends Component {
 		);
 	}
 }
+export default withRouter(Header);
