@@ -166,9 +166,9 @@ export default (req, res) => {
 					frontloadsCount,
 				});
 
-				if (context.url) {
-					return res.redirect(302, context.url);
-				}
+				// if (context.url) {
+				// 	return res.redirect(302, context.url);
+				// }
 
 				// We have all the final HTML, let's send it to the user already!
 				return res.send(html);

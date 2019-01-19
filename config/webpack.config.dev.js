@@ -6,9 +6,10 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
+
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
@@ -32,7 +33,9 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
 	const loaders = [
-		require.resolve('style-loader'),
+		{
+			loader: MiniCssExtractPlugin.loader,
+		},
 		{
 			loader: require.resolve('css-loader'),
 			options: cssOptions,
@@ -59,7 +62,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 		},
 	];
 	if (preProcessor) {
-		loaders.push(require.resolve(preProcessor));
+		loaders.push({
+			loader: require.resolve(preProcessor),
+		});
 	}
 	return loaders;
 };
@@ -116,6 +121,7 @@ module.exports = {
 		// https://twitter.com/wSokra/status/969633336732905474
 		// https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
 		splitChunks: {
+			chunks: 'all',
 			name: 'vendors',
 		},
 		// Keep the runtime chunk seperated to enable long term caching
@@ -363,6 +369,13 @@ module.exports = {
 		// a plugin that prints an error when you attempt to do this.
 		// See https://github.com/facebook/create-react-app/issues/240
 		new CaseSensitivePathsPlugin(),
+
+		new MiniCssExtractPlugin({
+			// Options similar to the same options in webpackOptions.output
+			// both options are optional
+			filename: 'static/css/[name].css',
+			chunkFilename: 'static/css/[name].css',
+		}),
 		// If you require a missing module and then `npm install` it, you still have
 		// to restart the development server for Webpack to discover it. This plugin
 		// makes the discovery automatic so you don't have to restart.
