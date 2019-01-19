@@ -65,7 +65,7 @@ export default (req, res) => {
 
 	// Load in our HTML file from our build
 	fs.readFile(
-		path.join(`${process.cwd()}/build/client/index.html`),
+		path.join(`${process.cwd()}/build/client/template.html`),
 		'utf8',
 		(err, htmlData) => {
 			// If there's an error... serve up something nasty

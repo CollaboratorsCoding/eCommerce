@@ -419,6 +419,7 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			inject: true,
+			filename: 'template.html',
 			template: paths.appHtml,
 			minify: {
 				removeComments: true,

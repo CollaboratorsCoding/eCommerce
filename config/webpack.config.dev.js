@@ -4,10 +4,10 @@ const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const paths = require('./paths');
@@ -83,10 +83,12 @@ module.exports = {
 		// Note: instead of the default WebpackDevServer client, we use a custom one
 		// to bring better experience for Create React App users. You can replace
 		// the line below with these two lines if you prefer the stock client:
+		// require.resolve('react-dev-utils/webpackHotDevClient'),
+		// 'react-hot-loader',
 		// 'react-hot-loader/patch',
 		// require.resolve('webpack-dev-server/client') + '?/',
 		// require.resolve('webpack/hot/dev-server'),
-		require.resolve('react-dev-utils/webpackHotDevClient'),
+		'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
 		// Finally, this is your app's code:
 		paths.appIndexJs,
 		// We include the app code last so that if there is a runtime error during
@@ -96,6 +98,7 @@ module.exports = {
 	output: {
 		// Add /* filename */ comments to generated require()s in the output.
 		pathinfo: true,
+		path: paths.appBuild,
 		// This does not produce a real file. It's just the virtual path that is
 		// served by WebpackDevServer in development. This is the JS bundle
 		// containing code from all our entry points, and the Webpack runtime.
@@ -337,11 +340,11 @@ module.exports = {
 		// Generates an `index.html` file with the <script> injected.
 		new HtmlWebpackPlugin({
 			inject: true,
+			filename: 'template.html',
 			template: paths.appHtml,
 		}),
-		new ReactLoadablePlugin({
-			filename: 'build/react-loadable.json',
-		}),
+
+		new WriteFilePlugin(),
 
 		// Makes some environment variables available in index.html.
 		// The public URL is available as %PUBLIC_URL% in index.html, e.g.:

@@ -109,19 +109,22 @@
 		"terser-webpack-plugin": "1.1.0",
 		"url-loader": "1.1.1",
 		"webpack": "4.19.1",
+		"webpack-dev-middleware": "^3.5.1",
 		"webpack-dev-server": "3.1.9",
+		"webpack-hot-middleware": "^2.24.3",
 		"webpack-manifest-plugin": "2.0.4",
-		"workbox-webpack-plugin": "3.6.2"
+		"workbox-webpack-plugin": "3.6.2",
+		"write-file-webpack-plugin": "^4.5.0"
 	},
 	"scripts": {
-		"start": "cross-env NODE_ENV=production node build/server/server.js",
-		"dev": "node scripts/start.js",
+		"start": "cross-env NODE_ENV=production node server.js",
+		"dev": "node scripts/compiler-node.js && npm run dev:server",
 		"dev:react": "node scripts/watch.js",
-		"dev:node": "node scripts/dev-node.js",
+		"dev:server": "cross-env NODE_ENV=development node server.js",
 		"build:react": "node scripts/build.js",
 		"build:node": "node scripts/build-node.js",
 		"build": "npm run build:react && npm run build:node",
-		"seed": "node server/seed.product.js",
+		"seed": "node server/seed/seed.product.js",
 		"test": "node scripts/test.js"
 	},
 	"browserslist": [

@@ -1,12 +1,6 @@
-// see https://github.com/remy/nodemon/issues/95#issuecomment-143423483
-process.stdout.isTTY = true;
-
 process.env.NODE_ENV = 'development';
-
-const path = require('path');
 const compiler = require('./utils/compiler').default;
-const compilerConfig = require('./utils/compiler').config;
-const spawnNodemon = require('./utils/nodemon').default;
+
 const chalk = require('chalk');
 const paths = require('../config/paths');
 const fs = require('fs-extra');
@@ -18,17 +12,12 @@ console.log(
 		)} server with ${chalk.underline('npm start')} command.`
 );
 
-const bundlePath = path.resolve(
-	compilerConfig.output.path,
-	compilerConfig.output.filename
-);
-
-let nodemon;
-
-console.log(chalk.cyan('\nWebpack starts to build and watch your files...\n'));
-
 fs.emptyDirSync(paths.appBuildServer);
 fs.copySync(paths.serverAssets, paths.appBuildServer);
+
+fs.ensureDirSync(paths.appBuild);
+
+fs.writeJSONSync(`${paths.appBuild}/assets-manifest.json`, {});
 
 compiler.watch(null, (err, stats) => {
 	if (err) {
@@ -47,22 +36,5 @@ compiler.watch(null, (err, stats) => {
 
 	if (stats.hasWarnings()) {
 		console.warn(info.warnings);
-	}
-
-	const statsString = stats.toString({
-		colors: true,
-	});
-
-	console.log(statsString);
-
-	console.log(
-		`${chalk.magenta('[Webpack]')} Compiled${chalk.grey(
-			` [timestamp:${Date.now()}]`
-		)}`
-	);
-	// spawn nodemon process if it wasn't already spawned
-	if (!nodemon) {
-		console.log(chalk.cyan('\nStarting nodemon...\n'));
-		nodemon = spawnNodemon(bundlePath);
 	}
 });
