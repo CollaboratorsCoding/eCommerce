@@ -5,7 +5,7 @@ const config = require('./config/webpack.config.dev');
 
 const compiler = webpack(config);
 
-module.exports = async app => {
+module.exports = app => {
 	console.log('Development: Applying webpackDevMiddleware');
 
 	app.use(

@@ -27,10 +27,10 @@ if (isDev) {
 				resolve();
 			}
 		});
-	}).then(async () => {
+	}).then(() => {
 		// Mount the routes when ready (and only once via promise semantics):
 		app.use(express.static('build/client/'));
-		await require('./devMiddleware')(app);
+		require('./devMiddleware')(app);
 		require('./build/server/server.js').mount.default(app);
 	});
 	// waitForBuild middleware to avoid confusing 404s

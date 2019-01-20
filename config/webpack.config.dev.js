@@ -33,6 +33,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
 	const loaders = [
+		require.resolve('css-hot-loader'),
 		{
 			loader: MiniCssExtractPlugin.loader,
 		},
