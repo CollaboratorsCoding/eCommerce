@@ -3,11 +3,11 @@ import { isServer } from '../utils';
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
-function formatUrl(path) {
+function formatUrl(path, req) {
 	const adjustedPath = path[0] !== '/' ? `/${path}` : path;
 	if (isServer) {
 		// Prepend host and port of the API server to the path.
-		return `http://localhost:3000/api${adjustedPath}`;
+		return `http://${req.hostname}:3000/api${adjustedPath}`;
 	}
 	// Prepend `/api` to relative URL, to proxy to API server.
 	return `/api${adjustedPath}`;
@@ -21,7 +21,7 @@ export default class ApiClient {
 				(this[method] = (path, { params, data } = {}) =>
 					new Promise((resolve, reject) => {
 						const request = superagent[method](
-							formatUrl(path, isServer)
+							formatUrl(path, req)
 						);
 
 						if (params) {

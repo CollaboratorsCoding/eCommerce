@@ -4,6 +4,7 @@ import Steps from 'rc-steps';
 import { Icon } from 'semantic-ui-react';
 import queryString from 'query-string';
 
+import { Link } from 'react-router-dom';
 import withValidations from '../../../hocs/withValidations';
 
 import FormContact from './FormContact';
@@ -206,28 +207,12 @@ class Checkout extends PureComponent {
 						<div className="steps-content--right--content">
 							<ProductList cart={this.props.cart} />
 							<br />
-							<p>Update cart</p>
+							<div className="steps-content--right--content-tocart">
+								<Link to="/cart">Update cart</Link>
+							</div>
 						</div>
 					</div>
 				</div>
-				{/* <div className="steps-action">
-					{current > 0 && (
-						<Button
-							style={{ marginLeft: 8 }}
-							onClick={() => this.prev()}
-						>
-							Previous
-						</Button>
-					)}
-					{current === steps.length - 1 && (
-						<Button type="primary">Done</Button>
-					)}
-					{current < steps.length - 1 && (
-						<Button type="primary" onClick={() => this.next()}>
-							Next
-						</Button>
-					)}
-				</div> */}
 			</div>
 		);
 	}

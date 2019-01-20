@@ -1,63 +1,68 @@
 import React from 'react';
-import { Table, Icon, Label, Image } from 'semantic-ui-react';
+import { List, Image, Icon, Label } from 'semantic-ui-react';
 
 export default function ItemCart({
-	product,
+	products,
 	handleAddProduct,
 	handleRemoveProduct,
 	handleReduceProduct,
 }) {
-	const { item, price, qty } = product;
 	return (
-		<Table.Row>
-			<Table.Cell>
-				<div className="title-wrapper">
+		<List divided relaxed>
+			{products.map(product => (
+				<List.Item key={product.item._id}>
 					<Image
-						className="title-wrapper--img"
-						size="mini"
-						src={item.imagePath}
+						floated="left"
+						size="tiny"
+						src={product.item.imagePath}
 					/>
-					<div className="title-wrapper--text">{item.title}</div>
-				</div>
-			</Table.Cell>
-			<Table.Cell>
-				<Icon
-					color="grey"
-					onClick={() => handleReduceProduct(item._id)}
-					size="large"
-					className="shopping-cart-section-body-table-arrow"
-					name="caret square left"
-				/>
-				<Label
-					className="shopping-cart-section-body-table-quantity"
-					color="teal"
-				>
-					{qty}
-				</Label>
-				<Icon
-					color="grey"
-					size="large"
-					onClick={() => handleAddProduct(item._id)}
-					className="shopping-cart-section-body-table-arrow"
-					name="caret square right"
-				/>
-			</Table.Cell>
-			<Table.Cell>
-				<Icon name="usd" />
-				{item.price}
-			</Table.Cell>
-			<Table.Cell>
-				<div className="shopping-cart-section-body-table--wrapper">
-					<Icon name="usd" />
-					{price}
-					<Icon
-						className="shopping-cart-section-body-table--wrapper__icon-delete"
-						onClick={() => handleRemoveProduct(item._id)}
-						color="red"
-						name="trash alternate outline"
-					/>
-				</div>
-			</Table.Cell>
-		</Table.Row>
+					<List.Content floated="left">
+						<List.Header className="shopping-cart-section-body-title cut-text">
+							{product.item.title}
+						</List.Header>
+						<List.Description className="shopping-cart-section-body-description cut-text">
+							{product.item.description}
+						</List.Description>
+					</List.Content>
+					<List.Content floated="right">
+						<div className="shopping-cart-section-body-right">
+							<Icon
+								className="shopping-cart-section-body-right__icon-delete"
+								onClick={() =>
+									handleRemoveProduct(product.item._id)
+								}
+								color="red"
+								name="trash alternate outline"
+							/>
+							<div className="shopping-cart-section-body-right-bottom">
+								<Icon
+									color="grey"
+									onClick={() =>
+										handleReduceProduct(product.item._id)
+									}
+									size="large"
+									className="shopping-cart-section-body-right-bottom-arrow"
+									name="caret square left"
+								/>
+								<Label color="teal">{product.qty}</Label>
+								<Icon
+									color="grey"
+									size="large"
+									onClick={() =>
+										handleAddProduct(product.item._id)
+									}
+									className="shopping-cart-section-body-right-bottom-arrow"
+									name="caret square right"
+								/>
+								<p>
+									<Icon name="usd" />
+									{product.price}
+								</p>
+							</div>
+						</div>
+					</List.Content>
+				</List.Item>
+			))}
+		</List>
 	);
 }

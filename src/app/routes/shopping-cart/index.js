@@ -43,7 +43,13 @@ class ShoppingCart extends Component {
 	};
 
 	render() {
-		const { cart, addToCart, reduceProduct, removeProduct } = this.props;
+		const {
+			loadingCart,
+			cart,
+			addToCart,
+			reduceProduct,
+			removeProduct,
+		} = this.props;
 		const { totalQty } = cart;
 		const { queryPage } = this.state;
 		return (
@@ -63,6 +69,7 @@ class ShoppingCart extends Component {
 								reduceProduct={reduceProduct}
 								removeProduct={removeProduct}
 								switchPage={this.switchPage}
+								loading={loadingCart}
 								cart={cart}
 							/>
 						)}
@@ -77,6 +84,7 @@ class ShoppingCart extends Component {
 
 const mapStateToProps = state => ({
 	cart: state.market.cart,
+	loadingCart: state.market.loadingCart,
 });
 
 const mapDispatchToProps = dispatch =>

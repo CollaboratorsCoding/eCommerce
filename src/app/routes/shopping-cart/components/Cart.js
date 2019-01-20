@@ -1,19 +1,24 @@
 import React from 'react';
-import { Icon, Table, Grid, Button } from 'semantic-ui-react';
+import { Icon, Grid, Button, Segment, Loader } from 'semantic-ui-react';
 
 import ItemCart from './ItemCart';
 
 export default function Cart({
-	history,
 	cart,
 	addToCart,
 	reduceProduct,
 	removeProduct,
 	switchPage,
+	loading,
 }) {
 	const { totalPrice, productsInCart } = cart;
 	return (
-		<div className="shopping-cart-section">
+		<Segment
+			className={`shopping-cart-section ${
+				loading ? 'loading-segment' : ''
+			}`}
+		>
+			<Loader active={loading} />
 			<Grid>
 				<Grid.Row className="shopping-cart-section-header">
 					<Grid.Column>
@@ -25,34 +30,12 @@ export default function Cart({
 				</Grid.Row>
 				<Grid.Row className="shopping-cart-section-body">
 					<Grid.Column>
-						<Table
-							className="shopping-cart-section-body-table"
-							basic="very"
-						>
-							<Table.Header className="shopping-cart-section-body-table-header">
-								<Table.Row>
-									<Table.HeaderCell>Product</Table.HeaderCell>
-									<Table.HeaderCell>
-										Quantity
-									</Table.HeaderCell>
-									<Table.HeaderCell>Price</Table.HeaderCell>
-									<Table.HeaderCell>
-										Subtotal
-									</Table.HeaderCell>
-								</Table.Row>
-							</Table.Header>
-							<Table.Body>
-								{productsInCart.map(product => (
-									<ItemCart
-										key={product.item._id}
-										product={product}
-										handleAddProduct={addToCart}
-										handleRemoveProduct={removeProduct}
-										handleReduceProduct={reduceProduct}
-									/>
-								))}
-							</Table.Body>
-						</Table>
+						<ItemCart
+							products={productsInCart}
+							handleAddProduct={addToCart}
+							handleRemoveProduct={removeProduct}
+							handleReduceProduct={reduceProduct}
+						/>
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Row>
@@ -60,20 +43,13 @@ export default function Cart({
 						<div className="shopping-cart-section-footer">
 							<div>
 								<Button
-									color="teal"
-									onClick={() => history.goBack()}
-								>
-									<Icon name="arrow left" /> COUNTINUE
-									SHOPPING
-								</Button>
-								<Button
 									onClick={() =>
 										switchPage({
 											cartpage: 'checkout',
 											step: 1,
 										})
 									}
-									primary
+									color="teal"
 								>
 									CHECKOUT
 								</Button>
@@ -86,6 +62,6 @@ export default function Cart({
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
-		</div>
+		</Segment>
 	);
 }

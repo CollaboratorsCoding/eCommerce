@@ -229,15 +229,27 @@ export default (state = initialState, action) => {
 				cart: action.result.cart,
 				loadingCart: false,
 			};
+		case REMOVE_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
+			};
 		case `${REMOVE_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
+			};
+		case REDUCE_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
 			};
 		case `${REDUCE_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
 			};
 		case `${ADD_ORDER}_SUCCESS`: {
 			return {

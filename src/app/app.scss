@@ -44,3 +44,13 @@
 .cart--menu:hover {
 	cursor: pointer;
 }
+
+.cut-text {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.loading-segment {
+	opacity: 0.4;
+}

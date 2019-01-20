@@ -9,7 +9,7 @@ const products = [
 	{
 		imagePath:
 			'http://www.gesgi.com/wp-content/uploads/2014/05/demo-image-325x390.png',
-		title: 'iphone X',
+		title: 'iphone X test test test sstest',
 		category: 'mobile',
 		slug: 'sddff',
 		description:

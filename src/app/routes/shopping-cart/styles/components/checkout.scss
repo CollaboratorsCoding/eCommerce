@@ -3,6 +3,21 @@
 	text-align: left;
 }
 
+@media only screen and (max-width: 590px) {
+	.steps-content {
+		flex-direction: column;
+
+		&--left {
+			width: 100% !important;
+		}
+
+		&--right {
+			margin-top: 40px;
+			width: 100% !important;
+		}
+	}
+}
+
 .steps-content {
 	margin-top: 16px;
 	display: flex;
@@ -23,12 +38,13 @@
 			border: 1px solid #c5c5c57a;
 			background-color: #fafafa;
 
-			& > p {
+			&-tocart {
 				text-align: center;
-				color: #659be0;
-
-				&:hover {
-					cursor: pointer;
+				& > a {
+					color: #659be0;
+					&:hover {
+						cursor: pointer;
+					}
 				}
 			}
 		}
