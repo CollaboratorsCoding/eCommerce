@@ -113,6 +113,10 @@ export default (req, res) => {
 			).then(({ routeMarkup, connectExist, frontloadsCount }) => {
 				// Otherwise, we carry on...
 				// Let's give ourself a function to load all our page-specific JS assets for code splitting
+
+				if (context.url) {
+					return res.redirect(302, context.url);
+				}
 				const extractAssets = (assets, chunks) =>
 					Object.keys(assets)
 						.filter(
@@ -151,6 +155,7 @@ export default (req, res) => {
 				// Let's output the title, just to see SSR is working as intended
 
 				// Pass all this nonsense into our HTML formatting function above
+
 				const html = injectHTML(htmlData, {
 					html: helmet.htmlAttributes.toString(),
 					title: helmet.title.toString(),
@@ -165,10 +170,6 @@ export default (req, res) => {
 					connectExist,
 					frontloadsCount,
 				});
-
-				// if (context.url) {
-				// 	return res.redirect(302, context.url);
-				// }
 
 				// We have all the final HTML, let's send it to the user already!
 				return res.send(html);

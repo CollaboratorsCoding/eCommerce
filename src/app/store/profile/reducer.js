@@ -14,6 +14,7 @@ const initialState = {
 	profile: {},
 	error: {},
 	loading: false,
+	userLoading: true,
 	lastVisitedProducts: [],
 };
 
@@ -35,6 +36,7 @@ export default (state = initialState, action) => {
 					'lastVisitedProducts',
 					[]
 				),
+				userLoading: false,
 				error: {},
 			};
 
