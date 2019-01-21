@@ -1,5 +1,5 @@
 // The basics
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
@@ -11,23 +11,17 @@ import Routes from './routes';
 
 import './app.scss';
 
-class App extends Component {
-	componentWillMount = () => {};
-
-	render() {
-		return (
-			<div id="app">
-				<ScrollTop>
-					<Layout current={this.props.location.pathname}>
-						<div id="content">
-							<Routes />
-						</div>
-					</Layout>
-				</ScrollTop>
-			</div>
-		);
-	}
-}
+const App = props => (
+	<div id="app">
+		<ScrollTop>
+			<Layout current={props.location.pathname}>
+				<div id="content">
+					<Routes />
+				</div>
+			</Layout>
+		</ScrollTop>
+	</div>
+);
 
 const mapStateToProps = state => ({
 	isAuthenticated: state.profile.isAuthenticated,
