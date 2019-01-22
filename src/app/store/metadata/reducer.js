@@ -12,13 +12,13 @@ const initialState = {
 
 export default (state = initialState, { data, type }) => {
 	switch (type) {
-		case 'SET_METADATA': {
-			return {
-				...state,
-				...data,
-			};
-		}
-		default:
-			return state;
+	case 'SET_METADATA': {
+		return {
+			...state,
+			...data,
+		};
+	}
+	default:
+		return state;
 	}
 };

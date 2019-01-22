@@ -15,8 +15,7 @@ class CustomLink extends PureComponent {
 					history.push(to);
 					setLoader(false);
 				})
-				.catch(error => {
-					console.log(error);
+				.catch(() => {
 					setLoader(false);
 				});
 		} else {
