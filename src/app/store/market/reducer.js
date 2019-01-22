@@ -10,9 +10,15 @@ const [GET_CATEGORIES] = types.getCategories;
 const [GET_PRODUCTS] = types.getProducts;
 const [GET_PRODUCT] = types.getProduct;
 const [ADD_REVIEW] = types.addReview;
+const [ADD_REPLY] = types.addReply;
 const [GET_REVIEWS] = types.getReviews;
+const [ADD_REVIEW_RATE] = types.addReviewRate;
+const [ADD_ORDER] = types.addOrder;
 
 const initialState = {
+	loading: false,
+	loadingCart: false,
+	error: {},
 	categories: {},
 	product: {
 		reviews: {
@@ -26,21 +32,40 @@ const initialState = {
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case `${GET_CATEGORIES}_SUCCESS`: {
-			const categories = {};
+			const newCategories = {};
 			action.result.categories.forEach(cat => {
-				categories[cat.slug] = {
+				newCategories[cat.slug] = {
 					...cat,
-					products: {
-						'1': [],
-					},
+					...state.categories[cat.slug],
+					products: _.get(state, `categories[${cat.slug}]`, null)
+						? state.categories[cat.slug].products
+						: {
+								'1': [],
+						  },
 				};
 			});
 			return {
 				...state,
-				categories,
+				categories: {
+					...newCategories,
+				},
 			};
 		}
 
+		case GET_PRODUCTS: {
+			return {
+				...state,
+				loading: true,
+				error: {},
+			};
+		}
+
+		case `${GET_PRODUCTS}_FAILURE`: {
+			return {
+				...state,
+				loading: false,
+			};
+		}
 		case `${GET_PRODUCTS}_SUCCESS`: {
 			const { result } = action;
 			const {
@@ -63,6 +88,7 @@ export default (state = initialState, action) => {
 			};
 			return {
 				...state,
+				loading: false,
 				categories: {
 					...state.categories,
 					[category]: {
@@ -77,9 +103,16 @@ export default (state = initialState, action) => {
 			};
 		}
 
+		case GET_PRODUCT: {
+			return {
+				...state,
+				loading: true,
+			};
+		}
 		case `${GET_PRODUCT}_SUCCESS`: {
 			return {
 				...state,
+				loading: false,
 				product: { ...state.product, ...action.result.product },
 			};
 		}
@@ -110,8 +143,33 @@ export default (state = initialState, action) => {
 				},
 			};
 		}
+
+		case `${ADD_REPLY}_SUCCESS`: {
+			const newReviews = _.mapValues(state.product.reviews, val => {
+				const reviewIndex = val.findIndex(
+					r => r._id === action.result.reply.parentReviewId
+				);
+
+				if (reviewIndex !== -1) {
+					const newVal = [...val];
+
+					newVal[reviewIndex].replies = [
+						action.result.reply,
+						...(newVal[reviewIndex].replies || []),
+					];
+					return [...newVal];
+				}
+				return val;
+			});
+			return {
+				...state,
+				product: {
+					...state.product,
+					reviews: newReviews,
+				},
+			};
+		}
 		case `${GET_REVIEWS}_SUCCESS`: {
-			// TODO: reviews
 			const { result } = action;
 			const { page, reviews } = result;
 
@@ -128,26 +186,78 @@ export default (state = initialState, action) => {
 				product,
 			};
 		}
+		case `${ADD_REVIEW_RATE}_SUCCESS`: {
+			const { result } = action;
+			const { review } = result;
+
+			const newReviews = _.mapValues(state.product.reviews, val => {
+				const newVal = [...val];
+
+				const reviewIndex = newVal.findIndex(
+					rev => rev._id === review._id
+				);
+
+				if (reviewIndex !== -1) {
+					newVal[reviewIndex] = { ...newVal[reviewIndex], ...review };
+					return [...newVal];
+				}
+				return newVal;
+			});
+
+			return {
+				...state,
+				product: {
+					...state.product,
+					reviews: newReviews,
+				},
+			};
+		}
+
 		case `${GET_CART}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
 			};
+		case ADD_TO_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
+			};
 		case `${ADD_TO_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
+			};
+		case REMOVE_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
 			};
 		case `${REMOVE_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
+			};
+		case REDUCE_CART_PRODUCT:
+			return {
+				...state,
+				loadingCart: true,
 			};
 		case `${REDUCE_CART_PRODUCT}_SUCCESS`:
 			return {
 				...state,
 				cart: action.result.cart,
+				loadingCart: false,
 			};
+		case `${ADD_ORDER}_SUCCESS`: {
+			return {
+				...state,
+				loading: false,
+				cart: action.result.cart,
+			};
+		}
 		default:
 			return state;
 	}

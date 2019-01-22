@@ -11,55 +11,67 @@ const UserTypes = require('../../type_models/user.types');
 const UserController = {};
 
 UserController.signup = (req, res, next) => {
-	passport.authenticate('local.signup', (error, user) => {
+	const SignUpform = { ...req.body };
+	const errors = validate(SignUpform, UserTypes.SignUpForm);
+	if (errors.error) {
+		return res.status(401).json({
+			// #TODO: changed to 'form' and handle on client errors from JOI ALL
+			type: 'server',
+			message: errors.error,
+		});
+	}
+	return passport.authenticate('local.signup', (error, user) => {
 		if (error) {
 			return res.status(error.status).json(error);
 		}
-		return req.login(user, loginErr => {
-			if (loginErr) return next(loginErr);
-			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-			req.session.token = token;
-			return res.json({
-				isLoggedIn: req.isAuthenticated(),
-				user: _.omit(user.toObject(), [
-					'password',
-					'resetPasswordToken',
-					'resetPasswordExpires',
-				]),
-			});
+
+		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+		req.session.token = token;
+		req.session.user_id = user._id;
+		return res.json({
+			isLoggedIn: true,
+			user: _.omit(user.toObject(), [
+				'password',
+				'resetPasswordToken',
+				'resetPasswordExpires',
+			]),
 		});
 	})(req, res, next);
 };
 
 UserController.signin = (req, res, next) => {
-	passport.authenticate('local.signin', (error, user) => {
+	const SignInform = { ...req.body };
+	const errors = validate(SignInform, UserTypes.SignInForm);
+	if (errors.error) {
+		return res.status(401).json({
+			// #TODO: changed to 'form' and handle on client errors from JOI ALL
+			type: 'server',
+			message: errors.error,
+		});
+	}
+	return passport.authenticate('local.signin', (error, user) => {
 		if (error) {
-			return res.status(error.status).json(error);
+			return res.status(401).json(error);
 		}
-		return req.login(user, async loginErr => {
-			if (loginErr) return next(loginErr);
-			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-			req.session.token = token;
-			req.session.adminData = {
-				name: user.name,
-			};
-			const userObject = user.toObject();
-			return res.json({
-				isLoggedIn: req.isAuthenticated(),
-				user: _.omit(userObject, [
-					'password',
-					'resetPasswordToken',
-					'resetPasswordExpires',
-				]),
-			});
+		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+		req.session.token = token;
+		req.session.user_id = user._id;
+		const userObject = user.toObject();
+		return res.json({
+			isLoggedIn: true,
+			user: _.omit(userObject, [
+				'password',
+				'resetPasswordToken',
+				'resetPasswordExpires',
+			]),
 		});
 	})(req, res, next);
 };
 
 UserController.logout = (req, res) => {
-	req.logout();
 	req.session.token = null;
 	res.json({
+		isLoggedIn: false,
 		requestSuccess: {
 			message: 'You are Logged Out now',
 			operation: 'user_logout',
@@ -70,6 +82,7 @@ UserController.logout = (req, res) => {
 
 UserController.getprofile = async (req, res) => {
 	const userObject = req.user.toObject();
+
 	res.json({
 		user: _.omit(userObject, [
 			'password',
@@ -77,6 +90,7 @@ UserController.getprofile = async (req, res) => {
 			'resetPasswordExpires',
 		]),
 		isLoggedIn: !!req.user,
+		lastVisitedProducts: req.session.lastVisitedProducts,
 	});
 };
 

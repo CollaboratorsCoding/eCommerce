@@ -132,12 +132,39 @@ ProductController.getProducts = (req, res) => {
 };
 
 ProductController.getProduct = (req, res) => {
+	if (!req.params.slug) res.status(404).send('error');
 	Product.findOne({ slug: req.params.slug }, (err, product) => {
+		if (!product || err) res.status(404).send('error');
 		Review.countDocuments(
 			{
 				parentSlug: product.slug,
 			},
 			(error, count) => {
+				// SESSION LAST PRODUCT VISITED UPDATE
+				const lastVisitedProducts = req.session.lastVisitedProducts;
+				const itemIndex = lastVisitedProducts.findIndex(
+					item => String(item._id) === String(product._id)
+				);
+
+				if (itemIndex === -1) {
+					if (!req.session.lastVisitedProducts.length) {
+						req.session.lastVisitedProducts = [product.toJSON()];
+					} else {
+						req.session.lastVisitedProducts.unshift(
+							product.toJSON()
+						);
+					}
+				} else if (lastVisitedProducts.length > 1) {
+					const temp = lastVisitedProducts[itemIndex];
+					const newlastVisitedProducts = lastVisitedProducts.filter(
+						i => i._id !== temp._id
+					);
+					newlastVisitedProducts.unshift(temp);
+					req.session.lastVisitedProducts = newlastVisitedProducts;
+				}
+
+				// SESSION END
+
 				res.json({
 					product: { ...product.toJSON(), reviewsCount: count },
 				});
@@ -162,9 +189,26 @@ ProductController.getReviews = (req, res) => {
 		.skip(parseFloat(offset))
 		.limit(parseFloat(limit));
 	query.exec((error, reviews) => {
-		res.json({
-			page,
-			reviews,
+		const parentIds = reviews.map(i => i._id);
+		const repliesQuery = Review.find({
+			parentReviewId: { $in: parentIds },
+		}).sort({ date: -1 });
+		repliesQuery.exec((erro, replies) => {
+			const reviewsWithReplies = _.map(reviews, review => {
+				const repliesToReview = _.filter(
+					replies,
+					reply => String(reply.parentReviewId) == String(review._id)
+				);
+
+				return _.assign(review.toObject(), {
+					replies: repliesToReview,
+				});
+			});
+
+			res.json({
+				page,
+				reviews: reviewsWithReplies,
+			});
 		});
 	});
 };
@@ -178,8 +222,52 @@ ProductController.addReview = (req, res) => {
 		parentSlug: productSlug,
 	});
 	review.save((error, savedReview) => {
-		res.json({ review: savedReview });
+		Product.findOneAndUpdate(
+			{ slug: productSlug },
+			{
+				$inc: {
+					votes: 1,
+					rating: savedReview.rating,
+				},
+			},
+			{ new: true },
+			(err, product) => {
+				res.json({ review: savedReview, product });
+			}
+		);
 	});
+};
+
+ProductController.addReply = (req, res) => {
+	const replyBody = req.body;
+
+	const review = new Review({
+		...replyBody,
+		parentSlug: 'review',
+	});
+	review.save((error, savedReply) => {
+		res.json({ reply: savedReply });
+	});
+};
+
+ProductController.addReviewRate = (req, res) => {
+	const rate = _.get(req.body, 'rate', null);
+	const reviewId = req.params.id;
+
+	if (!reviewId || (rate !== 1 && rate !== -1)) {
+		return res.status(404).send('error');
+	}
+	const prop = rate > 0 ? 'upvotes' : 'downvotes';
+	return Review.findOneAndUpdate(
+		{ _id: reviewId },
+		{
+			$inc: {
+				[prop]: 1,
+			},
+		},
+		{ new: true },
+		(err, review) => res.json({ review })
+	);
 };
 
 export default ProductController;

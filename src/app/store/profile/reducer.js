@@ -14,6 +14,8 @@ const initialState = {
 	profile: {},
 	error: {},
 	loading: false,
+	userLoading: true,
+	lastVisitedProducts: [],
 };
 
 export default (state = initialState, action) => {
@@ -29,6 +31,12 @@ export default (state = initialState, action) => {
 				...state,
 				profile: _.get(action.result, 'user', {}),
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
+				lastVisitedProducts: _.get(
+					action.result,
+					'lastVisitedProducts',
+					[]
+				),
+				userLoading: false,
 				error: {},
 			};
 
@@ -56,17 +64,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: {
-					type: _.get(action.result, 'response.data.type', 'server'),
+					type: _.get(action, 'error.type', 'server'),
 					message: _.get(
-						action.result,
-						'response.data.message',
+						action,
+						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};
@@ -89,17 +93,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: {
-					type: _.get(action.result, 'response.data.type', 'server'),
+					type: _.get(action, 'error.type', 'server'),
 					message: _.get(
-						action.result,
-						'response.data.message',
+						action,
+						'error.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};
@@ -114,7 +114,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
-				isLoggedIn: false,
+				isLoggedIn: _.get(action.result, 'isLoggedIn', false),
 				error: {},
 			};
 		case `${LOGOUT}_FAIL`:
@@ -127,11 +127,7 @@ export default (state = initialState, action) => {
 						'response.data.message',
 						'Oops... Something went wrong 😔'
 					),
-					formData: _.get(
-						action.result,
-						'response.data.formData',
-						{}
-					),
+					fieldName: _.get(action, 'error.fieldName', ''),
 				},
 				loading: false,
 			};

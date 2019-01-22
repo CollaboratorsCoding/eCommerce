@@ -12,7 +12,6 @@ const safePostCssParser = require('postcss-safe-parser');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const paths = require('./paths');
@@ -222,7 +221,6 @@ module.exports = {
 			// To fix this, we prevent you from importing files out of src/ -- if you'd like to,
 			// please link the files into your node_modules/ and let module-resolution kick in.
 			// Make sure your source files are compiled, as they will not be processed in any way.
-			new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
 		],
 	},
 	resolveLoader: {
@@ -421,6 +419,7 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			inject: true,
+			filename: 'template.html',
 			template: paths.appHtml,
 			minify: {
 				removeComments: true,

@@ -20,25 +20,19 @@ class Authentication extends PureComponent {
 		queryForm: queryString.parse(this.props.location.search).form,
 	};
 
+	componentDidUpdate() {
+		if (
+			this.state.queryForm !==
+			queryString.parse(this.props.location.search).form
+		) {
+			this.setState({
+				queryForm: queryString.parse(this.props.location.search).form,
+			});
+		}
+	}
+
 	switchForm = form => {
-		this.setState({ queryForm: form });
-		setQuery('form', form, this.props.history);
-	};
-
-	handleSubmit = e => {
-		const formData = new FormData(e.target);
-		const data = {};
-
-		e.preventDefault();
-
-		/* eslint-disable-next-line */
-		for (const entry of formData.entries()) {
-			data[entry[0]] = entry[1];
-		}
-		if (this.state.queryForm === 'signup') {
-			return this.props.signup(data);
-		}
-		return this.props.signin(data);
+		setQuery({ form }, this.props.history);
 	};
 
 	render() {
@@ -53,12 +47,14 @@ class Authentication extends PureComponent {
 					{!queryForm || queryForm === 'signin' ? (
 						<SignIn
 							switchForm={this.switchForm}
-							handleSubmit={this.handleSubmit}
+							serverError={this.props.serverError}
+							handleSignIn={this.props.signin}
 						/>
 					) : (
 						<SignUp
 							switchForm={this.switchForm}
-							handleSubmit={this.handleSubmit}
+							serverError={this.props.serverError}
+							handleSignUp={this.props.signup}
 						/>
 					)}
 				</div>
@@ -69,6 +65,7 @@ class Authentication extends PureComponent {
 
 const mapStateToProps = state => ({
 	cart: state.market.cart,
+	serverError: state.profile.error,
 });
 
 const mapDispatchToProps = dispatch =>

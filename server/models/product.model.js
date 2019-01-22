@@ -7,7 +7,10 @@ const ProductSchema = new mongoose.Schema({
 	description: { type: String, required: true },
 	price: { type: Number, required: true },
 	category: { type: String, required: true },
+	sold: { type: Number, default: 0 },
 	tags: { type: [String] },
+	rating: { type: Number },
+	votes: { type: Number },
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

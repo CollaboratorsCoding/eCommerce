@@ -2,6 +2,7 @@ import express from 'express';
 import CartController from './controllers/CartController';
 import UserController from './controllers/UserController';
 import ProductController from './controllers/ProductController';
+import OrderController from './controllers/OrderController';
 import CategoryController from './controllers/CategoryController';
 import checkJwt from '../middlewares/jwt.middleware';
 
@@ -18,6 +19,8 @@ api.get('/get-categories', CategoryController.getCategories);
 
 api.post('/add-product', ProductController.addProduct);
 api.post('/add-review/:slug', ProductController.addReview);
+api.post('/add-reply', ProductController.addReply);
+api.post('/add-review-rate/:id', ProductController.addReviewRate);
 api.get('/get-reviews/:slug', ProductController.getReviews);
 api.get('/get-products/:category_slug', ProductController.getProducts);
 api.get('/get-product/:slug', ProductController.getProduct);
@@ -38,6 +41,9 @@ api.post('/resetPassword', UserController.resetPassword);
 api.post('/signin', UserController.signin);
 api.post('/signup', UserController.signup);
 api.get('/logout', UserController.logout);
+
+// ORDER API
+api.post('/order', OrderController.newOrder);
 
 /* ... */
 

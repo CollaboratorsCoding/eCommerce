@@ -7,7 +7,7 @@ CartController.addToCart = (req, res) => {
 	const productId = req.params.id;
 	const cart = new Cart(req.session.cart ? req.session.cart : {});
 
-	Product.findById(productId, (err, product) => {
+	Product.findOne({ _id: productId }, (err, product) => {
 		if (err) {
 			return res.status(404).send('Not found');
 		}
@@ -30,7 +30,7 @@ CartController.getItemsCart = (req, res) => {
 			.json({ cart: { productsInCart: [], totalQty: 0, totalPrice: 0 } });
 	}
 
-	const cart = new Cart(req.session.cart);
+	const cart = new Cart(req.session.cart ? req.session.cart : {});
 	return res.status(200).json({
 		cart: {
 			productsInCart: cart.generateArray(),

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Rating } from 'semantic-ui-react';
+import { Rating, Form, Button } from 'semantic-ui-react';
 
 export default class ReviewForm extends Component {
 	state = { rating: null };
@@ -23,34 +23,64 @@ export default class ReviewForm extends Component {
 			};
 		}
 
-		this.props.addReview(data, this.props.productSlug);
-		this.setState({
-			rating: null,
-		});
-		e.target.reset();
+		if (this.props.parentReviewId) {
+			data = {
+				...data,
+				parentReviewId: this.props.parentReviewId,
+			};
+		}
+		if (this.props.parentReviewId && this.props.reply) {
+			this.props.addReply(data);
+		} else {
+			this.props.addReview(data, this.props.productSlug);
+			this.setState({
+				rating: null,
+			});
+			e.target.reset();
+		}
 	};
 
 	render() {
+		const { reply } = this.props;
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<input
+			<Form className="form" onSubmit={this.handleSubmit}>
+				<h1>Add Your {reply ? 'Reply' : 'Review'}</h1>
+				<Form.Input
+					icon="mail"
+					// label={errors.email}
+					iconPosition="left"
+					// onChange={validateField}
+
+					// error={errors.email}
 					type="text"
 					name="author"
 					placeholder="Enter Your Name"
 				/>
-				<input
+				<Form.Input
+					icon="key"
 					type="text"
 					name="text"
 					placeholder="Write Review Here"
+					iconPosition="left"
 				/>
-				<Rating
-					icon="star"
-					rating={this.state.rating}
-					maxRating={5}
-					onRate={this.handleRate}
+
+				{!reply && (
+					<Rating
+						icon="star"
+						rating={this.state.rating}
+						maxRating={5}
+						onRate={this.handleRate}
+						size="large"
+					/>
+				)}
+
+				<Button
+					content="Sign In"
+					icon="sign-in"
+					labelPosition="left"
+					type="submit"
 				/>
-				<button type="submit">Send</button>
-			</form>
+			</Form>
 		);
 	}
 }

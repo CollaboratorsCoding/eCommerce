@@ -46,8 +46,29 @@ MarketActions.addReview = (data, slug) => ({
 	promise: client => client.post(`add-review/${slug}`, { data }),
 });
 
+MarketActions.addReply = data => ({
+	types: MarketTypes.addReply,
+	promise: client => client.post(`add-reply`, { data }),
+});
+
+MarketActions.addReviewRate = (id, rate) => ({
+	types: MarketTypes.addReviewRate,
+	promise: client =>
+		client.post(`add-review-rate/${id}`, {
+			data: {
+				rate,
+			},
+		}),
+});
+
 MarketActions.getReviews = (p, l, slug) => ({
 	types: MarketTypes.getReviews,
 	promise: client => client.get(`get-reviews/${slug}?p=${p}&l=${l}`),
 });
+
+MarketActions.addOrder = data => ({
+	types: MarketTypes.addOrder,
+	promise: client => client.post(`order`, { data }),
+});
+
 export default MarketActions;

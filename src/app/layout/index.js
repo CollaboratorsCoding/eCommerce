@@ -39,7 +39,9 @@ class StickyLayout extends Component {
 						totalQty={this.props.cart.totalQty}
 						current={this.props.current}
 					/>
-					<Container fluid>{this.props.children}</Container>
+					<Container fluid className="main-container">
+						{this.props.children}
+					</Container>
 					<Footer />
 				</LoaderContext.Provider>
 			</div>

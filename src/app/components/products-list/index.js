@@ -1,25 +1,17 @@
 import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
-import { Product } from '../../routes';
-import CustomLink from '../../hocs/customLink';
 
-export default function ProductsList({ products }) {
+import ProductCard from '../product-card';
+
+export default function ProductsList({ products, addToCart, loadingCart }) {
 	if (!products.length) return null;
 
 	const productsList = products.map(product => (
-		<Grid.Column key={product._id}>
-			<CustomLink
-				componentPromise={Product}
-				className="category-item"
-				to={`/p/${product.slug}?tab=description`}
-			>
-				<Segment>{product.title}</Segment>
-			</CustomLink>
-		</Grid.Column>
+		<ProductCard
+			key={product._id}
+			product={product}
+			addToCart={addToCart}
+			loadingCart={loadingCart}
+		/>
 	));
-	return (
-		<Grid stackable columns={4}>
-			{productsList}
-		</Grid>
-	);
+	return <div className="product-list-wrapper">{productsList}</div>;
 }

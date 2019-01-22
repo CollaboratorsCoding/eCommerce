@@ -21,6 +21,9 @@ import manifest from '../build/client/asset-manifest.json';
 
 // LOADER
 export default (req, res) => {
+	if (!req.session || !req.session.lastVisitedProducts) {
+		req.session.lastVisitedProducts = [];
+	}
 	/*
     A simple helper function to prepare the HTML markup. This loads:
       - Page title
@@ -62,7 +65,7 @@ export default (req, res) => {
 
 	// Load in our HTML file from our build
 	fs.readFile(
-		path.join(`${process.cwd()}/build/client/index.html`),
+		path.join(`${process.cwd()}/build/client/template.html`),
 		'utf8',
 		(err, htmlData) => {
 			// If there's an error... serve up something nasty
@@ -110,6 +113,10 @@ export default (req, res) => {
 			).then(({ routeMarkup, connectExist, frontloadsCount }) => {
 				// Otherwise, we carry on...
 				// Let's give ourself a function to load all our page-specific JS assets for code splitting
+
+				if (context.url) {
+					return res.redirect(302, context.url);
+				}
 				const extractAssets = (assets, chunks) =>
 					Object.keys(assets)
 						.filter(
@@ -146,8 +153,9 @@ export default (req, res) => {
 
 				// NOTE: Disable if you desire
 				// Let's output the title, just to see SSR is working as intended
-				console.log('render server');
+
 				// Pass all this nonsense into our HTML formatting function above
+
 				const html = injectHTML(htmlData, {
 					html: helmet.htmlAttributes.toString(),
 					title: helmet.title.toString(),
@@ -162,10 +170,6 @@ export default (req, res) => {
 					connectExist,
 					frontloadsCount,
 				});
-
-				if (context.url) {
-					return res.redirect(302, context.url);
-				}
 
 				// We have all the final HTML, let's send it to the user already!
 				return res.send(html);

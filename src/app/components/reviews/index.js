@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Comment, Pagination, Icon } from 'semantic-ui-react';
+import { Pagination, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 import { frontloadConnect } from '../../hocs/frontLoad';
 import ReviewItem from './review_item';
 import ReviewForm from './review_form';
 import { setQuery } from '../../utils';
+
+import './index.scss';
 
 const frontload = async props => {
 	const { p, l } = props.query;
@@ -21,35 +23,59 @@ class Review extends Component {
 		super(props);
 		this.state = {
 			activePage: props.query.p || 1,
+			parentReviewId: null,
+			replyFormActive: false,
 		};
 	}
 
 	handlePaginationChange = (e, { activePage }) => {
-		setQuery('p', activePage, this.props.history);
+		setQuery({ p: activePage }, this.props.history);
 		this.setState({ activePage });
 		if (!_.get(this.props, `product.reviews[${activePage}].length`, null)) {
-			this.props.onGetReviews(activePage, 10, this.props.product_slug);
+			this.props.onGetReviews(activePage, 10, this.props.productSlug);
 		}
 	};
 
 	countPages = items => Math.ceil(items / 10);
 
+	handleReplyClick = parentReviewId => {
+		this.setState({
+			parentReviewId,
+			replyFormActive: true,
+		});
+	};
+
 	render() {
-		const { product, onAddReview, productSlug } = this.props;
-		const { activePage } = this.state;
+		const { product, onAddReview, productSlug, onAddReply } = this.props;
+		const { activePage, parentReviewId, replyFormActive } = this.state;
 
 		let renderReviews = null;
 		if (_.get(product, `reviews[${activePage}].length`, null)) {
 			renderReviews = product.reviews[activePage].map(review => (
-				<ReviewItem key={review._id} review={review} />
+				<ReviewItem
+					handleReplyClick={this.handleReplyClick}
+					handleReviewRate={this.props.onHandleAddReviewRate}
+					key={review._id}
+					review={review}
+				/>
 			));
 		}
 
 		return (
-			<div>
-				{renderReviews ? (
+			<>
+				{replyFormActive && (
 					<div>
-						<Comment.Group>{renderReviews}</Comment.Group>
+						FORM FOR REPLY:
+						<ReviewForm
+							reply
+							parentReviewId={parentReviewId}
+							addReply={onAddReply}
+						/>{' '}
+					</div>
+				)}
+				{renderReviews ? (
+					<>
+						<div className="reviews-wrapper">{renderReviews}</div>
 						<Pagination
 							activePage={activePage}
 							boundaryRange={1}
@@ -76,12 +102,12 @@ class Review extends Component {
 							}}
 							totalPages={this.countPages(product.reviewsCount)}
 						/>
-					</div>
+					</>
 				) : (
 					'No reviews yet... Be first!'
 				)}
 				<ReviewForm productSlug={productSlug} addReview={onAddReview} />{' '}
-			</div>
+			</>
 		);
 	}
 }
