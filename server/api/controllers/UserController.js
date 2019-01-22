@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import _ from 'lodash';
+import nanoid from 'nanoid';
 import sendEmail from '../../utils/send-email';
 
 const User = require('../../models/user.model');
@@ -15,6 +16,16 @@ UserController.signup = (req, res, next) => {
 	const errors = validate(SignUpform, UserTypes.SignUpForm);
 	if (errors.error) {
 		return res.status(401).json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'error',
+					message: {
+						text: 'Unexpected Error',
+					},
+					duration: 1.5,
+				},
+			},
 			// #TODO: changed to 'form' and handle on client errors from JOI ALL
 			type: 'server',
 			message: errors.error,
@@ -22,13 +33,35 @@ UserController.signup = (req, res, next) => {
 	}
 	return passport.authenticate('local.signup', (error, user) => {
 		if (error) {
-			return res.status(error.status).json(error);
+			return res.status(error.status).json({
+				metaData: {
+					notification: {
+						id: nanoid(6),
+						type: 'error',
+						message: {
+							text: 'Unexpected Error',
+						},
+						duration: 1.5,
+					},
+				},
+				error,
+			});
 		}
 
 		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 		req.session.token = token;
 		req.session.user_id = user._id;
 		return res.json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'success',
+					message: {
+						text: 'Profile Created!',
+					},
+					duration: 1.5,
+				},
+			},
 			isLoggedIn: true,
 			user: _.omit(user.toObject(), [
 				'password',
@@ -44,6 +77,16 @@ UserController.signin = (req, res, next) => {
 	const errors = validate(SignInform, UserTypes.SignInForm);
 	if (errors.error) {
 		return res.status(401).json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'error',
+					message: {
+						text: 'Unexpected Error',
+					},
+					duration: 1.5,
+				},
+			},
 			// #TODO: changed to 'form' and handle on client errors from JOI ALL
 			type: 'server',
 			message: errors.error,
@@ -51,7 +94,19 @@ UserController.signin = (req, res, next) => {
 	}
 	return passport.authenticate('local.signin', (error, user) => {
 		if (error) {
-			return res.status(401).json(error);
+			return res.status(401).json({
+				metaData: {
+					notification: {
+						id: nanoid(6),
+						type: 'error',
+						message: {
+							text: 'Unexpected Error',
+						},
+						duration: 1.5,
+					},
+				},
+				error,
+			});
 		}
 		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 		req.session.token = token;
@@ -71,12 +126,17 @@ UserController.signin = (req, res, next) => {
 UserController.logout = (req, res) => {
 	req.session.token = null;
 	res.json({
-		isLoggedIn: false,
-		requestSuccess: {
-			message: 'You are Logged Out now',
-			operation: 'user_logout',
-			redirectURL: '/login',
+		metaData: {
+			notification: {
+				id: nanoid(6),
+				type: 'success',
+				message: {
+					text: 'You are Logged Out now',
+				},
+				duration: 1.5,
+			},
 		},
+		isLoggedIn: false,
 	});
 };
 
@@ -136,13 +196,27 @@ UserController.sendresetPassword = (req, res) => {
 	const errors = validate(req.body.email, UserTypes.SignInForm.email);
 
 	if (errors.error) {
-		return res.status(403).json({ type: 'server', message: errors.error });
+		return res.status(403).json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'error',
+					message: {
+						text: 'Unexpected error',
+					},
+					duration: 1.5,
+				},
+			},
+			type: 'server',
+			message: errors.error,
+		});
 	}
 	return User.findOne({ email: req.body.email }, (err, user) => {
 		if (!user) {
 			return res.status(403).json({
 				metaData: {
 					notification: {
+						id: nanoid(6),
 						type: 'error',
 						message: {
 							text: 'Email not found.',
@@ -157,6 +231,16 @@ UserController.sendresetPassword = (req, res) => {
 		return reUser.save(errs => {
 			if (errs) {
 				res.status(403).json({
+					metaData: {
+						notification: {
+							id: nanoid(6),
+							type: 'error',
+							message: {
+								text: 'Unexpected error',
+							},
+							duration: 1.5,
+						},
+					},
 					type: 'server',
 					message: errs,
 				});
@@ -178,11 +262,16 @@ UserController.sendresetPassword = (req, res) => {
 				},
 			});
 			res.status(200).json({
-				requestSuccess: {
-					message:
-						'Email with restore link was sent. Please check you email',
-					operation: 'password_reset',
-					redirectURL: '/',
+				metaData: {
+					notification: {
+						id: nanoid(6),
+						type: 'success',
+						message: {
+							text:
+								'Email with restore link was sent. Please check you email',
+						},
+						duration: 1.5,
+					},
 				},
 			});
 		});
@@ -194,7 +283,20 @@ UserController.resetPassword = (req, res) => {
 
 	if (errors.error) {
 		// TODO: 'form'
-		return res.status(403).json({ type: 'server', message: errors.error });
+		return res.status(403).json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'error',
+					message: {
+						text: 'Unexpected error',
+					},
+					duration: 1.5,
+				},
+			},
+			type: 'server',
+			message: errors.error,
+		});
 	}
 	return User.findOne(
 		{
@@ -204,6 +306,16 @@ UserController.resetPassword = (req, res) => {
 		(err, user) => {
 			if (!user) {
 				return res.status(403).json({
+					metaData: {
+						notification: {
+							id: nanoid(6),
+							type: 'error',
+							message: {
+								text: 'Invalid token',
+							},
+							duration: 1.5,
+						},
+					},
 					type: 'form',
 					message: 'Invalid token',
 					fieldName: 'password',
@@ -218,6 +330,16 @@ UserController.resetPassword = (req, res) => {
 					res.send(errs);
 				}
 				res.status(200).json({
+					metaData: {
+						notification: {
+							id: nanoid(6),
+							type: 'success',
+							message: {
+								text: 'Password Was Changed',
+							},
+							duration: 1.5,
+						},
+					},
 					requestSuccess: {
 						message: 'Password Was Changed',
 						operation: 'password_change',

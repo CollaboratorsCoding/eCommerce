@@ -14,7 +14,14 @@ import ProfileActions from '../store/profile/actions';
 const { getCart } = MarketActions;
 const { getProfile, logout } = ProfileActions;
 
-const frontload = async props => [props.getCart(), props.getProfile()];
+const frontload = async props => {
+	const promise = new Promise(resolve => {
+		Promise.all([props.getCart(), props.getProfile()]).then(() => {
+			resolve();
+		});
+	});
+	return promise;
+};
 
 class StickyLayout extends Component {
 	state = {

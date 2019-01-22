@@ -2,7 +2,7 @@ const initialState = {
 	notification: {
 		type: '',
 		message: {},
-		timeout: null,
+		duration: 1.5,
 	},
 	redirect: {
 		path: null,

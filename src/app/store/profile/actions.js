@@ -13,6 +13,7 @@ ProfileActions.getProfile = () => ({
 ProfileActions.logout = () => ({
 	types: types.logout,
 	promise: client => client.get('/logout'),
+	metaData: true,
 });
 
 ProfileActions.signin = data => ({
@@ -23,6 +24,7 @@ ProfileActions.signin = data => ({
 ProfileActions.signup = data => ({
 	types: types.signUp,
 	promise: client => client.post('signup', { data }),
+	metaData: true,
 });
 
 ProfileActions.sendResetLinkEmail = data => ({
@@ -34,6 +36,7 @@ ProfileActions.sendResetLinkEmail = data => ({
 ProfileActions.actionResetPassword = (data, token) => ({
 	types: types.RestorePassword,
 	promise: client => client.post(`resetpassword?token=${token}`, { data }),
+	metaData: true,
 });
 
 export default ProfileActions;

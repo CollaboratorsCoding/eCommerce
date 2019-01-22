@@ -1,4 +1,5 @@
 import 'semantic-ui-css/semantic.min.css';
+import 'rc-notification/assets/index.css';
 import 'rc-slider/assets/index.css';
 import 'rc-steps/assets/index.css';
 

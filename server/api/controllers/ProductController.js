@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import nanoid from 'nanoid';
 import Product from '../../models/product.model';
 import Review from '../../models/review.model';
 import generateFilters from '../../utils/generateFilters';
@@ -32,18 +33,18 @@ ProductController.getProducts = (req, res) => {
 		category: categorySlug,
 		...(_.get(filters, 'price')
 			? {
-					price: {
-						...(_.get(filters, 'price.min')
-							? {
-									$gte: parseFloat(filters.price.min),
+				price: {
+					...(_.get(filters, 'price.min')
+						? {
+							$gte: parseFloat(filters.price.min),
 							  }
-							: {}),
-						...(_.get(filters, 'price.max')
-							? {
-									$lte: parseFloat(filters.price.max),
+						: {}),
+					...(_.get(filters, 'price.max')
+						? {
+							$lte: parseFloat(filters.price.max),
 							  }
-							: {}),
-					},
+						: {}),
+				},
 			  }
 			: {}),
 	})
@@ -80,22 +81,22 @@ ProductController.getProducts = (req, res) => {
 							category: categorySlug,
 							...(_.get(filters, 'price')
 								? {
-										price: {
-											...(_.get(filters, 'price.min')
-												? {
-														$gte: parseFloat(
-															filters.price.min
-														),
+									price: {
+										...(_.get(filters, 'price.min')
+											? {
+												$gte: parseFloat(
+													filters.price.min
+												),
 												  }
-												: {}),
-											...(_.get(filters, 'price.max')
-												? {
-														$lte: parseFloat(
-															filters.price.max
-														),
+											: {}),
+										...(_.get(filters, 'price.max')
+											? {
+												$lte: parseFloat(
+													filters.price.max
+												),
 												  }
-												: {}),
-										},
+											: {}),
+									},
 								  }
 								: {}),
 						},
@@ -236,7 +237,20 @@ ProductController.addReview = (req, res) => {
 			},
 			{ new: true },
 			(err, product) => {
-				res.json({ review: savedReview, product });
+				res.json({
+					metaData: {
+						notification: {
+							id: nanoid(6),
+							type: 'success',
+							message: {
+								text: `Your Review Successfully Added`,
+							},
+							duration: 1.5,
+						},
+					},
+					review: savedReview,
+					product,
+				});
 			}
 		);
 	});
@@ -250,7 +264,19 @@ ProductController.addReply = (req, res) => {
 		parentSlug: 'review',
 	});
 	review.save((error, savedReply) => {
-		res.json({ reply: savedReply });
+		res.json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'success',
+					message: {
+						text: `Your Reply Successfully Added`,
+					},
+					duration: 1.5,
+				},
+			},
+			reply: savedReply,
+		});
 	});
 };
 
@@ -270,7 +296,20 @@ ProductController.addReviewRate = (req, res) => {
 			},
 		},
 		{ new: true },
-		(err, review) => res.json({ review })
+		(err, review) =>
+			res.json({
+				metaData: {
+					notification: {
+						id: nanoid(6),
+						type: 'success',
+						message: {
+							text: `Review Was Rated`,
+						},
+						duration: 1.5,
+					},
+				},
+				review,
+			})
 	);
 };
 
