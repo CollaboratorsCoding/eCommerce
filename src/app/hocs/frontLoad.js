@@ -40,8 +40,11 @@ const map = (arr, fn) => {
 // util with same behaviour of Promise.all, except it does not short-circuit
 // to catch if one of the promises rejects. It resolves when all the passed promises
 // have either resolved or rejected
-const waitForAllToComplete = promises =>
-	Promise.all(map(promises, promise => promise['catch'](error => error)));
+const waitForAllToComplete = promises => {
+	return Promise.all(
+		map(promises, promise => promise['catch'](error => error))
+	);
+};
 
 function flushQueues(index, options = {}) {
 	if (index === undefined)

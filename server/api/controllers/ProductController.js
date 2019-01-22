@@ -26,7 +26,7 @@ ProductController.getProducts = (req, res) => {
 	const offset = parseFloat((page - 1) * limit);
 	const categorySlug = req.params.category_slug;
 
-	if (!categorySlug) return res.end();
+	if (!categorySlug) return res.status(404).end();
 	const filters = generateFilters(req.query);
 	const query = Product.find({
 		category: categorySlug,
@@ -133,9 +133,9 @@ ProductController.getProducts = (req, res) => {
 };
 
 ProductController.getProduct = (req, res) => {
-	if (!req.params.slug) return res.end();
+	if (!req.params.slug) return res.status(404).end();
 	Product.findOne({ slug: req.params.slug }, (err, product) => {
-		if (_.isEmpty(product) || err) return res.end();
+		if (_.isEmpty(product) || err) return res.status(404).end();
 
 		Review.countDocuments(
 			{
@@ -186,7 +186,7 @@ ProductController.getReviews = (req, res) => {
 		page = req.query.p;
 	}
 	const offset = (page - 1) * limit;
-	if (!productSlug) return res.end();
+	if (!productSlug) return res.status(404).end();
 	const query = Review.find({ parentSlug: productSlug })
 		.sort({ date: -1 })
 		.skip(parseFloat(offset))
@@ -220,7 +220,7 @@ ProductController.addReview = (req, res) => {
 	const productSlug = req.params.slug;
 	const reviewBody = req.body;
 
-	if (!productSlug) return res.end();
+	if (!productSlug) return res.status(404).end();
 	const review = new Review({
 		...reviewBody,
 		parentSlug: productSlug,
@@ -259,7 +259,7 @@ ProductController.addReviewRate = (req, res) => {
 	const reviewId = req.params.id;
 
 	if (!reviewId || (rate !== 1 && rate !== -1)) {
-		return res.end();
+		return res.status(404).end();
 	}
 	const prop = rate > 0 ? 'upvotes' : 'downvotes';
 	return Review.findOneAndUpdate(
