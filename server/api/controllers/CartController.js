@@ -1,4 +1,5 @@
 import nanoid from 'nanoid';
+import _ from 'lodash';
 import Cart from '../../models/cart.model';
 import Product from '../../models/product.model';
 
@@ -31,7 +32,8 @@ CartController.addToCart = (req, res) => {
 					id: nanoid(6),
 					type: 'success',
 					message: {
-						text: `${product.title} Added To Your Cart`,
+						header: _.truncate(product.title),
+						text: ` Added To Your Cart`,
 					},
 					duration: 1.5,
 				},

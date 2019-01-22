@@ -19,6 +19,7 @@ ProfileActions.logout = () => ({
 ProfileActions.signin = data => ({
 	types: types.signIn,
 	promise: client => client.post('signin', { data }),
+	metaData: true,
 });
 
 ProfileActions.signup = data => ({
