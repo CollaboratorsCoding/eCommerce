@@ -1,10 +1,12 @@
+import MetaData from '../metadata/actions';
+
 export default function clientMiddleware(client) {
 	return ({ dispatch, getState }) => next => action => {
 		if (typeof action === 'function') {
 			return action(dispatch, getState);
 		}
 
-		const { promise, types, ...rest } = action; // eslint-disable-line no-redeclare
+		const { promise, types, metaData, ...rest } = action; // eslint-disable-line no-redeclare
 		if (!promise) {
 			return next(action);
 		}
@@ -21,8 +23,18 @@ export default function clientMiddleware(client) {
 
 		actionPromise
 			.then(
-				result => next({ ...rest, result, type: SUCCESS }),
-				error => next({ ...rest, error, type: FAILURE })
+				result => {
+					if (metaData) {
+						MetaData(dispatch, result.metaData);
+					}
+					return next({ ...rest, result, type: SUCCESS });
+				},
+				error => {
+					if (metaData) {
+						MetaData(dispatch, error.metaData);
+					}
+					return next({ ...rest, error, type: FAILURE });
+				}
 			)
 			.catch(error => {
 				console.error('MIDDLEWARE ERROR:', error);

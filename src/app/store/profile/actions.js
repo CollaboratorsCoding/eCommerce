@@ -24,4 +24,16 @@ ProfileActions.signup = data => ({
 	types: types.signUp,
 	promise: client => client.post('signup', { data }),
 });
+
+ProfileActions.sendResetLinkEmail = data => ({
+	types: types.RestorePassword,
+	promise: client => client.post('sendresetPassword', { data }),
+	metaData: true,
+});
+
+ProfileActions.actionResetPassword = (data, token) => ({
+	types: types.RestorePassword,
+	promise: client => client.post(`resetpassword?token=${token}`, { data }),
+});
+
 export default ProfileActions;

@@ -141,11 +141,13 @@ UserController.sendresetPassword = (req, res) => {
 	return User.findOne({ email: req.body.email }, (err, user) => {
 		if (!user) {
 			return res.status(403).json({
-				type: 'form',
-				message: 'Email not found.',
-				formData: {
-					fieldName: 'email',
-					fieldValue: req.body.email,
+				metaData: {
+					notification: {
+						type: 'error',
+						message: {
+							text: 'Email not found.',
+						},
+					},
 				},
 			});
 		}
@@ -168,9 +170,11 @@ UserController.sendresetPassword = (req, res) => {
 					title: `Password Restore!`,
 					name: user.name,
 					emailAddress: user.email,
-					resetUrl: `${req.protocol}://${
-						req.hostname
-					}/resetpassword?token=${user.resetPasswordToken}`,
+					resetUrl: `${req.protocol}://${req.hostname}${
+						process.env.NODE_ENV !== 'production' ? ':3000' : null
+					}/authentication?form=resetpassword&token=${
+						user.resetPasswordToken
+					}`,
 				},
 			});
 			res.status(200).json({
@@ -200,8 +204,9 @@ UserController.resetPassword = (req, res) => {
 		(err, user) => {
 			if (!user) {
 				return res.status(403).json({
-					type: 'server',
-					message: 'Token already expired.',
+					type: 'form',
+					message: 'Invalid token',
+					fieldName: 'password',
 				});
 			}
 			const reUser = user;

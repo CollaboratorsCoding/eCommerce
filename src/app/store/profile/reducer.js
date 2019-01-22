@@ -9,12 +9,15 @@ const [SIGNUP] = types.signUp;
 
 const [LOGOUT] = types.logout;
 
+const [RESTORE_PASSWORD] = types.RestorePassword;
+
 const initialState = {
 	isLoggedIn: false,
 	profile: {},
 	error: {},
 	loading: false,
 	userLoading: true,
+	requestSuccess: {},
 	lastVisitedProducts: [],
 };
 
@@ -26,7 +29,7 @@ export default (state = initialState, action) => {
 				error: {},
 			};
 
-		case `${GET_PROFILE}_SUCCESS`:
+		case `${GET_PROFILE}_SUCCESS`: {
 			return {
 				...state,
 				profile: _.get(action.result, 'user', {}),
@@ -39,8 +42,9 @@ export default (state = initialState, action) => {
 				userLoading: false,
 				error: {},
 			};
+		}
 
-		case `${GET_PROFILE}_FAIL`:
+		case `${GET_PROFILE}_FAILURE`:
 			return {
 				...state,
 				loading: false,
@@ -60,7 +64,7 @@ export default (state = initialState, action) => {
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
 				error: {},
 			};
-		case `${SIGNIN}_FAIL`:
+		case `${SIGNIN}_FAILURE`: {
 			return {
 				...state,
 				error: {
@@ -74,6 +78,7 @@ export default (state = initialState, action) => {
 				},
 				loading: false,
 			};
+		}
 
 		case SIGNUP:
 			return {
@@ -89,7 +94,7 @@ export default (state = initialState, action) => {
 				isLoggedIn: _.get(action.result, 'isLoggedIn', true),
 				error: {},
 			};
-		case `${SIGNUP}_FAIL`:
+		case `${SIGNUP}_FAILURE`:
 			return {
 				...state,
 				error: {
@@ -117,7 +122,7 @@ export default (state = initialState, action) => {
 				isLoggedIn: _.get(action.result, 'isLoggedIn', false),
 				error: {},
 			};
-		case `${LOGOUT}_FAIL`:
+		case `${LOGOUT}_FAILURE`:
 			return {
 				...state,
 				error: {
@@ -131,6 +136,42 @@ export default (state = initialState, action) => {
 				},
 				loading: false,
 			};
+
+		case RESTORE_PASSWORD:
+			return {
+				...state,
+				loading: true,
+				requestSuccess: {},
+				error: {},
+			};
+
+		case `${RESTORE_PASSWORD}_SUCCESS`:
+			return {
+				...state,
+				loading: false,
+				requestSuccess: _.get(action.payload, 'data.requestSuccess', {
+					operation: 'generic',
+					message: 'Success. Operation Completed',
+				}),
+				error: {},
+			};
+
+		case `${RESTORE_PASSWORD}_FAILURE`: {
+			return {
+				...state,
+				error: {
+					type: _.get(action, 'error.type', 'server'),
+					message: _.get(
+						action,
+						'error.message',
+						'Oops... Something went wrong 😔'
+					),
+					fieldName: _.get(action, 'error.fieldName', ''),
+				},
+				loading: false,
+			};
+		}
+
 		default:
 			return state;
 	}
