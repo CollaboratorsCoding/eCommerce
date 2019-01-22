@@ -209,7 +209,11 @@ export class Category extends Component {
 
 						<Grid.Column mobile={16} tablet={9} computer={13}>
 							<Segment
-								className={loading ? 'loading-segment' : ''}
+								className={
+									loading
+										? 'products-section loading-segment'
+										: 'products-section'
+								}
 							>
 								<Loader active={loading} />
 								<ProductsList
@@ -223,6 +227,7 @@ export class Category extends Component {
 								<Pagination
 									activePage={activePage}
 									boundaryRange={1}
+									className="products-pagination"
 									onPageChange={this.handlePaginationChange}
 									ellipsisItem={{
 										content: (

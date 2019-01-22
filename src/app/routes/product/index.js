@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
-
+import _ from 'lodash';
 import {
 	Button,
 	Label,
@@ -60,7 +60,7 @@ export class Product extends Component {
 	render() {
 		const { product, addToCart, location, match, loading } = this.props;
 		const { contextRef } = this.state;
-		if (!product) return null;
+		if (!product || _.isEmpty(product)) return 'Not found';
 
 		if (loading)
 			return (
@@ -100,7 +100,7 @@ export class Product extends Component {
 								>
 									<section className="left-product-section">
 										<div className="product-img">
-											<img alt="lel" src={imagePath} />
+											<img alt="img" src={imagePath} />
 										</div>
 									</section>
 								</Grid.Column>
@@ -122,7 +122,7 @@ export class Product extends Component {
 													onClick={() => {
 														addToCart(product._id);
 													}}
-													color="green"
+													color="teal"
 													className="product-buy"
 												>
 													Add to Cart
@@ -184,7 +184,7 @@ export class Product extends Component {
 										>
 											<div className="product-img">
 												<img
-													alt="lel"
+													alt="img"
 													src={imagePath}
 												/>
 											</div>

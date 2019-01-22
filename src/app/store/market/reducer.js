@@ -116,6 +116,13 @@ export default (state = initialState, action) => {
 				product: { ...state.product, ...action.result.product },
 			};
 		}
+		case `${GET_PRODUCT}_FAILURE`: {
+			return {
+				...state,
+				loading: false,
+				product: {},
+			};
+		}
 		case `${ADD_REVIEW}_SUCCESS`: {
 			let prevLastItem;
 			const newReviews = _.mapValues(
@@ -124,7 +131,9 @@ export default (state = initialState, action) => {
 					let newVal = [...val];
 
 					newVal.unshift(
-						key === '1' ? action.result.review : prevLastItem
+						key === '1'
+							? { ...action.result.review, isNew: true }
+							: prevLastItem
 					);
 					if (newVal.length > 9) {
 						prevLastItem = newVal[newVal.length - 1];
@@ -154,7 +163,7 @@ export default (state = initialState, action) => {
 					const newVal = [...val];
 
 					newVal[reviewIndex].replies = [
-						action.result.reply,
+						{ ...action.result.reply, isNew: true },
 						...(newVal[reviewIndex].replies || []),
 					];
 					return [...newVal];
@@ -184,6 +193,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				product,
+			};
+		}
+
+		case `${GET_REVIEWS}_FAILURE`: {
+			return {
+				...state,
+				product: {},
 			};
 		}
 		case `${ADD_REVIEW_RATE}_SUCCESS`: {
