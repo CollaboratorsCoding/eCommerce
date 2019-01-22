@@ -69,7 +69,12 @@ class Review extends Component {
 						<ReviewForm
 							reply
 							parentReviewId={parentReviewId}
-							addReply={onAddReply}
+							addReply={data => {
+								onAddReply(data);
+								this.setState({
+									replyFormActive: false,
+								});
+							}}
 						/>{' '}
 					</div>
 				)}

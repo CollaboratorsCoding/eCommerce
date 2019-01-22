@@ -14,9 +14,9 @@ export default class FilterList extends Component {
 		this.state = {
 			sliderValues: [
 				parseFloat(_.get(props, 'filtersExisting.price.min')) ||
-					parseFloat(props.filtersData.min),
+					parseFloat(_.get(props, 'filtersData.min'), 0),
 				parseFloat(_.get(props, 'filtersExisting.price.max')) ||
-					parseFloat(props.filtersData.max),
+					parseFloat(_.get(props, 'filtersData.max'), 0),
 			],
 		};
 	}
@@ -64,7 +64,9 @@ export default class FilterList extends Component {
 
 	render() {
 		const { sliderValues } = this.state;
-		const { filtersData } = this.props;
+		const { filtersData, filtersExisting } = this.props;
+
+		if (!filtersData || !filtersExisting) return null;
 		return (
 			<section className="filters-wrapper">
 				<div>Price Range</div>

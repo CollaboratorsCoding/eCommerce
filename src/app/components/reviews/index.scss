@@ -73,3 +73,19 @@
 		}
 	}
 }
+
+@-webkit-keyframes demo {
+	from {
+		background-color: rgba(0, 128, 128, 0.244);
+	}
+	to {
+		background-color: #fff;
+	}
+}
+
+.new-review {
+	-webkit-animation-name: demo;
+	-webkit-animation-duration: 900ms;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in-out;
+}

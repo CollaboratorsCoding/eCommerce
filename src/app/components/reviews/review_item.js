@@ -11,7 +11,10 @@ export default class ReviewItem extends Component {
 		const { showMoreReplies } = this.state;
 		const { handleReplyClick, handleReviewRate } = this.props;
 		return (
-			<div className="review-wrapper" key={isReply ? rev._id : null}>
+			<div
+				className={`review-wrapper ${rev.isNew ? 'new-review' : ''}`}
+				key={isReply ? rev._id : null}
+			>
 				<div className="review-header">
 					<div className="review-author">{rev.author}</div>
 					{!isReply && (

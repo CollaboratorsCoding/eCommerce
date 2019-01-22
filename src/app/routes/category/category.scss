@@ -4,3 +4,10 @@
 		font-weight: 600;
 	}
 }
+.products-section {
+	display: flex;
+	flex-direction: column;
+	.products-pagination {
+		margin: 20px auto 0 auto !important;
+	}
+}

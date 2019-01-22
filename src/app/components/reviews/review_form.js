@@ -31,6 +31,7 @@ export default class ReviewForm extends Component {
 		}
 		if (this.props.parentReviewId && this.props.reply) {
 			this.props.addReply(data);
+			e.target.reset();
 		} else {
 			this.props.addReview(data, this.props.productSlug);
 			this.setState({
