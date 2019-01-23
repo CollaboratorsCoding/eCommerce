@@ -24,6 +24,7 @@ MarketActions.removeCartProduct = id => ({
 MarketActions.reduceCartProduct = id => ({
 	types: MarketTypes.reduceCartProduct,
 	promise: client => client.get(`/reduce/${id}`),
+	metaData: true,
 });
 
 // * CART  END * //
