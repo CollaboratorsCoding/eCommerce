@@ -23,7 +23,7 @@ UserController.signup = (req, res, next) => {
 					message: {
 						text: 'Unexpected Error',
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			// #TODO: changed to 'form' and handle on client errors from JOI ALL
@@ -39,9 +39,9 @@ UserController.signup = (req, res, next) => {
 						id: nanoid(6),
 						type: 'error',
 						message: {
-							text: 'Unexpected Error',
+							text: _.get(error, 'message', 'Unexpected Error'),
 						},
-						duration: 1.5,
+						duration: 3.5,
 					},
 				},
 				error,
@@ -59,7 +59,7 @@ UserController.signup = (req, res, next) => {
 					message: {
 						text: 'Profile Created!',
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			isLoggedIn: true,
@@ -75,6 +75,7 @@ UserController.signup = (req, res, next) => {
 UserController.signin = (req, res, next) => {
 	const SignInform = { ...req.body };
 	const errors = validate(SignInform, UserTypes.SignInForm);
+
 	if (errors.error) {
 		return res.status(401).json({
 			metaData: {
@@ -82,9 +83,9 @@ UserController.signin = (req, res, next) => {
 					id: nanoid(6),
 					type: 'error',
 					message: {
-						text: 'Unexpected Error',
+						text: _.get(errors, 'error', 'Unexpected Error'),
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			// #TODO: changed to 'form' and handle on client errors from JOI ALL
@@ -100,9 +101,9 @@ UserController.signin = (req, res, next) => {
 						id: nanoid(6),
 						type: 'error',
 						message: {
-							text: 'Unexpected Error',
+							text: _.get(error, 'message', 'Unexpected Error'),
 						},
-						duration: 1.5,
+						duration: 3.5,
 					},
 				},
 				error,
@@ -133,7 +134,7 @@ UserController.logout = (req, res) => {
 				message: {
 					text: 'You are Logged Out now',
 				},
-				duration: 1.5,
+				duration: 3.5,
 			},
 		},
 		isLoggedIn: false,
@@ -204,7 +205,7 @@ UserController.sendresetPassword = (req, res) => {
 					message: {
 						text: 'Unexpected error',
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			type: 'server',
@@ -238,7 +239,7 @@ UserController.sendresetPassword = (req, res) => {
 							message: {
 								text: 'Unexpected error',
 							},
-							duration: 1.5,
+							duration: 3.5,
 						},
 					},
 					type: 'server',
@@ -270,7 +271,7 @@ UserController.sendresetPassword = (req, res) => {
 							text:
 								'Email with restore link was sent. Please check you email',
 						},
-						duration: 1.5,
+						duration: 3.5,
 					},
 				},
 			});
@@ -291,7 +292,7 @@ UserController.resetPassword = (req, res) => {
 					message: {
 						text: 'Unexpected error',
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			type: 'server',
@@ -313,7 +314,7 @@ UserController.resetPassword = (req, res) => {
 							message: {
 								text: 'Invalid token',
 							},
-							duration: 1.5,
+							duration: 3.5,
 						},
 					},
 					type: 'form',
@@ -337,7 +338,7 @@ UserController.resetPassword = (req, res) => {
 							message: {
 								text: 'Password Was Changed',
 							},
-							duration: 1.5,
+							duration: 3.5,
 						},
 					},
 					requestSuccess: {

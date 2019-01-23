@@ -73,8 +73,11 @@ export default function ProductCard({ product, addToCart, loadingCart }) {
 					fluid
 					disabled={loadingCart}
 				>
-					Add to Cart
-					<Loader active={loadingCart} inline />
+					{loadingCart ? (
+						<Loader size="tiny" active={loadingCart} inline />
+					) : (
+						'Add to Cart'
+					)}
 				</Button>
 			</Card.Content>
 		</Card>

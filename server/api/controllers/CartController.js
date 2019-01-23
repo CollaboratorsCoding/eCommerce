@@ -19,7 +19,7 @@ CartController.addToCart = (req, res) => {
 						message: {
 							text: `Unexpected Error`,
 						},
-						duration: 1.5,
+						duration: 3.5,
 					},
 				},
 			});
@@ -35,7 +35,7 @@ CartController.addToCart = (req, res) => {
 						header: _.truncate(product.title),
 						text: ` Added To Your Cart`,
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 
@@ -79,7 +79,7 @@ CartController.remove = (req, res) => {
 				message: {
 					text: `Item Removed From Your Cart`,
 				},
-				duration: 1.5,
+				duration: 3.5,
 			},
 		},
 
@@ -105,7 +105,7 @@ CartController.removeOne = (req, res) => {
 				message: {
 					text: `Item Removed From Your Cart`,
 				},
-				duration: 1.5,
+				duration: 3.5,
 			},
 		},
 		cart: {

@@ -68,13 +68,13 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			error: {
-				type: _.get(action, 'error.type', 'server'),
+				type: _.get(action.error, 'error.type', 'server'),
 				message: _.get(
-					action,
+					action.error,
 					'error.message',
 					'Oops... Something went wrong 😔'
 				),
-				fieldName: _.get(action, 'error.fieldName', ''),
+				fieldName: _.get(action.error, 'error.fieldName', ''),
 			},
 			loading: false,
 		};
@@ -98,13 +98,13 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			error: {
-				type: _.get(action, 'error.type', 'server'),
+				type: _.get(action.error, 'error.type', 'server'),
 				message: _.get(
-					action,
+					action.error,
 					'error.message',
 					'Oops... Something went wrong 😔'
 				),
-				fieldName: _.get(action, 'error.fieldName', ''),
+				fieldName: _.get(action.error, 'error.fieldName', ''),
 			},
 			loading: false,
 		};
@@ -126,13 +126,13 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			error: {
-				type: _.get(action.result, 'response.data.type', 'server'),
+				type: _.get(action.error, 'error.type', 'server'),
 				message: _.get(
-					action.result,
-					'response.data.message',
+					action.error,
+					'error.message',
 					'Oops... Something went wrong 😔'
 				),
-				fieldName: _.get(action, 'error.fieldName', ''),
+				fieldName: _.get(action.error, 'error.fieldName', ''),
 			},
 			loading: false,
 		};
@@ -160,13 +160,13 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			error: {
-				type: _.get(action, 'error.type', 'server'),
+				type: _.get(action.error, 'error.type', 'server'),
 				message: _.get(
-					action,
+					action.error,
 					'error.message',
 					'Oops... Something went wrong 😔'
 				),
-				fieldName: _.get(action, 'error.fieldName', ''),
+				fieldName: _.get(action.error, 'error.fieldName', ''),
 			},
 			loading: false,
 		};

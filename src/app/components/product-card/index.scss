@@ -51,10 +51,10 @@ $large: 1124px;
 		}
 	}
 	.product-card-title {
-		color: darken(#4da3ff, 20);
+		color: #427db7;
 
 		&:hover {
-			color: #4da3ff;
+			color: lighten(#427db7, 15);
 		}
 	}
 	.product-card-description {
@@ -71,9 +71,10 @@ $large: 1124px;
 		margin-bottom: 9px;
 		.product-price {
 			font-weight: bold;
-			color: #808080;
+			font-family: 'Lato', sans-serif;
+			color: #b90b0d;
 			font-size: 19px;
-			background: #f1f1f1;
+
 			padding: 2px 13px;
 			border-radius: 7px;
 		}
@@ -82,11 +83,11 @@ $large: 1124px;
 			align-items: center;
 			.product-reviews {
 				margin-left: 3px;
-				margin-bottom: 2px;
+				margin-top: 1px;
 			}
 		}
-
-		.product-buy {
-		}
+	}
+	.product-buy {
+		font-family: 'Raleway', sans-serif;
 	}
 }

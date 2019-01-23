@@ -199,7 +199,7 @@ export class Product extends Component {
 													onClick={() => {
 														addToCart(product._id);
 													}}
-													color="green"
+													color="teal"
 													className="product-buy"
 												>
 													Add to Cart
@@ -225,30 +225,30 @@ export class Product extends Component {
 				description={description}
 				image={imagePath}
 			>
+				<Breadcrumb size="large">
+					<Breadcrumb.Section>
+						<CustomLink
+							style={{ cursor: 'pointer' }}
+							componentPromise={Homepage}
+							to="/"
+						>
+							Home
+						</CustomLink>
+					</Breadcrumb.Section>
+					<Breadcrumb.Divider icon="right chevron" />
+					<Breadcrumb.Section>
+						<CustomLink
+							style={{ cursor: 'pointer' }}
+							componentPromise={Category}
+							to={`/c/${category}`}
+						>
+							{category}
+						</CustomLink>
+					</Breadcrumb.Section>
+					<Breadcrumb.Divider icon="right chevron" />
+					<Breadcrumb.Section active>{title}</Breadcrumb.Section>
+				</Breadcrumb>
 				<div>
-					<Breadcrumb size="large">
-						<Breadcrumb.Section>
-							<CustomLink
-								style={{ cursor: 'pointer' }}
-								componentPromise={Homepage}
-								to="/"
-							>
-								Home
-							</CustomLink>
-						</Breadcrumb.Section>
-						<Breadcrumb.Divider icon="right chevron" />
-						<Breadcrumb.Section>
-							<CustomLink
-								style={{ cursor: 'pointer' }}
-								componentPromise={Category}
-								to={`/c/${category}`}
-							>
-								{category}
-							</CustomLink>
-						</Breadcrumb.Section>
-						<Breadcrumb.Divider icon="right chevron" />
-						<Breadcrumb.Section active>{title}</Breadcrumb.Section>
-					</Breadcrumb>
 					<h1>{title}</h1>
 					<Rating
 						icon="star"

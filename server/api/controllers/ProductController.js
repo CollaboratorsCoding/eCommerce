@@ -245,7 +245,7 @@ ProductController.addReview = (req, res) => {
 							message: {
 								text: `Your Review Successfully Added`,
 							},
-							duration: 1.5,
+							duration: 3.5,
 						},
 					},
 					review: savedReview,
@@ -272,7 +272,7 @@ ProductController.addReply = (req, res) => {
 					message: {
 						text: `Your Reply Successfully Added`,
 					},
-					duration: 1.5,
+					duration: 3.5,
 				},
 			},
 			reply: savedReply,
@@ -305,7 +305,7 @@ ProductController.addReviewRate = (req, res) => {
 						message: {
 							text: `Review Was Rated`,
 						},
-						duration: 1.5,
+						duration: 3.5,
 					},
 				},
 				review,
