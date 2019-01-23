@@ -27,7 +27,7 @@ class SignUp extends Component {
 		const { errors, validateField, switchForm } = this.props;
 		return (
 			<Form onSubmit={this.handleSubmit} className="form">
-				<h1>Registration</h1>
+				<h2>Registration</h2>
 				<Form.Input
 					icon="mail"
 					iconPosition="left"

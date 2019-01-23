@@ -1,3 +1,5 @@
+import nanoid from 'nanoid';
+import _ from 'lodash';
 import Cart from '../../models/cart.model';
 import Product from '../../models/product.model';
 
@@ -9,11 +11,34 @@ CartController.addToCart = (req, res) => {
 
 	Product.findOne({ _id: productId }, (err, product) => {
 		if (err) {
-			return res.status(404).send('Not found');
+			return res.status(404).json({
+				metaData: {
+					notification: {
+						id: nanoid(6),
+						type: 'error',
+						message: {
+							text: `Unexpected Error`,
+						},
+						duration: 3.5,
+					},
+				},
+			});
 		}
 		cart.add(product, product.id);
 		req.session.cart = cart;
 		return res.status(200).json({
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'success',
+					message: {
+						header: _.truncate(product.title),
+						text: ` Added To Your Cart`,
+					},
+					duration: 3.5,
+				},
+			},
+
 			cart: {
 				productsInCart: cart.generateArray(),
 				totalPrice: cart.totalPrice,
@@ -47,6 +72,17 @@ CartController.remove = (req, res) => {
 	cart.remove(productId);
 	req.session.cart = cart;
 	res.status(200).json({
+		metaData: {
+			notification: {
+				id: nanoid(6),
+				type: 'success',
+				message: {
+					text: `Item Removed From Your Cart`,
+				},
+				duration: 3.5,
+			},
+		},
+
 		cart: {
 			productsInCart: cart.generateArray(),
 			totalPrice: cart.totalPrice,
@@ -62,6 +98,16 @@ CartController.removeOne = (req, res) => {
 	cart.removeOne(productId);
 	req.session.cart = cart;
 	res.status(200).json({
+		metaData: {
+			notification: {
+				id: nanoid(6),
+				type: 'success',
+				message: {
+					text: `Item Removed From Your Cart`,
+				},
+				duration: 3.5,
+			},
+		},
 		cart: {
 			productsInCart: cart.generateArray(),
 			totalPrice: cart.totalPrice,

@@ -68,7 +68,7 @@
 		"mini-css-extract-plugin": "0.4.3",
 		"mongoose": "^5.4.0",
 		"morgan": "^1.9.1",
-		"nanoid": "^2.0.0",
+		"nanoid": "^2.0.1",
 		"node-sass": "^4.10.0",
 		"nodemailer": "^4.7.0",
 		"nodemon": "^1.18.9",
@@ -81,6 +81,7 @@
 		"postcss-preset-env": "6.0.6",
 		"postcss-safe-parser": "4.0.1",
 		"query-string": "^6.2.0",
+		"rc-notification": "^3.3.0",
 		"rc-rate": "^2.5.0",
 		"rc-slider": "^8.6.4",
 		"rc-steps": "^3.3.1",
@@ -134,13 +135,7 @@
 		"not ie <= 11",
 		"not op_mini all"
 	],
-	"husky": {
-		"hooks": {
-			"pre-commit": "pretty-quick --staged"
-		}
-	},
 	"devDependencies": {
-		"husky": "^1.1.0",
 		"ignore-loader": "^0.1.2",
 		"prettier": "^1.15.3",
 		"pretty-quick": "^1.7.0",

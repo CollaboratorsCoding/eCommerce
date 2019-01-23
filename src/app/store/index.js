@@ -13,7 +13,7 @@ export default (url = '/', client) => {
 
 	const history = isServer
 		? createMemoryHistory({
-				initialEntries: [url],
+			initialEntries: [url],
 		  })
 		: createBrowserHistory();
 

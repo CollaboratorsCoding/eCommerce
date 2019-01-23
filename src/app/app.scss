@@ -54,3 +54,63 @@
 .loading-segment {
 	opacity: 0.4;
 }
+
+.notification-item {
+	width: 100%;
+	border-left: 6px solid;
+	color: #878787;
+	text-align: center;
+	padding: 16px 30px;
+	position: relative;
+	&__close {
+		position: absolute;
+		right: 15px;
+		top: 47%;
+		width: 14px;
+		cursor: pointer;
+		height: 14px;
+		fill: #878787;
+		transform: translateY(-50%);
+	}
+	&__header {
+		color: #3e3e3e;
+		font-weight: 700;
+		margin-top: 0;
+		margin-bottom: 4px;
+	}
+	&__content {
+		padding: 0 70px;
+	}
+	&__icon.success {
+		background: rgb(0, 181, 173);
+	}
+	&__icon.error {
+		background: #da5353;
+	}
+	&__icon.info {
+		background: #5694da;
+	}
+	&__icon {
+		position: absolute;
+		top: 50%;
+		left: 22px;
+		transform: translateY(-50%);
+		width: 14px;
+		height: 14px;
+		padding: 13px;
+		border-radius: 50%;
+		display: inline-block;
+	}
+	&__svg {
+		position: absolute;
+		fill: #fff;
+
+		left: 6px;
+
+		transform: translateY(-50%);
+		width: 16px;
+
+		border-radius: 50%;
+		fill: #fff;
+	}
+}

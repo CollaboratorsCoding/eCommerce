@@ -9,6 +9,7 @@ import {
 	Segment,
 	Button,
 	Loader,
+	Dimmer,
 	Popup,
 	Breadcrumb,
 } from 'semantic-ui-react';
@@ -130,6 +131,13 @@ export class Category extends Component {
 		const categoryName = this.props.match.params.slug_category;
 		const { categories, addToCart, loading, loadingCart } = this.props;
 		const { activePage } = this.state;
+		if (loading)
+			return (
+				<Dimmer inverted active>
+					{' '}
+					<Loader active />
+				</Dimmer>
+			);
 		const upperRow = (
 			<Grid.Row verticalAlign="middle" textAlign="center">
 				<Grid.Column mobile={16} tablet={7} computer={3}>
