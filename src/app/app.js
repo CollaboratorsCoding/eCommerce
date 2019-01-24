@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 
 // Action creators and helpers
 import ScrollTop from './hocs/scrollTop';
-import WithNotifications from './hocs/withNotifications';
+import MetaDataHendler from './hocs/withNotifications';
 import Layout from './layout';
 import Routes from './routes';
 
@@ -15,13 +15,13 @@ import './app.scss';
 const App = props => (
 	<div id="app">
 		<ScrollTop>
-			<WithNotifications notification={props.notification}>
+			<MetaDataHendler redirect={props.redirect} notification={props.notification}>
 				<Layout current={props.location.pathname}>
 					<div id="content">
 						<Routes />
 					</div>
 				</Layout>
-			</WithNotifications>
+			</MetaDataHendler>
 		</ScrollTop>
 	</div>
 );
@@ -32,6 +32,7 @@ const mapStateToProps = state => ({
 	search: state.router.location.search,
 	hash: state.router.location.hash,
 	notification: state.metadata.notification,
+	redirect: state.metadata.redirect,
 });
 
 export default withRouter(

@@ -35,7 +35,7 @@ CartController.addToCart = (req, res) => {
 						header: _.truncate(product.title),
 						text: ` Added To Your Cart`,
 					},
-					duration: 3.5,
+					duration: 2,
 				},
 			},
 
@@ -68,7 +68,7 @@ CartController.getItemsCart = (req, res) => {
 CartController.remove = (req, res) => {
 	const productId = req.params.id;
 	const cart = new Cart(req.session.cart ? req.session.cart : {});
-
+	const currentProduct = cart.get(productId);
 	cart.remove(productId);
 	req.session.cart = cart;
 	res.status(200).json({
@@ -77,9 +77,10 @@ CartController.remove = (req, res) => {
 				id: nanoid(6),
 				type: 'success',
 				message: {
-					text: `Item Removed From Your Cart`,
+					header: _.truncate(_.get(currentProduct, 'item.title', '')),
+					text: ` Removed From Your Cart`,
 				},
-				duration: 3.5,
+				duration: 2,
 			},
 		},
 
@@ -94,7 +95,7 @@ CartController.remove = (req, res) => {
 CartController.removeOne = (req, res) => {
 	const productId = req.params.id;
 	const cart = new Cart(req.session.cart ? req.session.cart : {});
-
+	const currentProduct = cart.get(productId);
 	cart.removeOne(productId);
 	req.session.cart = cart;
 	res.status(200).json({
@@ -103,9 +104,10 @@ CartController.removeOne = (req, res) => {
 				id: nanoid(6),
 				type: 'success',
 				message: {
-					text: `Item Removed From Your Cart`,
+					header: _.truncate(_.get(currentProduct, 'item.title', '')),
+					text: ` Removed From Your Cart`,
 				},
-				duration: 3.5,
+				duration: 2,
 			},
 		},
 		cart: {

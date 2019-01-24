@@ -271,8 +271,11 @@ UserController.sendresetPassword = (req, res) => {
 							text:
 								'Email with restore link was sent. Please check you email',
 						},
-						duration: 3.5,
+						duration: 4.5,
 					},
+					redirect: {
+						path: '/'
+					}
 				},
 			});
 		});
@@ -340,11 +343,9 @@ UserController.resetPassword = (req, res) => {
 							},
 							duration: 3.5,
 						},
-					},
-					requestSuccess: {
-						message: 'Password Was Changed',
-						operation: 'password_change',
-						redirectURL: '/login',
+						redirect: {
+							path: '/authentication'
+						}
 					},
 				});
 			});

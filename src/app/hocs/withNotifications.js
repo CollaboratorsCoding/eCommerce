@@ -86,9 +86,13 @@ const colors = {
 	},
 };
 
-class ScrollToTop extends Component {
+class MetaDataHendler extends Component {
 	componentDidUpdate(prevProps) {
-		const { notification } = this.props;
+		const { notification, redirect, history } = this.props;
+
+		if (prevProps.redirect.path !== redirect.path && !isServer) {
+			history.push(redirect.path)
+		}
 
 		if (prevProps.notification.id !== notification.id && !isServer) {
 			rcnotification.notice({
@@ -148,4 +152,4 @@ class ScrollToTop extends Component {
 	}
 }
 
-export default withRouter(ScrollToTop);
+export default withRouter(MetaDataHendler);

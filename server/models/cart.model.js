@@ -23,6 +23,10 @@ export default class Cart {
 		this.totalPrice += storedItem.item.price;
 	}
 
+	get(id) {
+		return this.items[id]
+	}
+
 	remove(id) {
 		this.totalQty -= this.items[id].qty;
 		this.totalPrice -= this.items[id].price;

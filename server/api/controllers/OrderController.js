@@ -1,4 +1,5 @@
 // const _ = require('lodash');
+import nanoid from 'nanoid';
 import Cart from '../../models/cart.model';
 
 const Product = require('../../models/product.model');
@@ -57,10 +58,18 @@ OrderContreller.newOrder = async (req, res) => {
 		};
 		return res.json({
 			cart: req.session.cart,
-			requestSuccess: {
-				message: 'Success',
-				operation: 'new_order',
-				redirectURL: '/',
+			metaData: {
+				notification: {
+					id: nanoid(6),
+					type: 'success',
+					message: {
+						text: 'Your order has been sent',
+					},
+					duration: 3.5,
+				},
+				redirect: {
+					path: '/'
+				}
 			},
 		});
 	} catch (error) {
