@@ -29,16 +29,9 @@ const frontload = async props => {
 };
 
 class OrderHistory extends Component {
-	state = {
-		products: []
-	};
-    
-    getProducts = (expanded, record) => {
-    	this.setState({products: record.products})
-    } 
+	state ={}
 
-    render() {
-    	console.log(this.props.myOrders)
+	render() {
     	if(this.props.loading) {
     		return 	<Loader active={this.props.loading} />
     	}
@@ -59,9 +52,8 @@ class OrderHistory extends Component {
     						<Table
     							columns={columns}
     							expandRowByClick
-    							onExpand={this.getProducts}
     							scroll={{ x: 550 }}
-    							expandedRowRender={() => ExpandedRow(this.state.products)}
+    							expandedRowRender={(record) => ExpandedRow(record.products)}
     							data={this.props.myOrders}
     						/>
     					</div>
@@ -77,7 +69,7 @@ class OrderHistory extends Component {
     		</Page>
     		);
 				
-    }
+	}
 }
 
 const mapStateToProps = state => ({
