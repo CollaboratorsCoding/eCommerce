@@ -44,6 +44,7 @@ api.get('/logout', UserController.logout);
 
 // ORDER API
 api.post('/order', OrderController.newOrder);
+api.get('/orders-history', checkJwt, OrderController.OrdersHistory);
 
 /* ... */
 

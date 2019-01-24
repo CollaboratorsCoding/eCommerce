@@ -90,5 +90,10 @@ MarketActions.addOrder = data => ({
 	metaData: true,
 });
 
+MarketActions.getOrders = () => ({
+	types: MarketTypes.GetOrders,
+	promise: client => client.get('/orders-history'),
+});
+
 // * ORDERS  END * //
 export default MarketActions;

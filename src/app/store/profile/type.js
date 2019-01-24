@@ -9,4 +9,5 @@ ProfileTypes.logout = ['LOGOUT'];
 
 ProfileTypes.RestorePassword = ['RESTORE_PASSWORD'];
 
+
 export default ProfileTypes;

@@ -11,13 +11,14 @@ const [LOGOUT] = types.logout;
 
 const [RESTORE_PASSWORD] = types.RestorePassword;
 
+
+
 const initialState = {
 	isLoggedIn: false,
 	profile: {},
 	error: {},
 	loading: false,
 	userLoading: true,
-	requestSuccess: {},
 	lastVisitedProducts: [],
 };
 
@@ -119,6 +120,7 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			loading: false,
+			profile: {},
 			isLoggedIn: _.get(action.result, 'isLoggedIn', false),
 			error: {},
 		};
@@ -171,7 +173,6 @@ export default (state = initialState, action) => {
 			loading: false,
 		};
 	}
-
 	default:
 		return state;
 	}

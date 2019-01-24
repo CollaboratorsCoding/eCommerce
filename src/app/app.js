@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 
 // Action creators and helpers
 import ScrollTop from './hocs/scrollTop';
-import MetaDataHendler from './hocs/withNotifications';
+import MetaDataHendler from './hocs/MetaDataHendler';
 import Layout from './layout';
 import Routes from './routes';
 

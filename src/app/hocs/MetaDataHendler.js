@@ -90,7 +90,7 @@ class MetaDataHendler extends Component {
 	componentDidUpdate(prevProps) {
 		const { notification, redirect, history } = this.props;
 
-		if (prevProps.redirect.path !== redirect.path && !isServer) {
+		if (prevProps.redirect.id !== redirect.id && !isServer) {
 			history.push(redirect.path)
 		}
 

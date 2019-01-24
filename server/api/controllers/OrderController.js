@@ -1,6 +1,7 @@
-// const _ = require('lodash');
+import _ from'lodash';
 import nanoid from 'nanoid';
 import Cart from '../../models/cart.model';
+import RenameKeys from '../../utils/renameKeys';
 
 const Product = require('../../models/product.model');
 const Order = require('../../models/orders.model');
@@ -29,17 +30,22 @@ OrderContreller.newOrder = async (req, res) => {
 	const cartArray = await cart.generateArray();
 	const itemsIds = cartArray.map(product => product.item._id);
 
-	const userId = req.session.userId;
+	const userId = req.session.user_id;
 	const orderObj = {
 		userId,
 		user: { ...Orderform },
 		products: cartArray,
-		OrderPrice: cart.totalPrice,
+		OrderPrice: `$ ${cart.totalPrice}`,
 		OrderQty: cart.totalQty,
 	};
 	try {
 		const newOrder = new Order(orderObj);
-		await newOrder.save();
+		const saveOrder = await newOrder.save();
+		const orderRenameKey = _.omit(RenameKeys({_id: 'key'}, saveOrder.toObject()), [
+			'user',
+			'OrderQty',
+			'userId',
+		]);
 		await Product.update(
 			{
 				_id: { $in: itemsIds },
@@ -58,6 +64,7 @@ OrderContreller.newOrder = async (req, res) => {
 		};
 		return res.json({
 			cart: req.session.cart,
+			order: orderRenameKey,
 			metaData: {
 				notification: {
 					id: nanoid(6),
@@ -68,7 +75,8 @@ OrderContreller.newOrder = async (req, res) => {
 					duration: 3.5,
 				},
 				redirect: {
-					path: '/'
+					id: nanoid(6),
+					path: req.session.user_id?'/orders-history':'/'
 				}
 			},
 		});
@@ -76,5 +84,18 @@ OrderContreller.newOrder = async (req, res) => {
 		return res.json({ type: 'server', message: error });
 	}
 };
+
+OrderContreller.OrdersHistory = (req, res) => {
+	Order.find({ userId: req.user._id }, (err, orders) => {
+		const mapOrders = orders.map(order => _.omit(RenameKeys({_id: 'key'}, order.toObject()), [
+			'user',
+			'OrderQty',
+			'userId',
+		]))
+		res.json({orders: mapOrders})
+	})
+	
+}
+
 
 export default OrderContreller;

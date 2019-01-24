@@ -126,6 +126,7 @@ UserController.signin = (req, res, next) => {
 
 UserController.logout = (req, res) => {
 	req.session.token = null;
+	req.session.user_id = null;
 	res.json({
 		metaData: {
 			notification: {
@@ -274,6 +275,7 @@ UserController.sendresetPassword = (req, res) => {
 						duration: 4.5,
 					},
 					redirect: {
+						id: nanoid(6),
 						path: '/'
 					}
 				},
@@ -344,6 +346,7 @@ UserController.resetPassword = (req, res) => {
 							duration: 3.5,
 						},
 						redirect: {
+							id: nanoid(6),
 							path: '/authentication'
 						}
 					},
