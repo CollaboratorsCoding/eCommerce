@@ -86,7 +86,7 @@ const colors = {
 	},
 };
 
-class MetaDataHendler extends Component {
+class MetaDataHandler extends Component {
 	componentDidUpdate(prevProps) {
 		const { notification, redirect, history } = this.props;
 
@@ -152,4 +152,4 @@ class MetaDataHendler extends Component {
 	}
 }
 
-export default withRouter(MetaDataHendler);
+export default withRouter(MetaDataHandler);

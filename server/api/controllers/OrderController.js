@@ -43,7 +43,6 @@ OrderContreller.newOrder = async (req, res) => {
 		const saveOrder = await newOrder.save();
 		const orderRenameKey = _.omit(RenameKeys({_id: 'key'}, saveOrder.toObject()), [
 			'user',
-			'OrderQty',
 			'userId',
 		]);
 		await Product.update(
@@ -89,7 +88,6 @@ OrderContreller.OrdersHistory = (req, res) => {
 	Order.find({ userId: req.user._id }, (err, orders) => {
 		const mapOrders = orders.map(order => _.omit(RenameKeys({_id: 'key'}, order.toObject()), [
 			'user',
-			'OrderQty',
 			'userId',
 		]))
 		res.json({orders: mapOrders})

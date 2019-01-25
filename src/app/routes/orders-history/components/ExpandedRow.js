@@ -9,12 +9,15 @@ const columns = [
 	{ title: 'SubTotal', dataIndex: 'price', key: 'subtotal' },
 ]
 
-export default function ExpandedRow(products) {
+export default function ExpandedRow(products, OrderQty) {
 	const mapProducts = products.map(product => ({key:nanoid(5), ...product}))
 	return (
+		<>
+		<h3>Ordered products: {OrderQty}</h3>
 		<Table
     		columns={columns}		
     		data={mapProducts}
     	/>
+		</>
 	)
 }

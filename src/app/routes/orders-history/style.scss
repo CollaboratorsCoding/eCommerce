@@ -9,3 +9,16 @@
 .rc-table-row:hover {
     cursor: pointer;
 }
+.rc-table table {
+    text-align: center;
+    color: black;
+    font-size: 13px;
+}
+
+.rc-table td, th {
+    border: 1px solid #e6e5e5;
+}
+
+table {
+    border-spacing: 0 !important;
+}

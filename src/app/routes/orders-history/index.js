@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Container, Loader } from 'semantic-ui-react';
+import dayjs from 'dayjs';
+import { Container, Loader, Label } from 'semantic-ui-react';
 import Table from 'rc-table';
 
 import { frontloadConnect } from '../../hocs/frontLoad';
@@ -16,11 +17,32 @@ import './style.scss';
 const { getOrders } = MarketActions;
 
 const columns = [
-	{ title: 'Order id', dataIndex: 'key', key: '_id', width: 200 },
-	{ title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
-	{ title: 'Total', dataIndex: 'OrderPrice', key: 'OrderPrice', width: 100 },
-	{ title: 'Date', dataIndex: 'date', key: 'date', width: 200 },
+	{ 
+		title: 'Order id', 
+		dataIndex: 'key', 
+		key: '_id', 
+		width: 200 
+	},
+	{ 
+		title: 'Status', 
+		dataIndex: 'status',
+		key: 'status', 
+		width: 100, 
+		render: status => <Label color='red'>{status}</Label>},
+	{ 
+		title: 'Total', 
+		dataIndex: 'OrderPrice', 
+		key: 'OrderPrice', 
+		width: 100 },
+	{ 
+		title: 'Date', 
+		dataIndex: 'date',
+		key: 'date', 
+		width: 200,
+		render: date => dayjs(date).format('DD.MM.YYYY | H:mm')
+	},
 ];
+
 
 const frontload = async props => {
 	if(!props.myOrders.length){
@@ -53,7 +75,7 @@ class OrderHistory extends Component {
     							columns={columns}
     							expandRowByClick
     							scroll={{ x: 550 }}
-    							expandedRowRender={(record) => ExpandedRow(record.products)}
+    							expandedRowRender={(record) => ExpandedRow(record.products, record.OrderQty)}
     							data={this.props.myOrders}
     						/>
     					</div>

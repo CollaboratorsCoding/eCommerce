@@ -29,6 +29,9 @@
 
 a {
 	color: rgb(34, 34, 34);
+	&:hover {
+		color: rgb(34, 34, 34);
+	}
 }
 
 #links li a {
