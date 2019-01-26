@@ -59,7 +59,7 @@ class OrderHistory extends Component {
     	}
     	
     	return (
-    		<Page id="myorders" title="Add New Product"
+    		<Page id="myorders" title="My order history"
     			description="This is about really cool stuff."
     			noCrawl>
     			

@@ -24,7 +24,26 @@ OrderContreller.newOrder = async (req, res) => {
 
 	const cart = new Cart(req.session.cart ? req.session.cart : {});
 	if (!cart.totalQty) {
-		return res.status(403).json({ message: 'Cart is empty' });
+		return res.status(403).json({ metaData: {
+			notification: {
+				id: nanoid(6),
+				type: 'error',
+				message: {
+					text: 'Your cart is empty',
+				},
+				duration: 3.5,
+			},
+			redirect: {
+				id: nanoid(6),
+				path: '/'
+			}
+		},
+		cart: {
+			productsInCart: [],
+			totalQty: 0,
+			totalPrice: 0,
+		},
+		});
 	}
 
 	const cartArray = await cart.generateArray();

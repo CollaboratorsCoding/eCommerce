@@ -284,6 +284,13 @@ export default (state = initialState, action) => {
 			cart: action.result.cart,
 		};
 	}
+	case `${ADD_ORDER}_FAILURE`: {
+		return {
+			...state,
+			cart: action.error.cart,
+			loading: false,
+		};
+	}
 	case GET_ORDERS:
 		return {
 			...state,
