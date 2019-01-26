@@ -7,28 +7,23 @@ const Authenticated = ({
 	loading,
 	isLoggedIn,
 	...rest
-}) => {
-	if (loading) {
-		return null;
-	}
-	return (
-		<Route
-			{...rest}
-			render={props =>
-				isLoggedIn ? (
-					<Component {...props} />
-				) : (
-					<Redirect
-						to={`/authentication?redirect=${props.location.pathname.replace(
-							'/',
-							''
-						)}`}
-					/>
-				)
-			}
-		/>
-	);
-};
+}) => (
+	<Route
+		{...rest}
+		render={props =>
+			isLoggedIn || loading ? (
+				<Component {...props} />
+			) : (
+				<Redirect
+					to={`/authentication?redirect=${props.location.pathname.replace(
+						'/',
+						''
+					)}`}
+				/>
+			)
+		}
+	/>
+);
 
 const mapStateToProps = state => ({
 	isLoggedIn: state.profile.isLoggedIn,
