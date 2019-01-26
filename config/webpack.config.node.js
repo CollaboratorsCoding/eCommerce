@@ -2,12 +2,12 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const NODE_ENV = process.env.NODE_ENV;
 
-module.exports = {
+const config = {
 	mode: NODE_ENV,
 	target: 'node',
-	entry: ['webpack/hot/poll?1000', './server/mount.webpack'],
+	entry: ['./server/mount.webpack'],
 	output: {
 		path: path.join(__dirname, '../build/server'),
 		// Build it as a commonjs library so we can include it
@@ -16,13 +16,7 @@ module.exports = {
 		// Build it as a commonjs library so we can include it
 		libraryTarget: 'commonjs',
 	},
-
-	externals: [
-		nodeExternals({
-			// Include the hot reload polling code in the bundle though
-			whitelist: ['webpack/hot/poll?1000'],
-		}),
-	],
+	externals: [],
 	module: {
 		rules: [
 			{
@@ -64,11 +58,30 @@ module.exports = {
 		],
 	},
 	plugins: [
-		// new webpack.DefinePlugin({
-		// 	'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-		// }),
 		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 	],
 };
+
+if (NODE_ENV === 'production') {
+	config.externals.unshift(nodeExternals())
+	config.plugins.push(
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify('production')
+	  }),
+		new webpack.optimize.OccurrenceOrderPlugin(),
+	)
+} else {
+	config.entry.unshift('webpack/hot/poll?1000'); 
+	config.externals.unshift(nodeExternals({
+		// Include the hot reload polling code in the bundle though
+		whitelist: ['webpack/hot/poll?1000'],
+	}))
+	config.plugins.unshift(
+		new webpack.HotModuleReplacementPlugin(),
+	)
+	
+}
+
+
+module.exports = config
