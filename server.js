@@ -1,5 +1,4 @@
 const express = require('express');
-const expressStaticGzip = require('express-static-gzip');
 const compression = require('compression');
 const Loadable = require('react-loadable');
 
@@ -38,12 +37,6 @@ if (isDev) {
 		buildPromise.then(next, next);
 	});
 } else {
-	app.use(
-		expressStaticGzip(`${process.cwd()}/build/client`, {
-			enableBrotli: true,
-			orderPreference: ['br'],
-		})
-	);
 	require('./build/server/server.js').mount.default(app);
 }
 
@@ -60,15 +53,15 @@ app.on('error', error => {
 	const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`;
 
 	switch (error.code) {
-		case 'EACCES':
-			console.error(`${bind} requires elevated privileges`);
-			process.exit(1);
-			break;
-		case 'EADDRINUSE':
-			console.error(`${bind} is already in use`);
-			process.exit(1);
-			break;
-		default:
-			throw error;
+	case 'EACCES':
+		console.error(`${bind} requires elevated privileges`);
+		process.exit(1);
+		break;
+	case 'EADDRINUSE':
+		console.error(`${bind} is already in use`);
+		process.exit(1);
+		break;
+	default:
+		throw error;
 	}
 });
