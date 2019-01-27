@@ -276,7 +276,10 @@ export default (state = initialState, action) => {
 		};
 	}
 	case `${ADD_ORDER}_SUCCESS`: {
-		const newOrder = [...state.myOrders, action.result.order];
+		let newOrder = state.myOrders;
+		if (newOrder.length) {
+			newOrder = [...state.myOrders, action.result.order];
+		}
 		return {
 			...state,
 			myOrders: newOrder,

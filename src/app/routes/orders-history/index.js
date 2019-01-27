@@ -45,7 +45,7 @@ const columns = [
 
 
 const frontload = async props => {
-	if(props.myOrders.length <= 1){
+	if(!props.myOrders.length){
 		await props.getOrders();
 	}
 };
