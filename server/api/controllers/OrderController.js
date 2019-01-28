@@ -104,7 +104,8 @@ OrderContreller.newOrder = async (req, res) => {
 };
 
 OrderContreller.OrdersHistory = (req, res) => {
-	Order.find({ userId: req.user._id }, (err, orders) => {
+	const Orders = Order.find({ userId: req.user._id }).sort({ date: -1 }); 
+	Orders.exec((err, orders) => {
 		const mapOrders = orders.map(order => _.omit(RenameKeys({_id: 'key'}, order.toObject()), [
 			'user',
 			'userId',
