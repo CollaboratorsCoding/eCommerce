@@ -13,7 +13,7 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from '../hocs/customLink';
-import { Homepage, About, AddProduct, Cart, Authentication } from '../routes';
+import { Homepage, About, AddProduct, Cart, Authentication, OrderHistory } from '../routes';
 import logo from '../assets/logo.png';
 
 const unAuthLinks = [
@@ -170,8 +170,7 @@ class Header extends Component {
 
 										return TheLink;
 									})}
-
-									<Menu.Item>
+									<Menu.Menu position='right'>
 										<CustomLink
 											to="/cart"
 											componentPromise={Cart}
@@ -194,33 +193,39 @@ class Header extends Component {
 												) : null}
 											</Icon.Group>
 										</CustomLink>
-									</Menu.Item>
+									
 
-									{user.isLoggedIn ? (
-										<Dropdown
-											text={user.profile.name}
-											pointing
-											className="link item"
-										>
-											<Dropdown.Menu>
-												<Dropdown.Item>
-													Profile
-												</Dropdown.Item>
+										{user.isLoggedIn ? (
+											<Dropdown
+												text={user.profile.name}
+												pointing
+												className="link item"
+											>
+												<Dropdown.Menu>
+													<Dropdown.Item>
+														<CustomLink
+															to="/orders-history"
+															componentPromise={OrderHistory}
+														>
+													My orders
+														</CustomLink>
+													</Dropdown.Item>
 
-												<Dropdown.Divider />
-												<Dropdown.Item onClick={logout}>
+													<Dropdown.Divider />
+													<Dropdown.Item onClick={logout}>
 													Logout
-												</Dropdown.Item>
-											</Dropdown.Menu>
-										</Dropdown>
-									) : (
-										<HeaderLink
-											current={current}
-											to="/authentication"
-											text="Authentication"
-											componentPromise={Authentication}
-										/>
-									)}
+													</Dropdown.Item>
+												</Dropdown.Menu>
+											</Dropdown>
+										) : (
+											<HeaderLink
+												current={current}
+												to="/authentication"
+												text="Authentication"
+												componentPromise={Authentication}
+											/>
+										)}
+									</Menu.Menu>
 								</>
 							)}
 						</Container>
@@ -288,7 +293,12 @@ class Header extends Component {
 									>
 										<Dropdown.Menu>
 											<Dropdown.Item>
-												Profile
+												<CustomLink
+													to="/orders-history"
+													componentPromise={OrderHistory}
+												>
+										My orders
+												</CustomLink>
 											</Dropdown.Item>
 
 											<Dropdown.Divider />

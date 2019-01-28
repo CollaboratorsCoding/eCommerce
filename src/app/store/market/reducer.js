@@ -14,6 +14,7 @@ const [ADD_REPLY] = types.addReply;
 const [GET_REVIEWS] = types.getReviews;
 const [ADD_REVIEW_RATE] = types.addReviewRate;
 const [ADD_ORDER] = types.addOrder;
+const [GET_ORDERS] = types.GetOrders;
 
 const initialState = {
 	loading: false,
@@ -26,6 +27,7 @@ const initialState = {
 		},
 		reviewsCount: 0,
 	},
+	myOrders: [],
 	cart: {},
 };
 
@@ -267,13 +269,44 @@ export default (state = initialState, action) => {
 			cart: action.result.cart,
 			loadingCart: false,
 		};
-	case `${ADD_ORDER}_SUCCESS`: {
+	case ADD_ORDER: {
 		return {
 			...state,
+			loading: true,
+		};
+	}
+	case `${ADD_ORDER}_SUCCESS`: {
+		let newOrder = state.myOrders;
+		if (newOrder.length) {
+			newOrder = [action.result.order, ...state.myOrders];
+		}
+		return {
+			...state,
+			myOrders: newOrder,
 			loading: false,
 			cart: action.result.cart,
 		};
 	}
+	case `${ADD_ORDER}_FAILURE`: {
+		return {
+			...state,
+			cart: action.error.cart,
+			loading: false,
+		};
+	}
+	case GET_ORDERS:
+		return {
+			...state,
+			loading: true,
+		};
+
+	case `${GET_ORDERS}_SUCCESS`:
+		return {
+			...state,
+			loading: false,
+			myOrders: action.result.orders
+		};
+
 	default:
 		return state;
 	}

@@ -47,7 +47,7 @@ export default class ReviewForm extends Component {
 			<Form className="form" onSubmit={this.handleSubmit}>
 				<h1>Add Your {reply ? 'Reply' : 'Review'}</h1>
 				<Form.Input
-					icon="mail"
+					icon="user"
 					// label={errors.email}
 					iconPosition="left"
 					// onChange={validateField}
@@ -58,11 +58,11 @@ export default class ReviewForm extends Component {
 					placeholder="Enter Your Name"
 				/>
 				<Form.Input
-					icon="key"
+					
 					type="text"
 					name="text"
 					placeholder="Write Review Here"
-					iconPosition="left"
+					
 				/>
 
 				{!reply && (
@@ -76,9 +76,9 @@ export default class ReviewForm extends Component {
 				)}
 
 				<Button
-					content="Sign In"
-					icon="sign-in"
-					labelPosition="left"
+					content="Send review"
+					icon="send"
+					labelPosition="right"
 					type="submit"
 				/>
 			</Form>

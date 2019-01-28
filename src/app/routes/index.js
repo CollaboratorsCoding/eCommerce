@@ -50,35 +50,19 @@ export const Cart = Loadable({
 	modules: ['cart'],
 });
 
-// const Dashboard = Loadable({
-//   loader: () => import(/* webpackChunkName: "dashboard" */ './dashboard'),
-//   loading: () => null,
-//   modules: ['dashboard']
-// });
+export const OrderHistory = Loadable({
+	loader: () => import(/* webpackChunkName: "orders-history" */ './orders-history'),
+	loading: () => null,
+	modules: ['orders-history'],
+});
 
-// const Login = Loadable({
-//   loader: () => import(/* webpackChunkName: "login" */ './login'),
-//   loading: () => null,
-//   modules: ['login']
-// });
-
-// const Logout = Loadable({
-//   loader: () => import(/* webpackChunkName: "logout" */ './logout'),
-//   loading: () => null,
-//   modules: ['logout']
-// });
-
-// const Profile = Loadable({
-//   loader: () => import(/* webpackChunkName: "profile" */ './profile'),
-//   loading: () => null,
-//   modules: ['profile']
-// });
 
 export default () => (
 	<Switch>
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
 		<Authenticated exact path="/add" component={AddProduct} />
+		<Authenticated exact path="/orders-history" component={OrderHistory} />
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />
 

@@ -63,6 +63,28 @@ class Checkout extends PureComponent {
 		if (!queryStep || queryStep <= 0 || queryStep > 1) {
 			this.switchStep(1);
 		}
+
+		if(!_.isEmpty(this.props.user)) {
+			this.setState({form: {
+				1: {
+					data: {
+						email: this.props.user.email,
+						name: this.props.user.name,
+						phone: this.props.user.phone,
+					},
+					isValid: true,
+				},
+				2: {
+					data: {
+						address: this.props.user.address,
+					},
+					isValid: true,
+				},
+				3: {
+					isValid: true,
+				},
+			},})
+		}
 	}
 
 	componentDidUpdate(prevProps) {

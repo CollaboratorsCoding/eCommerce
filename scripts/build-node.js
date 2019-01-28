@@ -16,6 +16,8 @@ console.log(
 );
 
 console.log(chalk.cyan('\nCreating production Server build...\n'));
+fs.emptyDirSync(paths.appBuildServer);
+
 
 fs.copySync(paths.serverAssets, paths.appBuildServer);
 

@@ -86,11 +86,11 @@ const colors = {
 	},
 };
 
-class MetaDataHendler extends Component {
+class MetaDataHandler extends Component {
 	componentDidUpdate(prevProps) {
 		const { notification, redirect, history } = this.props;
 
-		if (prevProps.redirect.path !== redirect.path && !isServer) {
+		if (prevProps.redirect.id !== redirect.id && !isServer) {
 			history.push(redirect.path)
 		}
 
@@ -152,4 +152,4 @@ class MetaDataHendler extends Component {
 	}
 }
 
-export default withRouter(MetaDataHendler);
+export default withRouter(MetaDataHandler);

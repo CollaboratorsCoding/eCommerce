@@ -46,6 +46,7 @@ class ShoppingCart extends Component {
 		const {
 			loadingCart,
 			cart,
+			user,
 			addToCart,
 			reduceProduct,
 			removeProduct,
@@ -59,6 +60,7 @@ class ShoppingCart extends Component {
 						{queryPage === 'checkout' ? (
 							<Checkout
 								cart={cart}
+								user={user}
 								switchPage={this.switchPage}
 								addOrder={this.props.addOrder}
 								{...this.props}
@@ -84,6 +86,7 @@ class ShoppingCart extends Component {
 
 const mapStateToProps = state => ({
 	cart: state.market.cart,
+	user: state.profile.profile,
 	loadingCart: state.market.loadingCart,
 });
 

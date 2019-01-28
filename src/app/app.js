@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 
 // Action creators and helpers
 import ScrollTop from './hocs/scrollTop';
-import MetaDataHendler from './hocs/withNotifications';
+import MetaDataHandler from './hocs/MetaDataHandler';
 import Layout from './layout';
 import Routes from './routes';
 
@@ -15,13 +15,13 @@ import './app.scss';
 const App = props => (
 	<div id="app">
 		<ScrollTop>
-			<MetaDataHendler redirect={props.redirect} notification={props.notification}>
+			<MetaDataHandler redirect={props.redirect} notification={props.notification}>
 				<Layout current={props.location.pathname}>
 					<div id="content">
 						<Routes />
 					</div>
 				</Layout>
-			</MetaDataHendler>
+			</MetaDataHandler>
 		</ScrollTop>
 	</div>
 );

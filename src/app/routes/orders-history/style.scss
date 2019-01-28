@@ -1,0 +1,24 @@
+.orders-history {
+    margin-top: 80px;
+    &-table {
+        border-radius: 5px;
+        box-shadow: 0 15px 40px rgba(#000, 0.15);
+    }
+}
+
+.rc-table-row:hover {
+    cursor: pointer;
+}
+.rc-table table {
+    text-align: center;
+    color: black;
+    font-size: 13px;
+}
+
+.rc-table td, th {
+    border: 1px solid #e6e5e5;
+}
+
+table {
+    border-spacing: 0 !important;
+}
