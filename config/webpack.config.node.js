@@ -7,11 +7,11 @@ const NODE_ENV = process.env.NODE_ENV;
 const config = {
 	mode: NODE_ENV,
 	target: 'node',
-	entry: ['./server/mount.webpack'],
+	entry: ['./server/mount.js'],
 	output: {
 		path: path.join(__dirname, '../build/server'),
 		// Build it as a commonjs library so we can include it
-		filename: 'server.js',
+		filename: 'index.js',
 		library: 'mount',
 		// Build it as a commonjs library so we can include it
 		libraryTarget: 'commonjs',
@@ -68,7 +68,7 @@ if (NODE_ENV === 'production') {
 	config.plugins.push(
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify('production')
-	  }),
+		}),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 	)
 } else {

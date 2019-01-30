@@ -1,7 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-// import AuthenticatedRoute from '../components/authenticated-route';
-// import UnauthenticatedRoute from '../components/unauthenticated-route';
 import Loadable from 'react-loadable';
 
 import NotFound from './not-found';
@@ -65,21 +63,12 @@ export default () => (
 		<Authenticated exact path="/orders-history" component={OrderHistory} />
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />
-
 		<Unauthenticated
 			exact
 			path="/authentication"
 			component={Authentication}
 		/>
-		{/* <Route exact path="/product/:slug/" component={AddProduct} /> */}
 		<Route exact path="/cart" component={Cart} />
-
-		{/* <Route exact path="/profile/:id" component={Profile} /> */}
-
-		{/* <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
-
-    <UnauthenticatedRoute exact path="/login" component={Login} />
-    <AuthenticatedRoute exact path="/logout" component={Logout} /> */}
 
 		<Route component={NotFound} />
 	</Switch>

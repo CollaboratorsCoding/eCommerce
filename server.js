@@ -30,14 +30,14 @@ if (isDev) {
 		// Mount the routes when ready (and only once via promise semantics):
 		app.use(express.static('build/client/'));
 		require('./devMiddleware')(app);
-		require('./build/server/server.js').mount.default(app);
+		require('./build/server/index.js').mount.default(app);
 	});
 	// waitForBuild middleware to avoid confusing 404s
 	app.use((req, res, next) => {
 		buildPromise.then(next, next);
 	});
 } else {
-	require('./build/server/server.js').mount.default(app);
+	require('./build/server/index.js').mount.default(app);
 }
 
 Loadable.preloadAll().then(() => {
