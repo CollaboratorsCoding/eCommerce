@@ -257,7 +257,7 @@ UserController.sendresetPassword = (req, res) => {
 					name: user.name,
 					emailAddress: user.email,
 					resetUrl: `${req.protocol}://${req.hostname}${
-						process.env.NODE_ENV !== 'production' ? ':3000' : null
+						process.env.NODE_ENV !== 'production' ? ':3000' : ''
 					}/authentication?form=resetpassword&token=${
 						user.resetPasswordToken
 					}`,
@@ -276,8 +276,8 @@ UserController.sendresetPassword = (req, res) => {
 					},
 					redirect: {
 						id: nanoid(6),
-						path: '/'
-					}
+						path: '/',
+					},
 				},
 			});
 		});
@@ -347,8 +347,8 @@ UserController.resetPassword = (req, res) => {
 						},
 						redirect: {
 							id: nanoid(6),
-							path: '/authentication'
-						}
+							path: '/authentication',
+						},
 					},
 				});
 			});

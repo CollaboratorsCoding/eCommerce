@@ -20,6 +20,7 @@ import templateToHTML from './hbs-email-to-html';
 
 
 */
+
 const transporter = nodeMailer.createTransport({
 	host: process.env.EMAIL_HOST,
 	port: 465,

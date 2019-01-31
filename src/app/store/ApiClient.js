@@ -7,7 +7,12 @@ function formatUrl(path, req) {
 	const adjustedPath = path[0] !== '/' ? `/${path}` : path;
 	if (isServer) {
 		// Prepend host and port of the API server to the path.
-		return `http://${req.hostname}:3000/api${adjustedPath}`;
+		const ending =
+			process.env.NODE_ENV === 'production' && process.env.PORT
+				? ''
+				: `:${process.env.PORT}` || ':3000';
+
+		return `http://${req.hostname}${ending}/api${adjustedPath}`;
 	}
 	// Prepend `/api` to relative URL, to proxy to API server.
 	return `/api${adjustedPath}`;
