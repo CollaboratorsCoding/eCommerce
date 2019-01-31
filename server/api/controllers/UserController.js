@@ -249,8 +249,8 @@ UserController.sendresetPassword = (req, res) => {
 			}
 			sendEmail({
 				to: user.email,
-				from: '<codenamevero@gmail.com>',
-				subject: `[CodeNameVero] Password Restore!`,
+				from: '<demo.app0121@gmail.com>',
+				subject: `[E-COMMERCE-DEMO] Password Restore!`,
 				template: 'reset-password',
 				templateVars: {
 					title: `Password Restore!`,

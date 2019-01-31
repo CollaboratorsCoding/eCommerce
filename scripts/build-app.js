@@ -2,9 +2,9 @@ const fse = require('fs-extra');
 const chalk = require('chalk');
 
 
-fse.copy(".env", "production/.env", (err) => {
+fse.copy(".env.production", "production/.env", (err) => {
 	if (err) return console.error(err);
-	return console.log(chalk.green('✔ .env copied to production/.env'))
+	return console.log(chalk.green('✔ .env.production copied to production/.env'))
 });
 
 fse.copy("build", "production/build", (err) => {

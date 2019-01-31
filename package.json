@@ -1,6 +1,5 @@
 {
-	"name": "cra-ssr",
-	"homepage": "https://cra-ssr.herokuapp.com",
+	"name": "ecommerce-demo",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
