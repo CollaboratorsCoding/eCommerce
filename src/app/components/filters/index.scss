@@ -4,6 +4,9 @@
 
 .input-wrapper {
 	display: flex;
+	@media only screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 	.min-input,
 	.max-input {
 		flex: 0 1 40%;
