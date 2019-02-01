@@ -10,11 +10,10 @@ const SITE_URL =
 
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
-const defaultTitle = 'My Website';
-const defaultDescription =
-	'This is a really awesome website where we can render on the server. Supa cool.';
+const defaultTitle = 'e-Commerce';
+const defaultDescription = 'e-Commerce SSR SPA ';
 const defaultImage = `${SITE_URL}${logo}`;
-const defaultTwitter = '@cereallarceny';
+
 const defaultSep = ' | ';
 
 class Page extends Component {
@@ -47,10 +46,10 @@ class Page extends Component {
 			{ itemprop: 'image', content: theImage },
 			{ name: 'description', content: theDescription },
 			{ name: 'twitter:card', content: 'summary_large_image' },
-			{ name: 'twitter:site', content: defaultTwitter },
+
 			{ name: 'twitter:title', content: theTitle },
 			{ name: 'twitter:description', content: theDescription },
-			{ name: 'twitter:creator', content: twitter || defaultTwitter },
+
 			{ name: 'twitter:image:src', content: theImage },
 			{ property: 'og:title', content: theTitle },
 			{ property: 'og:type', content: contentType || 'website' },
