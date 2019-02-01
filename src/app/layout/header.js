@@ -13,7 +13,14 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from '../hocs/customLink';
-import { Homepage, About, AddProduct, Cart, Authentication, OrderHistory } from '../routes';
+import {
+	Homepage,
+	About,
+	AddProduct,
+	Cart,
+	Authentication,
+	OrderHistory,
+} from '../routes';
 import logo from '../assets/logo.png';
 
 const unAuthLinks = [
@@ -145,7 +152,7 @@ class Header extends Component {
 						<Container>
 							<Menu.Item header>
 								<Image size="tiny" src={logo} />
-								JabkoStore
+								DemoStore
 								<Icon
 									className="mobile-bars"
 									name="bars"
@@ -170,7 +177,7 @@ class Header extends Component {
 
 										return TheLink;
 									})}
-									<Menu.Menu position='right'>
+									<Menu.Menu position="right">
 										<CustomLink
 											to="/cart"
 											componentPromise={Cart}
@@ -193,7 +200,6 @@ class Header extends Component {
 												) : null}
 											</Icon.Group>
 										</CustomLink>
-									
 
 										{user.isLoggedIn ? (
 											<Dropdown
@@ -205,15 +211,19 @@ class Header extends Component {
 													<Dropdown.Item>
 														<CustomLink
 															to="/orders-history"
-															componentPromise={OrderHistory}
+															componentPromise={
+																OrderHistory
+															}
 														>
-													My orders
+															My orders
 														</CustomLink>
 													</Dropdown.Item>
 
 													<Dropdown.Divider />
-													<Dropdown.Item onClick={logout}>
-													Logout
+													<Dropdown.Item
+														onClick={logout}
+													>
+														Logout
 													</Dropdown.Item>
 												</Dropdown.Menu>
 											</Dropdown>
@@ -222,7 +232,9 @@ class Header extends Component {
 												current={current}
 												to="/authentication"
 												text="Authentication"
-												componentPromise={Authentication}
+												componentPromise={
+													Authentication
+												}
 											/>
 										)}
 									</Menu.Menu>
@@ -295,9 +307,11 @@ class Header extends Component {
 											<Dropdown.Item>
 												<CustomLink
 													to="/orders-history"
-													componentPromise={OrderHistory}
+													componentPromise={
+														OrderHistory
+													}
 												>
-										My orders
+													My orders
 												</CustomLink>
 											</Dropdown.Item>
 
