@@ -88,7 +88,6 @@ export default (state = initialState, action) => {
 			...oldProducts,
 			[page]: products,
 		};
-		console.log(category);
 		return {
 			...state,
 			loading: false,

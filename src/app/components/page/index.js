@@ -37,7 +37,7 @@ class Page extends Component {
 		const theDescription = description
 			? description.substring(0, 155)
 			: defaultDescription;
-		const theImage = image ? `${SITE_URL}${image}` : defaultImage;
+		const theImage = image || defaultImage;
 
 		const metaTags = [
 			{ itemprop: 'name', content: theTitle },
