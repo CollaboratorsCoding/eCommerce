@@ -12,7 +12,6 @@ function formatUrl(path, req) {
 			process.env.NODE_ENV === 'production' && process.env.PORT
 				? ''
 				: `:${process.env.PORT || '3000'}`;
-		console.log(`http://${req.hostname}${ending}/api${adjustedPath}`)
 		return `${req.protocol}://${req.hostname}${ending}/api${adjustedPath}`;
 	}
 	// Prepend `/api` to relative URL, to proxy to API server.

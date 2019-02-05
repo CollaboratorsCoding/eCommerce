@@ -52,7 +52,7 @@ CartController.getItemsCart = (req, res) => {
 	if (!req.session.cart) {
 		return res
 			.status(200)
-			.json({ cart: { productsInCart: [], totalQty: 0, totalPrice: 0 } });
+			.json({ cart: { productsInCart: [], totalQty: 0, totalPrice: 0} });
 	}
 
 	const cart = new Cart(req.session.cart ? req.session.cart : {});

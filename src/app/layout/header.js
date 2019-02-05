@@ -16,7 +16,6 @@ import CustomLink from '../hocs/customLink';
 import {
 	Homepage,
 	About,
-	AddProduct,
 	Cart,
 	Authentication,
 	OrderHistory,
@@ -46,11 +45,6 @@ const authLinks = [
 		to: '/about',
 		text: 'About',
 		componentPromise: About,
-	},
-	{
-		to: '/add',
-		text: 'Add',
-		componentPromise: AddProduct,
 	},
 ];
 

@@ -13,10 +13,10 @@ fse.copy("build", "production/build", (err) => {
 });
 
 
-fse.copy("server.js", "production/server.js", (err) => {
-	if (err) return console.error(err);
-	return console.log(chalk.green('✔ server.js copied to production/server.js'))
-});
+// fse.copy("server.js", "production/server.js", (err) => {
+// 	if (err) return console.error(err);
+// 	return console.log(chalk.green('✔ server.js copied to production/server.js'))
+// });
 
 fse.readJson("package.json", (err, data) => {
 	fse.outputJson("production/package.json", {
@@ -24,7 +24,7 @@ fse.readJson("package.json", (err, data) => {
 		version: data.version,
 		private: data.private,
 		scripts: {
-			start: "cross-env NODE_ENV=production node server.js"
+			start: "cross-env NODE_ENV=production node build/server/index.js"
 		},
 		dependencies: data.dependencies
 	}, {spaces: '\t'}, (err) => {

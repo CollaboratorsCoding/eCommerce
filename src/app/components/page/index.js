@@ -23,7 +23,6 @@ class Page extends Component {
 			description,
 			image,
 			contentType,
-			twitter,
 			noCrawl,
 			published,
 			updated,

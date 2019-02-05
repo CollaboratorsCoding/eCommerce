@@ -58,9 +58,9 @@
 		"url-loader": "1.1.1"
 	},
 	"scripts": {
-		"start": "cross-env NODE_ENV=production node server.js",
+		"start": "cross-env NODE_ENV=production node build/server/index.js",
 		"dev": "node scripts/dev-start.js && npm run dev:server",
-		"dev:server": "cross-env NODE_ENV=development node server.js",
+		"dev:server": "cross-env NODE_ENV=development node scripts/devServer.js",
 		"build:react": "node scripts/build.js",
 		"build:node": "node scripts/build-node.js",
 		"build": "npm run build:react && npm run build:node",
