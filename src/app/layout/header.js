@@ -13,14 +13,7 @@ import {
 	Icon,
 } from 'semantic-ui-react';
 import CustomLink from '../hocs/customLink';
-import {
-	Homepage,
-	About,
-	AddProduct,
-	Cart,
-	Authentication,
-	OrderHistory,
-} from '../routes';
+import { Homepage, About, Cart, Authentication, OrderHistory } from '../routes';
 import logo from '../assets/logo.png';
 
 const unAuthLinks = [
@@ -46,11 +39,6 @@ const authLinks = [
 		to: '/about',
 		text: 'About',
 		componentPromise: About,
-	},
-	{
-		to: '/add',
-		text: 'Add',
-		componentPromise: AddProduct,
 	},
 ];
 
@@ -153,31 +141,8 @@ class Header extends Component {
 							<Menu.Item header>
 								<Image size="tiny" src={logo} />
 								DemoStore
-								<Icon
-									className="mobile-bars"
-									name="bars"
-									onClick={() => {
-										this.setState(prevState => ({
-											showMobile: !prevState.showMobile,
-										}));
-									}}
-								/>
-							</Menu.Item>
-
-							{showMobile && (
-								<>
-									{links.map(link => {
-										const TheLink = (
-											<HeaderLink
-												key={link.text}
-												current={current}
-												{...link}
-											/>
-										);
-
-										return TheLink;
-									})}
-									<Menu.Menu position="right">
+								<div className="mobile-right">
+									<div className="mobile-cart">
 										<CustomLink
 											to="/cart"
 											componentPromise={Cart}
@@ -200,12 +165,41 @@ class Header extends Component {
 												) : null}
 											</Icon.Group>
 										</CustomLink>
+									</div>
 
+									<Icon
+										className="mobile-bars"
+										name="bars"
+										onClick={() => {
+											this.setState(prevState => ({
+												showMobile: !prevState.showMobile,
+											}));
+										}}
+									/>
+								</div>
+							</Menu.Item>
+
+							{showMobile && (
+								<>
+									{links.map(link => {
+										const TheLink = (
+											<HeaderLink
+												key={link.text}
+												current={current}
+												{...link}
+											/>
+										);
+
+										return TheLink;
+									})}
+									<Menu.Menu
+										position="right"
+										className="dropdown-menu"
+									>
 										{user.isLoggedIn ? (
 											<Dropdown
 												text={user.profile.name}
-												pointing
-												className="link item"
+												inline
 											>
 												<Dropdown.Menu>
 													<Dropdown.Item>
@@ -258,7 +252,7 @@ class Header extends Component {
 							<Menu.Item>
 								<Image size="tiny" src={logo} />
 							</Menu.Item>
-							<Menu.Item header>JabkoStore</Menu.Item>
+							<Menu.Item header> DemoStore</Menu.Item>
 							{links.map(link => {
 								const TheLink = (
 									<HeaderLink
@@ -271,7 +265,10 @@ class Header extends Component {
 								return TheLink;
 							})}
 
-							<Menu.Menu position="right">
+							<Menu.Menu
+								position="right"
+								className="dropdown-menu"
+							>
 								<Menu.Item>
 									<CustomLink
 										to="/cart"

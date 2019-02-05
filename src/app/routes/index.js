@@ -25,12 +25,6 @@ export const Authentication = Loadable({
 	modules: ['authentication'],
 });
 
-export const AddProduct = Loadable({
-	loader: () => import(/* webpackChunkName: "add" */ './add'),
-	loading: () => null,
-	modules: ['add'],
-});
-
 export const Category = Loadable({
 	loader: () => import(/* webpackChunkName: "c" */ './category'),
 	loading: () => null,
@@ -49,17 +43,17 @@ export const Cart = Loadable({
 });
 
 export const OrderHistory = Loadable({
-	loader: () => import(/* webpackChunkName: "orders-history" */ './orders-history'),
+	loader: () =>
+		import(/* webpackChunkName: "orders-history" */ './orders-history'),
 	loading: () => null,
 	modules: ['orders-history'],
 });
-
 
 export default () => (
 	<Switch>
 		<Route exact path="/" component={Homepage} />
 		<Route exact path="/about" component={About} />
-		<Authenticated exact path="/add" component={AddProduct} />
+
 		<Authenticated exact path="/orders-history" component={OrderHistory} />
 		<Route exact path="/c/:slug_category/" component={Category} />
 		<Route exact path="/p/:slug_product" component={Product} />

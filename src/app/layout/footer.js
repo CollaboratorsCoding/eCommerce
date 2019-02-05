@@ -20,6 +20,8 @@ export default function Footer() {
 			style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
 			vertical
 		>
+			All products data are from www.headphonezone.in only for test
+			purposes
 			<Container textAlign="center">
 				<Grid columns={4} divided stackable inverted>
 					<Grid.Row>

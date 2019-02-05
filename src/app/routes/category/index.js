@@ -128,9 +128,12 @@ export class Category extends Component {
 	countPages = items => Math.ceil(items / 20);
 
 	render() {
-		const categoryName = this.props.match.params.slug_category;
+		const categorySlug = this.props.match.params.slug_category;
+
 		const { categories, addToCart, loading, loadingCart } = this.props;
 		const { activePage } = this.state;
+		const categoryName = _.get(categories[categorySlug], 'title', '');
+
 		if (loading)
 			return (
 				<Dimmer inverted active>
@@ -178,7 +181,7 @@ export class Category extends Component {
 		if (
 			!_.get(
 				this.props,
-				`categories[${categoryName}].products[${activePage}].length`,
+				`categories[${categorySlug}].products[${activePage}].length`,
 				null
 			)
 		) {
@@ -190,7 +193,7 @@ export class Category extends Component {
 			);
 		}
 
-		const currentCategory = categories[categoryName];
+		const currentCategory = categories[categorySlug];
 
 		return (
 			<Page id="category" title={categoryName} description={categoryName}>

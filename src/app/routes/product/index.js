@@ -242,7 +242,11 @@ export class Product extends Component {
 							componentPromise={Category}
 							to={`/c/${category}`}
 						>
-							{category}
+							{_.get(
+								this.props.categories[category],
+								'title',
+								category
+							)}
 						</CustomLink>
 					</Breadcrumb.Section>
 					<Breadcrumb.Divider icon="right chevron" />
@@ -273,6 +277,7 @@ export class Product extends Component {
 }
 const mapStateToProps = state => ({
 	product: state.market.product,
+	categories: state.market.categories,
 	loading: state.market.loading,
 });
 
