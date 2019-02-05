@@ -88,19 +88,24 @@ export default (state = initialState, action) => {
 			...oldProducts,
 			[page]: products,
 		};
+		console.log(category);
 		return {
 			...state,
 			loading: false,
 			categories: {
 				...state.categories,
-				[category]: {
-					...state.categories[category],
-					products: newProducts,
-					productsCount,
-					filtersData,
-					filtersExisting,
-					filteredDocsCount,
-				},
+				...(category
+					? {
+						[category]: {
+							...state.categories[category],
+							products: newProducts,
+							productsCount,
+							filtersData,
+							filtersExisting,
+							filteredDocsCount,
+						},
+						  }
+					: {}),
 			},
 		};
 	}
@@ -304,7 +309,7 @@ export default (state = initialState, action) => {
 		return {
 			...state,
 			loading: false,
-			myOrders: action.result.orders
+			myOrders: action.result.orders,
 		};
 
 	default:

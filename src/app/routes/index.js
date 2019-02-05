@@ -43,11 +43,11 @@ export const Cart = Loadable({
 });
 
 export const OrderHistory = Loadable({
-	loader: () => import(/* webpackChunkName: "orders-history" */ './orders-history'),
+	loader: () =>
+		import(/* webpackChunkName: "orders-history" */ './orders-history'),
 	loading: () => null,
 	modules: ['orders-history'],
 });
-
 
 export default () => (
 	<Switch>
