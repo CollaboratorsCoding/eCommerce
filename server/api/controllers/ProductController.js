@@ -145,25 +145,35 @@ ProductController.getProduct = (req, res) => {
 			(error, count) => {
 				// SESSION LAST PRODUCT VISITED UPDATE
 				const lastVisitedProducts = req.session.lastVisitedProducts;
-				const itemIndex = lastVisitedProducts.findIndex(
-					item => String(item._id) === String(product._id)
-				);
-
-				if (itemIndex === -1) {
-					if (!req.session.lastVisitedProducts.length) {
-						req.session.lastVisitedProducts = [product.toJSON()];
-					} else {
-						req.session.lastVisitedProducts.unshift(
-							product.toJSON()
-						);
-					}
-				} else if (lastVisitedProducts.length > 1) {
-					const temp = lastVisitedProducts[itemIndex];
-					const newlastVisitedProducts = lastVisitedProducts.filter(
-						i => i._id !== temp._id
+				if (typeof lastVisitedProducts !== 'undefined') {
+					const itemIndex = lastVisitedProducts.findIndex(
+						item => String(item._id) === String(product._id)
 					);
-					newlastVisitedProducts.unshift(temp);
-					req.session.lastVisitedProducts = newlastVisitedProducts;
+
+					if (itemIndex === -1) {
+						if (
+							!_.get(
+								req.session,
+								'lastVisitedProducts.length',
+								null
+							)
+						) {
+							req.session.lastVisitedProducts = [
+								product.toJSON(),
+							];
+						} else {
+							req.session.lastVisitedProducts.unshift(
+								product.toJSON()
+							);
+						}
+					} else if (lastVisitedProducts.length > 1) {
+						const temp = lastVisitedProducts[itemIndex];
+						const newlastVisitedProducts = lastVisitedProducts.filter(
+							i => i._id !== temp._id
+						);
+						newlastVisitedProducts.unshift(temp);
+						req.session.lastVisitedProducts = newlastVisitedProducts;
+					}
 				}
 
 				// SESSION END

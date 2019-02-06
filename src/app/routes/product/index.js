@@ -39,7 +39,11 @@ const frontload = async props =>
 
 export class Product extends Component {
 	state = {
-		activeTab: queryString.parse(this.props.location.search).tab,
+		activeTab: _.get(
+			queryString.parse(this.props.location.search),
+			'tab',
+			'description'
+		),
 	};
 
 	componentDidUpdate = (prevProps, prevState) => {
